@@ -57,6 +57,10 @@
             <id>sunigos</id>
             <name>Igor Sontsa</name>
         </developer>
+        <developer>
+            <id>knysh</id>
+            <name>Sergey Knysh</name>
+        </developer>
     </developers>
     <dependencies>
     </dependencies>
