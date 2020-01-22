@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Demo Test Suite" verbose="1">
+    <test name="Integration tests" parallel="methods" thread-count="10">
+        <classes>
+        </classes>
+    </test>
+    <test name="Use cases tests" parallel="methods" thread-count="10">
+        <classes>
+        </classes>
+    </test>
+    <test name="Non-threadsafe tests" parallel="none">
+        <classes>
+        </classes>
+    </test>
+</suite>
