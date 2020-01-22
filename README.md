@@ -1,0 +1,1 @@
+# aquality-selenium-core-java
