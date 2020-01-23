@@ -1,6 +1,5 @@
-package tests.Logger;
+package tests.logger;
 
-import aquality.selenium.core.application.AqualityServices;
 import org.apache.log4j.*;
 import org.testng.annotations.*;
 import java.io.File;
@@ -10,6 +9,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
 import aquality.selenium.core.logging.Logger;
+import tests.application.TestAqualityServices;
+
 import static org.testng.Assert.*;
 
 public class LoggerTests {
@@ -17,13 +18,15 @@ public class LoggerTests {
     private final static String testMessage = "test message";
     private final static String testExceptionText = "test exception";
     private final static String log4jFieldName = "log4J";
-    private Logger logger = AqualityServices.getInjector().getInstance(Logger.class);
+    private Logger logger;
     private org.apache.log4j.Logger log4j;
     private Appender appender;
     private File appenderFile;
 
     @BeforeMethod
     private void addMessagesAppender() throws IOException {
+        logger = TestAqualityServices.getInjector().getInstance(Logger.class);
+        logger.info("addMessagesAppender");
         appenderFile = getRandomAppenderFile();
         appender = getFileAppender(appenderFile);
         logger.addAppender(appender);
@@ -31,6 +34,8 @@ public class LoggerTests {
 
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
+        logger = TestAqualityServices.getInjector().getInstance(Logger.class);
+        logger.info("initializeLog4jField");
         Field log4jField = Logger.class.getDeclaredField(log4jFieldName);
         log4jField.setAccessible(true);
         log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(logger)).get();
@@ -169,6 +174,7 @@ public class LoggerTests {
 
     @AfterMethod
     private void removeFileAppenderFromLogger() {
+        logger.info("removeFileAppenderFromLogger");
         logger.removeAppender(appender);
     }
 }

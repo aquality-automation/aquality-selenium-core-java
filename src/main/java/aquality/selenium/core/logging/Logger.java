@@ -15,9 +15,9 @@ public final class Logger {
     }
 
     /**
-     * Gets Logger instance
+     * Gets logger instance
      *
-     * @return Logger instance
+     * @return logger instance
      */
     public static Logger getInstance() {
         return instance.get();
@@ -35,7 +35,7 @@ public final class Logger {
     /**
      * Removes appender
      * @param appender Appender to be removed
-     * @return Logger instance
+     * @return logger instance
      */
     public Logger removeAppender(Appender appender){
         log4J.get().removeAppender(appender);
