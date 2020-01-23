@@ -3,15 +3,29 @@ package aquality.selenium.core.application;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class AqualityServices {
+public abstract class AqualityServices{
 
-    private static Injector injector;
+    private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
+
+    private AqualityServices(){
+    }
 
     public static Injector getInjector(){
-        if(injector == null){
-            injector = Guice.createInjector(new AqualityModule());
+        if(injectorContainer.get() == null){
+            setDefaultInjector();
         }
 
-        return injector;
+        return injectorContainer.get();
+    }
+
+    public static void setDefaultInjector(){
+        remove(injectorContainer);
+        injectorContainer.set(Guice.createInjector(new AqualityModule()));
+    }
+
+    private static void remove(ThreadLocal<?> container){
+        if(container.get() != null){
+            container.remove();
+        }
     }
 }

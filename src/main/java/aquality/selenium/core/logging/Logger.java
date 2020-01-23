@@ -1,4 +1,4 @@
-package logging;
+package aquality.selenium.core.logging;
 
 import org.apache.log4j.Appender;
 

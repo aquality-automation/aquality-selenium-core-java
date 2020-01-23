@@ -1,7 +1,7 @@
 package aquality.selenium.core.application;
 
 import com.google.inject.AbstractModule;
-import logging.Logger;
+import aquality.selenium.core.logging.Logger;
 
 public class AqualityModule extends AbstractModule {
 
