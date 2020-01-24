@@ -9,7 +9,7 @@ public final class Logger {
 
     private static ThreadLocal<org.apache.log4j.Logger> log4J = ThreadLocal.withInitial(()
             -> org.apache.log4j.Logger.getLogger(String.valueOf(Thread.currentThread().getId())));
-    private static ThreadLocal<Logger> instance = ThreadLocal.withInitial(Logger::new);
+    private static ThreadLocal<Logger> instance = new ThreadLocal<>();
 
     private Logger() {
     }
@@ -20,6 +20,11 @@ public final class Logger {
      * @return logger instance
      */
     public static Logger getInstance() {
+        if(instance.get() == null){
+            log4J.remove();
+            instance.remove();
+            instance.set(new Logger());
+        }
         return instance.get();
     }
 
