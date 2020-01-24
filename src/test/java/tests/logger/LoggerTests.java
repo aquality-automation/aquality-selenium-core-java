@@ -46,15 +46,13 @@ public class LoggerTests {
     public void testShouldBePossibleToAddAppender() throws IOException {
         logger.addAppender(appender).info(testMessage);
         assertTrue(appenderFile.exists(), String.format("New appender should be added to log4j. File '%s' should be created.", appenderFile.getPath()));
-        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' doesn't contains message '%s'.", appenderFile.getPath(), testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     @Test
     public void testShouldBePossibleToRemoveAppender() throws IOException {
         logger.addAppender(appender).removeAppender(appender).info(testMessage);
-        if (appenderFile.exists()) {
-            assertFalse(isFileContainsText(appenderFile, testMessage), String.format("New appender is not removed from log4j. File '%s' is not empty.", appenderFile.getPath()));
-        }
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("New appender should be removed from log4j. File '%s' should be empty.", appenderFile.getPath()));
     }
 
     @Test(groups = "messages")
