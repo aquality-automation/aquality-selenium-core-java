@@ -8,7 +8,7 @@ import static org.testng.Assert.*;
 
 public class AqualityServicesTests{
 
-    @Test
+    /*@Test
     public void testShouldBePossibleToGetDefaultInjector() {
         Injector injector = CustomAqualityServices.getInjector();
         assertNotNull(injector, "Default injector should not be null");
@@ -47,5 +47,5 @@ public class AqualityServicesTests{
         CustomAqualityServices.setInjector(new TestModule());
         ICustomDependency customDependency = CustomAqualityServices.getInjector().getInstance(ICustomDependency.class);
         assertNotNull(customDependency, "ICustomDependency should not be injected in custom module");
-    }
+    }*/
 }

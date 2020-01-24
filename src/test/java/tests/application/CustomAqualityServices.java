@@ -13,15 +13,7 @@ public abstract class CustomAqualityServices extends AqualityServices {
         return AqualityServices.getInjector();
     }
 
-    public static <T extends AqualityModule> Injector getInjector(T module) {
-        return AqualityServices.getInjector(module);
-    }
-
-    public static void setInjector() {
-        AqualityServices.setInjector();
-    }
-
     public static <T extends AqualityModule> void setInjector(T module) {
-        AqualityServices.setInjector(module);
+        AqualityServices.initInjector(module);
     }
 }
