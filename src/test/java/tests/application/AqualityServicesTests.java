@@ -18,34 +18,34 @@ public class AqualityServicesTests{
         assertThrows(ConfigurationException.class, () -> injector.getInstance(ICustomDependency.class));
 
         Injector newInjector = CustomAqualityServices.getInjector();
-        assertEquals(injector, newInjector, "AqualityServices should return instance of injector");
+        assertEquals(injector, newInjector, "AqualityServices should return same instance of injector");
     }
 
     @Test
     public void testShouldBePossibleToGetCustomModule() {
-        CustomAqualityServices.setInjector(new TestModule());
+        CustomAqualityServices.initInjector(new TestModule());
         Injector injector = CustomAqualityServices.getInjector();
         assertNotNull(injector, "Custom injector should not be null");
 
         ICustomDependency customDependency = injector.getInstance(ICustomDependency.class);
-        assertNotNull(customDependency, "ICustomDependency should not be injected in custom module");
-        assertEquals(customDependency.getClass(), CustomDependency.class, "ICustomDependency should not be injected as CustomDependency");
-        assertNotNull(injector.getInstance(Logger.class), "Logger should not be null");
+        assertNotNull(customDependency, "ICustomDependency should be injected in custom module");
+        assertEquals(customDependency.getClass(), CustomDependency.class, "ICustomDependency should be injected as CustomDependency");
+        assertNotNull(injector.getInstance(Logger.class), "Logger should be null");
 
         Injector newInjector = CustomAqualityServices.getInjector();
-        assertEquals(injector, newInjector, "AqualityServices should return instance of injector");
+        assertEquals(injector, newInjector, "AqualityServices should return same instance of injector");
     }
 
     @Test
     public void testShouldBePossibleToSetDefaultInjector() {
         Logger logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
-        assertNotNull(logger, "Logger should not be injected in default module");
+        assertNotNull(logger, "Logger should be injected in default module");
     }
 
     @Test
     public void testShouldBePossibleToSetCustomInjector() {
-        CustomAqualityServices.setInjector(new TestModule());
+        CustomAqualityServices.initInjector(new TestModule());
         ICustomDependency customDependency = CustomAqualityServices.getInjector().getInstance(ICustomDependency.class);
-        assertNotNull(customDependency, "ICustomDependency should not be injected in custom module");
+        assertNotNull(customDependency, "ICustomDependency should be injected in custom module");
     }
 }
