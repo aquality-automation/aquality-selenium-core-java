@@ -8,7 +8,7 @@ import static org.testng.Assert.*;
 
 public class AqualityServicesTests{
 
-    /*@Test
+    @Test
     public void testShouldBePossibleToGetDefaultInjector() {
         Injector injector = CustomAqualityServices.getInjector();
         assertNotNull(injector, "Default injector should not be null");
@@ -23,7 +23,8 @@ public class AqualityServicesTests{
 
     @Test
     public void testShouldBePossibleToGetCustomModule() {
-        Injector injector = CustomAqualityServices.getInjector(new TestModule());
+        CustomAqualityServices.setInjector(new TestModule());
+        Injector injector = CustomAqualityServices.getInjector();
         assertNotNull(injector, "Custom injector should not be null");
 
         ICustomDependency customDependency = injector.getInstance(ICustomDependency.class);
@@ -37,7 +38,6 @@ public class AqualityServicesTests{
 
     @Test
     public void testShouldBePossibleToSetDefaultInjector() {
-        CustomAqualityServices.setInjector();
         Logger logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
         assertNotNull(logger, "Logger should not be injected in default module");
     }
@@ -47,5 +47,5 @@ public class AqualityServicesTests{
         CustomAqualityServices.setInjector(new TestModule());
         ICustomDependency customDependency = CustomAqualityServices.getInjector().getInstance(ICustomDependency.class);
         assertNotNull(customDependency, "ICustomDependency should not be injected in custom module");
-    }*/
+    }
 }

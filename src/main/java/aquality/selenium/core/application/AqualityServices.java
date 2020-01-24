@@ -41,4 +41,8 @@ public abstract class AqualityServices {
         injectorContainer.remove();
         injectorContainer.set(Guice.createInjector(module));
     }
+
+    public void unload() {
+        injectorContainer.remove();
+    }
 }
