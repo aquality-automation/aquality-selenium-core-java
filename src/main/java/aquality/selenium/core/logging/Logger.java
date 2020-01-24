@@ -5,11 +5,11 @@ import org.apache.log4j.Appender;
 /**
  * This class is using for a creating extended log. It implements a Singleton pattern
  */
-public final class Logger {
+public final class Logger implements AutoCloseable {
 
     private static ThreadLocal<org.apache.log4j.Logger> log4J = ThreadLocal.withInitial(()
             -> org.apache.log4j.Logger.getLogger(String.valueOf(Thread.currentThread().getId())));
-    private static ThreadLocal<Logger> instance = new ThreadLocal<>();
+    private static ThreadLocal<Logger> instance = ThreadLocal.withInitial(Logger::new);
 
     private Logger() {
     }
@@ -20,29 +20,26 @@ public final class Logger {
      * @return logger instance
      */
     public static Logger getInstance() {
-        if(instance.get() == null){
-            log4J.remove();
-            instance.remove();
-            instance.set(new Logger());
-        }
         return instance.get();
     }
 
     /**
      * Adds appender
+     *
      * @param appender Appender to be added
      */
-    public Logger addAppender(Appender appender){
+    public Logger addAppender(Appender appender) {
         log4J.get().addAppender(appender);
         return getInstance();
     }
 
     /**
      * Removes appender
+     *
      * @param appender Appender to be removed
      * @return logger instance
      */
-    public Logger removeAppender(Appender appender){
+    public Logger removeAppender(Appender appender) {
         log4J.get().removeAppender(appender);
         return getInstance();
     }
@@ -59,7 +56,7 @@ public final class Logger {
     /**
      * Debug log
      *
-     * @param message Message
+     * @param message   Message
      * @param throwable Throwable
      */
     public void debug(String message, Throwable throwable) {
@@ -106,7 +103,8 @@ public final class Logger {
     /**
      * tries to get localized value by passed key, then applies String.format to fetched value and params
      * then makes record in the log output
-     * @param key key from localized dictionary
+     *
+     * @param key    key from localized dictionary
      * @param params list of params to format
      */
     public void info(String key, Object... params) {
@@ -116,10 +114,17 @@ public final class Logger {
     /**
      * tries to get localized value by passed key, then applies String.format to fetched value and params
      * then makes record in the log output
-     * @param key key from localized dictionary
+     *
+     * @param key    key from localized dictionary
      * @param params list of params to format
      */
     public void debug(String key, Object... params) {
         log4J.get().debug(String.format(key, params));
+    }
+
+    @Override
+    public void close() {
+        instance.remove();
+        log4J.remove();
     }
 }

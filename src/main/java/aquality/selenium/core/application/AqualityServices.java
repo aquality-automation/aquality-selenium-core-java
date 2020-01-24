@@ -3,7 +3,7 @@ package aquality.selenium.core.application;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public abstract class AqualityServices {
+public abstract class AqualityServices implements AutoCloseable {
 
     private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
 
@@ -29,5 +29,10 @@ public abstract class AqualityServices {
     protected static <T extends AqualityModule> void setInjector(T module) {
         injectorContainer.remove();
         injectorContainer.set(Guice.createInjector(module));
+    }
+
+    @Override
+    public void close() {
+        injectorContainer.remove();
     }
 }
