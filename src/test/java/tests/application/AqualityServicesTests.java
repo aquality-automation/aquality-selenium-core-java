@@ -29,7 +29,7 @@ public class AqualityServicesTests{
         ICustomDependency customDependency = injector.getInstance(ICustomDependency.class);
         assertNotNull(customDependency, "ICustomDependency should not be injected in custom module");
         assertEquals(customDependency.getClass(), CustomDependency.class, "ICustomDependency should not be injected as CustomDependency");
-        assertThrows(ConfigurationException.class, () -> injector.getInstance(Logger.class));
+        assertNotNull(injector.getInstance(Logger.class), "Logger should not be null");
 
         Injector newInjector = CustomAqualityServices.getInjector();
         assertEquals(injector, newInjector, "AqualityServices should return instance of injector");

@@ -1,7 +1,7 @@
 package tests.application;
 
+import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.application.AqualityServices;
-import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 
 public abstract class CustomAqualityServices extends AqualityServices {
@@ -13,7 +13,7 @@ public abstract class CustomAqualityServices extends AqualityServices {
         return AqualityServices.getInjector();
     }
 
-    public static <TModule extends AbstractModule> Injector getInjector(TModule module) {
+    public static <TModule extends AqualityModule> Injector getInjector(TModule module) {
         return AqualityServices.getInjector(module);
     }
 
@@ -21,7 +21,7 @@ public abstract class CustomAqualityServices extends AqualityServices {
         AqualityServices.setInjector();
     }
 
-    public static <TModule extends AbstractModule> void setInjector(TModule module) {
+    public static <TModule extends AqualityModule> void setInjector(TModule module) {
         AqualityServices.setInjector(module);
     }
 }

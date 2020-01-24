@@ -1,11 +1,12 @@
 package tests.application;
 
-import com.google.inject.AbstractModule;
+import aquality.selenium.core.application.AqualityModule;
 
-public class TestModule extends AbstractModule {
+public class TestModule extends AqualityModule {
 
     @Override
     protected void configure() {
+        super.configure();
         bind(ICustomDependency.class).to(CustomDependency.class);
     }
 }
