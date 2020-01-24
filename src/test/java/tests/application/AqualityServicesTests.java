@@ -23,7 +23,7 @@ public class AqualityServicesTests{
 
     @Test
     public void testShouldBePossibleToGetCustomModule() {
-        CustomAqualityServices.initInjector(new TestModule());
+        CustomAqualityServices.initInjector(new TestModule(() -> CustomAqualityServices.getApplication()));
         Injector injector = CustomAqualityServices.getInjector();
         assertNotNull(injector, "Custom injector should not be null");
 
@@ -44,7 +44,7 @@ public class AqualityServicesTests{
 
     @Test
     public void testShouldBePossibleToSetCustomInjector() {
-        CustomAqualityServices.initInjector(new TestModule());
+        CustomAqualityServices.initInjector(new TestModule(() -> CustomAqualityServices.getApplication()));
         ICustomDependency customDependency = CustomAqualityServices.getInjector().getInstance(ICustomDependency.class);
         assertNotNull(customDependency, "ICustomDependency should be injected in custom module");
     }
