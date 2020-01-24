@@ -1,6 +1,5 @@
 package aquality.selenium.core.application;
 
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -15,7 +14,7 @@ public abstract class AqualityServices {
         return getInjector(new AqualityModule());
     }
 
-    protected static <TModule extends AbstractModule> Injector getInjector(TModule module) {
+    protected static <TModule extends AqualityModule> Injector getInjector(TModule module) {
         if (injectorContainer.get() == null) {
             setInjector(module);
         }
@@ -27,7 +26,7 @@ public abstract class AqualityServices {
         setInjector(new AqualityModule());
     }
 
-    protected static <TModule extends AbstractModule> void setInjector(TModule module) {
+    protected static <TModule extends AqualityModule> void setInjector(TModule module) {
         remove(injectorContainer);
         injectorContainer.set(Guice.createInjector(module));
     }
