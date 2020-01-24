@@ -27,17 +27,7 @@ public abstract class AqualityServices {
     }
 
     protected static <T extends AqualityModule> void setInjector(T module) {
-        remove(injectorContainer);
-        injectorContainer.set(Guice.createInjector(module));
-    }
-
-    private static void remove(ThreadLocal<?> container) {
-        if (container.get() != null) {
-            container.remove();
-        }
-    }
-
-    public void unload() {
         injectorContainer.remove();
+        injectorContainer.set(Guice.createInjector(module));
     }
 }
