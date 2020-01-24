@@ -14,7 +14,7 @@ public abstract class AqualityServices {
         return getInjector(new AqualityModule());
     }
 
-    protected static <TModule extends AqualityModule> Injector getInjector(TModule module) {
+    protected static <T extends AqualityModule> Injector getInjector(T module) {
         if (injectorContainer.get() == null) {
             setInjector(module);
         }
@@ -26,7 +26,7 @@ public abstract class AqualityServices {
         setInjector(new AqualityModule());
     }
 
-    protected static <TModule extends AqualityModule> void setInjector(TModule module) {
+    protected static <T extends AqualityModule> void setInjector(T module) {
         remove(injectorContainer);
         injectorContainer.set(Guice.createInjector(module));
     }
@@ -37,7 +37,7 @@ public abstract class AqualityServices {
         }
     }
 
-    private void unload() {
+    public void unload() {
         injectorContainer.remove();
     }
 }

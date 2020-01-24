@@ -118,7 +118,7 @@ public final class Logger {
         log4J.get().debug(String.format(key, params));
     }
 
-    private void unload() {
+    public void unload() {
         log4J.remove();
         instance.remove();
     }
