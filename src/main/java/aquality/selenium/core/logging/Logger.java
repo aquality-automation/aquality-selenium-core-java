@@ -5,7 +5,7 @@ import org.apache.log4j.Appender;
 /**
  * This class is using for a creating extended log. It implements a Singleton pattern
  */
-public final class Logger implements AutoCloseable {
+public final class Logger {
 
     private static ThreadLocal<org.apache.log4j.Logger> log4J = ThreadLocal.withInitial(()
             -> org.apache.log4j.Logger.getLogger(String.valueOf(Thread.currentThread().getId())));
@@ -120,11 +120,5 @@ public final class Logger implements AutoCloseable {
      */
     public void debug(String key, Object... params) {
         log4J.get().debug(String.format(key, params));
-    }
-
-    @Override
-    public void close() {
-        instance.remove();
-        log4J.remove();
     }
 }

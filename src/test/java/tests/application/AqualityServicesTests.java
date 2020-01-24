@@ -18,7 +18,7 @@ public class AqualityServicesTests{
         assertThrows(ConfigurationException.class, () -> injector.getInstance(ICustomDependency.class));
 
         Injector newInjector = CustomAqualityServices.getInjector();
-        assertEquals(injector, newInjector, "AqualityServices should return same instance of injector");
+        assertEquals(injector, newInjector, "AqualityServices should return the same instance of injector");
     }
 
     @Test
@@ -33,7 +33,7 @@ public class AqualityServicesTests{
         assertNotNull(injector.getInstance(Logger.class), "Logger should be null");
 
         Injector newInjector = CustomAqualityServices.getInjector();
-        assertEquals(injector, newInjector, "AqualityServices should return same instance of injector");
+        assertEquals(injector, newInjector, "AqualityServices should return the same instance of injector");
     }
 
     @Test

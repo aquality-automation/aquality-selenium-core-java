@@ -18,14 +18,13 @@ public class LoggerTests {
     private final static String testMessage = "test message";
     private final static String testExceptionText = "test exception";
     private final static String log4jFieldName = "log4J";
-    private Logger logger;
+    private Logger logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
     private org.apache.log4j.Logger log4j;
     private Appender appender;
     private File appenderFile;
 
     @BeforeMethod
     private void addMessagesAppender() throws IOException {
-        logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
         appenderFile = getRandomAppenderFile();
         appender = getFileAppender(appenderFile);
         logger.addAppender(appender);
@@ -33,21 +32,20 @@ public class LoggerTests {
 
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
-        logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
         Field log4jField = Logger.class.getDeclaredField(log4jFieldName);
         log4jField.setAccessible(true);
         log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(logger)).get();
     }
 
     @Test
-    public void testAqualityServicesShouldReturnInstanceofLogger() {
+    public void testAqualityServicesShouldReturnInstanceOfLogger() {
         assertEquals(logger, Logger.getInstance());
     }
 
     @Test
     public void testShouldBePossibleToAddAppender() throws IOException {
         logger.addAppender(appender).info(testMessage);
-        assertTrue(appenderFile.exists(), String.format("New appender is not added to log4j. File '%s' is not created.", appenderFile.getPath()));
+        assertTrue(appenderFile.exists(), String.format("New appender should be added to log4j. File '%s' should be created.", appenderFile.getPath()));
         assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' doesn't contains message '%s'.", appenderFile.getPath(), testMessage));
     }
 
