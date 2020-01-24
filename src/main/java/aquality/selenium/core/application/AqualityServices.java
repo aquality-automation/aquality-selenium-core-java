@@ -19,7 +19,7 @@ public class AqualityServices {
      *
      * @return existing or new injector.
      */
-    public static Injector getInjector() {
+    protected static Injector getInjector() {
         if (injectorContainer.get() == null) {
             initInjector();
         }
@@ -40,9 +40,5 @@ public class AqualityServices {
     protected static <T extends AqualityModule> void initInjector(T module) {
         injectorContainer.remove();
         injectorContainer.set(Guice.createInjector(module));
-    }
-
-    public void unload(){
-        injectorContainer.remove();
     }
 }
