@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
 import aquality.selenium.core.logging.Logger;
-import tests.application.TestAqualityServices;
+import tests.application.CustomAqualityServices;
 
 import static org.testng.Assert.*;
 
@@ -25,8 +25,7 @@ public class LoggerTests {
 
     @BeforeMethod
     private void addMessagesAppender() throws IOException {
-        logger = TestAqualityServices.getInjector().getInstance(Logger.class);
-        logger.info("addMessagesAppender");
+        logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
         appenderFile = getRandomAppenderFile();
         appender = getFileAppender(appenderFile);
         logger.addAppender(appender);
@@ -34,8 +33,7 @@ public class LoggerTests {
 
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
-        logger = TestAqualityServices.getInjector().getInstance(Logger.class);
-        logger.info("initializeLog4jField");
+        logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
         Field log4jField = Logger.class.getDeclaredField(log4jFieldName);
         log4jField.setAccessible(true);
         log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(logger)).get();
@@ -65,92 +63,92 @@ public class LoggerTests {
     public void testInfoMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.FATAL);
         logger.info(testMessage);
-        assertFalse(isFileContainsText(appenderFile, testMessage));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
 
         log4j.setLevel(Level.INFO);
         logger.info(testMessage);
-        assertTrue(isFileContainsText(appenderFile, testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     @Test(groups = "messages")
     public void testInfoMessageWithParametersShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.FATAL);
         logger.info("%s", testMessage);
-        assertFalse(isFileContainsText(appenderFile, testMessage));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
 
         log4j.setLevel(Level.INFO);
         logger.info("%s", testMessage);
-        assertTrue(isFileContainsText(appenderFile, testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageWithParametersShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.WARN);
         logger.debug("%s", testMessage);
-        assertFalse(isFileContainsText(appenderFile, testMessage));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
 
         log4j.setLevel(Level.DEBUG);
         logger.debug("%s", testMessage);
-        assertTrue(isFileContainsText(appenderFile, testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.WARN);
         logger.debug(testMessage);
-        assertFalse(isFileContainsText(appenderFile, testMessage));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
 
         log4j.setLevel(Level.DEBUG);
         logger.debug(testMessage);
-        assertTrue(isFileContainsText(appenderFile, testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     @Test(groups = "messages")
     public void testDebugMessageWithThrowableShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.WARN);
         logger.debug(testMessage, new Exception(testExceptionText));
-        assertFalse(isFileContainsText(appenderFile, testMessage));
-        assertFalse(isFileContainsText(appenderFile, testExceptionText));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
+        assertFalse(isFileContainsText(appenderFile, testExceptionText), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testExceptionText));
 
         log4j.setLevel(Level.DEBUG);
         logger.debug(testMessage, new Exception(testExceptionText));
-        assertTrue(isFileContainsText(appenderFile, testMessage));
-        assertTrue(isFileContainsText(appenderFile, testExceptionText));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
+        assertTrue(isFileContainsText(appenderFile, testExceptionText), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testExceptionText));
     }
 
     @Test(groups = "messages")
     public void testWarnMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.ERROR);
         logger.warn(testMessage);
-        assertFalse(isFileContainsText(appenderFile, testMessage));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
 
         log4j.setLevel(Level.WARN);
         logger.warn(testMessage);
-        assertTrue(isFileContainsText(appenderFile, testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     @Test(groups = "messages")
     public void testFatalMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.OFF);
         logger.fatal(testMessage, new Exception(testExceptionText));
-        assertFalse(isFileContainsText(appenderFile, testMessage));
-        assertFalse(isFileContainsText(appenderFile, testExceptionText));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
+        assertFalse(isFileContainsText(appenderFile, testExceptionText), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testExceptionText));
 
         log4j.setLevel(Level.FATAL);
         logger.fatal(testMessage, new Exception(testExceptionText));
-        assertTrue(isFileContainsText(appenderFile, testMessage));
-        assertTrue(isFileContainsText(appenderFile, testExceptionText));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
+        assertTrue(isFileContainsText(appenderFile, testExceptionText), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testExceptionText));
     }
 
     @Test(groups = "messages")
     public void testErrorMessageShouldBeDisplayedAccordingToLogLevel() throws IOException {
         log4j.setLevel(Level.FATAL);
         logger.error(testMessage);
-        assertFalse(isFileContainsText(appenderFile, testMessage));
+        assertFalse(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' shouldn't contain message '%s'.", appenderFile.getPath(), testMessage));
 
         log4j.setLevel(Level.ERROR);
         logger.error(testMessage);
-        assertTrue(isFileContainsText(appenderFile, testMessage));
+        assertTrue(isFileContainsText(appenderFile, testMessage), String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), testMessage));
     }
 
     private Appender getFileAppender(File file) throws IOException {
@@ -174,7 +172,6 @@ public class LoggerTests {
 
     @AfterMethod
     private void removeFileAppenderFromLogger() {
-        logger.info("removeFileAppenderFromLogger");
         logger.removeAppender(appender);
     }
 }
