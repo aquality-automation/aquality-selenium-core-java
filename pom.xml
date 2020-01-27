@@ -14,6 +14,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -24,11 +25,13 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
     <scm>
         <connection>scm:git:git@github.com:aquality-automation/aquality-selenium-core-java.git</connection>
         <developerConnection>scm:git:git@github.com:aquality-automation/aquality-selenium-core-java.git</developerConnection>
         <url>https://github.com/aquality-automation/aquality-selenium-core-java</url>
     </scm>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -36,6 +39,7 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
+
     <developers>
         <developer>
             <id>DmitryBogatko</id>
@@ -62,7 +66,29 @@
             <name>Sergey Knysh</name>
         </developer>
     </developers>
+
     <dependencies>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-remote-driver</artifactId>
+            <version>3.141.59</version>
+        </dependency>
     </dependencies>
     <profiles>
         <profile>
