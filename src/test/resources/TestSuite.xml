@@ -13,6 +13,7 @@
     <test name="Non-threadsafe tests" parallel="none">
         <classes>
             <class name="tests.logger.LoggerTests"/>
+            <class name="tests.utilities.SettingsFileTests"/>
         </classes>
     </test>
 </suite>
