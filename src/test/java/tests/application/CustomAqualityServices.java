@@ -6,7 +6,7 @@ import com.google.inject.Injector;
 import tests.application.browser.ChromeApplication;
 
 public class CustomAqualityServices extends AqualityServices<ChromeApplication> {
-    private static final ThreadLocal<CustomAqualityServices> instanceContainer = ThreadLocal.withInitial(CustomAqualityServices::new);
+    private static final ThreadLocal<CustomAqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(CustomAqualityServices::new);
 
     private CustomAqualityServices() {
         super(CustomAqualityServices::getApplication, null);
@@ -17,7 +17,7 @@ public class CustomAqualityServices extends AqualityServices<ChromeApplication> 
     }
 
     private static CustomAqualityServices getInstance() {
-        return instanceContainer.get();
+        return INSTANCE_CONTAINER.get();
     }
 
     public static ChromeApplication getApplication() {
@@ -29,9 +29,9 @@ public class CustomAqualityServices extends AqualityServices<ChromeApplication> 
     }
 
     public static <T extends AqualityModule<ChromeApplication>> void initInjector(T module) {
-        if (instanceContainer.get() != null){
-            instanceContainer.remove();
+        if (INSTANCE_CONTAINER.get() != null){
+            INSTANCE_CONTAINER.remove();
         }
-        instanceContainer.set(new CustomAqualityServices(module));
+        INSTANCE_CONTAINER.set(new CustomAqualityServices(module));
     }
 }

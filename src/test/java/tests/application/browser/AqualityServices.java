@@ -4,14 +4,14 @@ import com.google.inject.Injector;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class AqualityServices  extends aquality.selenium.core.application.AqualityServices<ChromeApplication> {
-    private static final ThreadLocal<AqualityServices> instanceContainer = ThreadLocal.withInitial(AqualityServices::new);
+    private static final ThreadLocal<AqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(AqualityServices::new);
 
     private AqualityServices() {
         super(AqualityServices::getApplication, null);
     }
 
     private static AqualityServices getInstance() {
-        return instanceContainer.get();
+        return INSTANCE_CONTAINER.get();
     }
 
     public static boolean isApplicationStarted() {
