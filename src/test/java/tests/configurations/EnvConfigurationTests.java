@@ -12,11 +12,11 @@ import static org.testng.Assert.assertEquals;
 
 public class EnvConfigurationTests {
 
-    private static final String languageKey = "logger.language";
+    private static final String LANGUAGE_KEY = "logger.language";
 
     @BeforeMethod
     public void before(){
-        System.setProperty(languageKey, "ru");
+        System.setProperty(LANGUAGE_KEY, "ru");
         CustomAqualityServices.initInjector(new TestModule());
     }
 
@@ -28,6 +28,7 @@ public class EnvConfigurationTests {
 
     @AfterMethod
     public void after(){
-        System.clearProperty(languageKey);
+        System.clearProperty(LANGUAGE_KEY);
+        CustomAqualityServices.initInjector(new TestModule());
     }
 }
