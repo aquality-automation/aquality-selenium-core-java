@@ -1,9 +1,6 @@
 package aquality.selenium.core.application;
 
-import aquality.selenium.core.configurations.ILoggerConfiguration;
-import aquality.selenium.core.configurations.ITimeoutConfiguration;
-import aquality.selenium.core.configurations.LoggerConfiguration;
-import aquality.selenium.core.configurations.TimeoutConfiguration;
+import aquality.selenium.core.configurations.*;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
 import com.google.inject.AbstractModule;
@@ -23,6 +20,7 @@ public class AqualityModule extends AbstractModule {
         bind(Logger.class).toInstance(Logger.getInstance());
         bind(ILoggerConfiguration.class).to(LoggerConfiguration.class);
         bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class);
+        bind(IRetryConfiguration.class).to(RetryConfiguration.class);
     }
 
     /**
