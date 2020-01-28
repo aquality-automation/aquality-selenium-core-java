@@ -1,5 +1,7 @@
 package aquality.selenium.core.application;
 
+import aquality.selenium.core.configurations.ILoggerConfiguration;
+import aquality.selenium.core.configurations.LoggerConfiguration;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
 import com.google.inject.AbstractModule;
@@ -17,6 +19,7 @@ public class AqualityModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(Logger.class).toInstance(Logger.getInstance());
+        bind(ILoggerConfiguration.class).to(LoggerConfiguration.class);
     }
 
     /**

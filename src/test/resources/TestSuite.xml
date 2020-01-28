@@ -4,6 +4,7 @@
     <test name="Integration tests" parallel="methods" thread-count="10">
         <classes>
             <class name="tests.application.AqualityServicesTests"/>
+            <class name="tests.configurations.LoggerConfigurationTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
@@ -14,6 +15,8 @@
         <classes>
             <class name="tests.logger.LoggerTests"/>
             <class name="tests.utilities.SettingsFileTests"/>
+            <class name="tests.configurations.EnvConfigurationTests"/>
+            <class name="tests.configurations.ProfileConfigurationTests"/>
         </classes>
     </test>
 </suite>
