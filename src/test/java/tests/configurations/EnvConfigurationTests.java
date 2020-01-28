@@ -16,6 +16,7 @@ import static org.testng.Assert.assertEquals;
 
 public class EnvConfigurationTests {
 
+    private static final String LANGUAGE_KEY = "logger.language";
     private static final String languageKey = "logger.language";
     private static final String languageValue = "ru";
     private static final String conditionTimeoutKey = "timeouts.timeoutCondition";
@@ -23,6 +24,8 @@ public class EnvConfigurationTests {
     private Injector injector;
 
     @BeforeMethod
+    public void before(){
+        System.setProperty(LANGUAGE_KEY, "ru");
     public void before() {
         System.setProperty(languageKey, languageValue);
         System.setProperty(conditionTimeoutKey, newTimeoutValue);
@@ -55,6 +58,9 @@ public class EnvConfigurationTests {
     }
 
     @AfterMethod
+    public void after(){
+        System.clearProperty(LANGUAGE_KEY);
+        CustomAqualityServices.initInjector(new TestModule());
     public void after() {
         System.clearProperty(languageKey);
         System.clearProperty(conditionTimeoutKey);

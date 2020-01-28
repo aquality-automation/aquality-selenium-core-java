@@ -33,13 +33,6 @@ public interface ISettingsFile {
     Map<String, Object> getMap(String path);
 
     /**
-     * Gets content of settings file.
-     *
-     * @return Content of settings file as string.
-     */
-    String getContent();
-
-    /**
      * Checks if value exists in settings.
      *
      * @param path Path to the values. Depending on file format, it can be jsonPath, xpath etc.
