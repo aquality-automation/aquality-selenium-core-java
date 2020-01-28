@@ -1,16 +1,15 @@
 package tests.utilities;
 
 import aquality.selenium.core.utilities.ISettingsFile;
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
 import tests.application.TestModule;
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.*;
 
@@ -20,9 +19,8 @@ public class SettingsFileTests {
     private static final String LANGUAGE_ENV_KEY = "logger.language";
     private static final String ARGUMENTS_ENV_KEY = "arguments.start";
     private static final String PROFILE = "jsontest";
-    private static final String PROFILE_KEY = "PROFILE";
+    private static final String PROFILE_KEY = "profile";
     private static final String FILE_NAME = String.format("settings.%s.json", PROFILE);
-    private static final String DEFAULT_FILE_NAME = "settings.json";
     private ISettingsFile jsonSettingsFile;
     private static final Map EXPECTED_LANGUAGES = new HashMap<String, String>() {{
         put("language", "ru");
@@ -31,25 +29,17 @@ public class SettingsFileTests {
     @BeforeMethod
     public void before() {
         System.setProperty(PROFILE_KEY, PROFILE);
+        CustomAqualityServices.initInjector(new TestModule());
         jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
     }
 
     @Test
-    public void testShouldBePossibleToGetDefaultContent() throws IOException {
+    public void testShouldBePossibleToGetDefaultContent(){
         System.clearProperty(PROFILE_KEY);
         CustomAqualityServices.initInjector(new TestModule());
         jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
-
-        String expectedContent = Files.asCharSource(new File(getClass().getClassLoader().getResource(DEFAULT_FILE_NAME).getFile()), Charsets.UTF_8).read().trim();
-        String actualContent = jsonSettingsFile.getContent();
-        assertEquals(actualContent, expectedContent, String.format("Settings file %s should be read correctly", DEFAULT_FILE_NAME));
-    }
-
-    @Test
-    public void testShouldBePossibleToGetContent() throws IOException {
-        String expectedContent = Files.asCharSource(new File(getClass().getClassLoader().getResource(FILE_NAME).getFile()), Charsets.UTF_8).read().trim();
-        String actualContent = jsonSettingsFile.getContent();
-        assertEquals(actualContent, expectedContent, String.format("Settings file %s should be read correctly", FILE_NAME));
+        String language = jsonSettingsFile.getValue("/logger/language").toString();
+        assertEquals(language, "en", "Logger language in default settings file should be read correctly");
     }
 
     @Test
