@@ -18,24 +18,17 @@ import static org.testng.Assert.assertEquals;
 public class EnvConfigurationTests {
 
     private static final String LANGUAGE_KEY = "logger.language";
-    private static final String LANGUAGE_VALUE = "ru";
+    private static final String NEW_STRING_VALUE = "ru";
     private static final String CONDITION_TIMEOUT_KEY = "timeouts.timeoutCondition";
-    private static final String NEW_TIMEOUT_VALUE = "10000";
-    private static final String languageKey = "logger.language";
-    private static final String newStringValue = "ru";
-    private static final String conditionTimeoutKey = "timeouts.timeoutCondition";
-    private static final String retryNumberKey = "retry.number";
-    private static final String newIntValue = "10000";
+    private static final String NEW_INT_VALUE = "10000";
+    private static final String RETRY_NUMBER_KEY = "retry.number";
     private Injector injector;
 
     @BeforeMethod
     public void before() {
-        System.setProperty(languageKey, newStringValue);
-        System.setProperty(conditionTimeoutKey, newIntValue);
-        System.setProperty(retryNumberKey, newIntValue);
-    public void before(){
-        System.setProperty(LANGUAGE_KEY, "ru");
-        System.setProperty(CONDITION_TIMEOUT_KEY, NEW_TIMEOUT_VALUE);
+        System.setProperty(LANGUAGE_KEY, NEW_STRING_VALUE);
+        System.setProperty(CONDITION_TIMEOUT_KEY, NEW_INT_VALUE);
+        System.setProperty(RETRY_NUMBER_KEY, NEW_INT_VALUE);
         CustomAqualityServices.initInjector(new TestModule());
         injector = CustomAqualityServices.getInjector();
     }
@@ -49,20 +42,18 @@ public class EnvConfigurationTests {
     @Test
     public void testShouldBePossibleToOverrideTimeoutWithEnvVariable() {
         long conditionTimeout = injector.getInstance(ITimeoutConfiguration.class).getCondition();
-        assertEquals(conditionTimeout, Long.parseLong(newIntValue), "Condition timeout should be overridden with env variable");
+        assertEquals(conditionTimeout, Long.parseLong(NEW_INT_VALUE), "Condition timeout should be overridden with env variable");
     }
 
     @Test
     public void testShouldBePossibleToOverrideRetryConfigurationWithEnvVariable() {
         int retryNumber = injector.getInstance(IRetryConfiguration.class).getNumber();
-        assertEquals(retryNumber, Long.parseLong(newIntValue), "Number of retry attempts should be overridden with env variable");
-        assertEquals(conditionTimeout, Long.parseLong(NEW_TIMEOUT_VALUE), "Condition timeout should be overridden with env variable");
+        assertEquals(retryNumber, Long.parseLong(NEW_INT_VALUE), "Number of retry attempts should be overridden with env variable");
     }
 
     @Test
     public void testNumberFormatExceptionShouldBeThrownIfTimeoutIsNotANumber() {
-        System.setProperty(CONDITION_TIMEOUT_KEY, LANGUAGE_VALUE);
-        System.setProperty(conditionTimeoutKey, newStringValue);
+        System.setProperty(CONDITION_TIMEOUT_KEY, NEW_STRING_VALUE);
         try {
             CustomAqualityServices.initInjector(new TestModule());
             CustomAqualityServices.getInjector().getInstance(ITimeoutConfiguration.class).getCommand();
@@ -74,7 +65,7 @@ public class EnvConfigurationTests {
 
     @Test
     public void testNumberFormatExceptionShouldBeThrownIfRetryConfigurationIsNotANumber() {
-        System.setProperty(retryNumberKey, newStringValue);
+        System.setProperty(RETRY_NUMBER_KEY, NEW_STRING_VALUE);
         try {
             CustomAqualityServices.initInjector(new TestModule());
             CustomAqualityServices.getInjector().getInstance(IRetryConfiguration.class).getNumber();
@@ -88,11 +79,7 @@ public class EnvConfigurationTests {
     public void after(){
         System.clearProperty(LANGUAGE_KEY);
         System.clearProperty(CONDITION_TIMEOUT_KEY);
+        System.clearProperty(RETRY_NUMBER_KEY);
         CustomAqualityServices.initInjector(new TestModule());
-    public void after() {
-        System.clearProperty(languageKey);
-        System.clearProperty(conditionTimeoutKey);
-        System.clearProperty(retryNumberKey);
-        CustomAqualityServices.initInjector(new AqualityModule());
     }
 }
