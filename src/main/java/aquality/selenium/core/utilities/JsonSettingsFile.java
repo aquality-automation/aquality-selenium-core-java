@@ -14,18 +14,15 @@ import java.util.*;
 public class JsonSettingsFile implements ISettingsFile {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private final String fileCanonicalPath;
     private final String content;
 
     public JsonSettingsFile(File file) throws IOException {
         this.content = getFileContent(file.getCanonicalPath());
-        fileCanonicalPath = file.getCanonicalPath();
     }
 
     public JsonSettingsFile(String resourceName) {
         ResourceFile resourceFile = new ResourceFile(resourceName);
         this.content = resourceFile.getFileContent();
-        this.fileCanonicalPath = resourceFile.getFileCanonicalPath();
     }
 
     @Override
@@ -84,10 +81,10 @@ public class JsonSettingsFile implements ISettingsFile {
 
     private JsonNode getJsonNode(String jsonPath) {
         try {
-            JsonNode node = mapper.readTree(getContent());
+            JsonNode node = mapper.readTree(content);
             return node.at(jsonPath);
         } catch (IOException e) {
-            throw new UncheckedIOException(String.format("Json field by json-path %1$s was not found in the file %2$s", jsonPath, getContent()), e);
+            throw new UncheckedIOException(String.format("Json field by json-path %1$s was not found in the file %2$s", jsonPath, content), e);
         }
     }
 
@@ -99,17 +96,9 @@ public class JsonSettingsFile implements ISettingsFile {
         }
     }
 
-    public String getContent() {
-        return content;
-    }
-
     @Override
     public boolean isValuePresent(String path) {
         String value = getValue(path).toString().trim();
         return !value.isEmpty();
-    }
-
-    public String getFileCanonicalPath() {
-        return fileCanonicalPath;
     }
 }
