@@ -9,7 +9,7 @@ import static org.testng.Assert.assertEquals;
 public class TimeoutConfigurationTests {
 
     @Test
-    public void testShouldBePossibleToGetLanguage() {
+    public void testShouldBePossibleToGetTimeoutConfiguration() {
         ITimeoutConfiguration timeoutConfiguration = CustomAqualityServices.getInjector().getInstance(ITimeoutConfiguration.class);
         assertEquals(timeoutConfiguration.getCommand(), 60, "Command timeout should be got");
         assertEquals(timeoutConfiguration.getCondition(), 30, "Condition timeout should be got");

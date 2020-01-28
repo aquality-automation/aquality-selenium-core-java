@@ -9,7 +9,7 @@ import com.google.inject.Injector;
  */
 public class AqualityServices {
 
-    private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
+    private static final ThreadLocal<Injector> INJECTOR_CONTAINER = new ThreadLocal<>();
 
     protected AqualityServices() {
     }
@@ -20,11 +20,11 @@ public class AqualityServices {
      * @return existing or new injector.
      */
     protected static Injector getInjector() {
-        if (injectorContainer.get() == null) {
+        if (INJECTOR_CONTAINER.get() == null) {
             initInjector();
         }
 
-        return injectorContainer.get();
+        return INJECTOR_CONTAINER.get();
     }
 
     private static void initInjector() {
@@ -38,7 +38,7 @@ public class AqualityServices {
      * @param <T> is type of custom module. Custom module should be inherited from {@link AqualityModule}.
      */
     protected static <T extends AqualityModule> void initInjector(T module) {
-        injectorContainer.remove();
-        injectorContainer.set(Guice.createInjector(module));
+        INJECTOR_CONTAINER.remove();
+        INJECTOR_CONTAINER.set(Guice.createInjector(module));
     }
 }
