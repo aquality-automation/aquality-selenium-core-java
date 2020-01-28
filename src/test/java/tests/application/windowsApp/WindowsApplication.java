@@ -1,18 +1,22 @@
-package tests.application.browser;
+package tests.application.windowsApp;
 
 import aquality.selenium.core.application.IApplication;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import io.appium.java_client.windows.WindowsDriver;
+import io.appium.java_client.windows.WindowsElement;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class ChromeApplication implements IApplication {
+public class WindowsApplication implements IApplication {
     private long implicitWaitSeconds;
     private final RemoteWebDriver driver;
 
-    public ChromeApplication(long implicitWaitSeconds) {
-        driver = new ChromeDriver(new ChromeOptions());
+    public WindowsApplication(long implicitWaitSeconds, String appPath, URL serviceUrl) {
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability("app", appPath);
+        driver = new WindowsDriver<WindowsElement>(serviceUrl, capabilities);
         setImplicitWaitTimeout(implicitWaitSeconds, TimeUnit.SECONDS);
     }
 

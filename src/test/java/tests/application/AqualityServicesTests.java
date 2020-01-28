@@ -1,12 +1,20 @@
 package tests.application;
 
+import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.logging.Logger;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Injector;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+
 import static org.testng.Assert.*;
 
 public class AqualityServicesTests{
+
+    @AfterMethod
+    public void cleanUpInjector() {
+        CustomAqualityServices.initInjector(new AqualityModule<>(CustomAqualityServices::getApplication));
+    }
 
     @Test
     public void testShouldBePossibleToGetDefaultInjector() {
@@ -15,7 +23,7 @@ public class AqualityServicesTests{
 
         Logger logger = injector.getInstance(Logger.class);
         assertNotNull(logger, "Logger should not be null");
-        assertThrows(ConfigurationException.class, () -> injector.getInstance(TestModule.class));
+        assertThrows(ConfigurationException.class, () -> injector.getInstance(ICustomDependency.class));
 
         Injector newInjector = CustomAqualityServices.getInjector();
         assertEquals(injector, newInjector, "AqualityServices should return the same instance of injector");
@@ -23,7 +31,7 @@ public class AqualityServicesTests{
 
     @Test
     public void testShouldBePossibleToGetCustomModule() {
-        CustomAqualityServices.initInjector(new TestModule(() -> CustomAqualityServices.getApplication()));
+        CustomAqualityServices.initInjector(new TestModule(CustomAqualityServices::getApplication));
         Injector injector = CustomAqualityServices.getInjector();
         assertNotNull(injector, "Custom injector should not be null");
 
@@ -44,7 +52,7 @@ public class AqualityServicesTests{
 
     @Test
     public void testShouldBePossibleToSetCustomInjector() {
-        CustomAqualityServices.initInjector(new TestModule(() -> CustomAqualityServices.getApplication()));
+        CustomAqualityServices.initInjector(new TestModule(CustomAqualityServices::getApplication));
         ICustomDependency customDependency = CustomAqualityServices.getInjector().getInstance(ICustomDependency.class);
         assertNotNull(customDependency, "ICustomDependency should be injected in custom module");
     }
