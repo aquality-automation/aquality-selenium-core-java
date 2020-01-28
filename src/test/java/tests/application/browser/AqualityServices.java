@@ -3,17 +3,23 @@ package tests.application.browser;
 import com.google.inject.Injector;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class AqualityServices  extends aquality.selenium.core.application.AqualityServices {
+public class AqualityServices  extends aquality.selenium.core.application.AqualityServices<ChromeApplication> {
+    private static final ThreadLocal<AqualityServices> instanceContainer = ThreadLocal.withInitial(AqualityServices::new);
 
     private AqualityServices() {
+        super(AqualityServices::getApplication, null);
+    }
+
+    private static AqualityServices getInstance() {
+        return instanceContainer.get();
     }
 
     public static boolean isApplicationStarted() {
-        return aquality.selenium.core.application.AqualityServices.isApplicationStarted();
+        return getInstance().isAppStarted();
     }
 
     public static ChromeApplication getApplication() {
-        return getApplication(AqualityServices::startChrome, null);
+        return getInstance().getApp(AqualityServices::startChrome);
     }
 
     private static ChromeApplication startChrome(Injector injector) {
@@ -25,7 +31,7 @@ public class AqualityServices  extends aquality.selenium.core.application.Aquali
         return new ChromeApplication(implicitWaitSeconds);
     }
 
-    public static Injector getInjector() {
-        return getInjector(AqualityServices::getApplication, null);
+    public static Injector getServiceProvider() {
+        return getInstance().getInjector();
     }
 }

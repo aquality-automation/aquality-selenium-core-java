@@ -7,19 +7,25 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class AqualityServices extends aquality.selenium.core.application.AqualityServices {
+public class AqualityServices extends aquality.selenium.core.application.AqualityServices<WindowsApplication> {
+    private static final ThreadLocal<AqualityServices> instanceContainer = ThreadLocal.withInitial(AqualityServices::new);
     private static final String APP_PATH = "./src/test/resources/apps/Day Maxi Calc.exe";
     private static final String DEFAULT_SERVICE_URL =  "http://127.0.0.1:4723/";
 
     private AqualityServices() {
+        super(AqualityServices::getApplication, null);
+    }
+
+    private static AqualityServices getInstance() {
+        return instanceContainer.get();
     }
 
     public static boolean isApplicationStarted() {
-        return aquality.selenium.core.application.AqualityServices.isApplicationStarted();
+        return getInstance().isAppStarted();
     }
 
     public static WindowsApplication getApplication() {
-        return getApplication(AqualityServices::startWindowsApplication, null);
+        return getInstance().getApp(AqualityServices::startWindowsApplication);
     }
 
     private static WindowsApplication startWindowsApplication(Injector injector) {
@@ -38,14 +44,14 @@ public class AqualityServices extends aquality.selenium.core.application.Aqualit
     }
 
     public static <T> T get(Class<T> type) {
-        return getInjector().getInstance(type);
+        return getServiceProvider().getInstance(type);
     }
 
     public static void setApplication(WindowsApplication application) {
-        aquality.selenium.core.application.AqualityServices.setApplication(application);
+        getInstance().setApp(application);
     }
 
-    public static Injector getInjector() {
-        return getInjector(AqualityServices::getApplication, null);
+    public static Injector getServiceProvider() {
+        return getInstance().getInjector();
     }
 }

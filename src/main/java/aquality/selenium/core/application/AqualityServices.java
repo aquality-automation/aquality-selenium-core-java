@@ -11,63 +11,36 @@ import java.util.function.Supplier;
  * Describes static methods which help work with Application and dependency injector.
  * Injector is thread safe.
  */
-public class AqualityServices {
+public abstract class AqualityServices <T extends IApplication> {
 
-    private static final ThreadLocal<IApplication> appContainer = new ThreadLocal<>();
-    private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
+    private T app;
+    private final Injector injector;
 
-    protected AqualityServices() {
+    protected <V extends AqualityModule<T>> AqualityServices(Provider<T> applicationProvider,
+                                                             Supplier<V> servicesModuleSupplier) {
+        AqualityModule<T> module = servicesModuleSupplier == null
+                ? new AqualityModule<>(applicationProvider)
+                : servicesModuleSupplier.get();
+        injector = Guice.createInjector(module);
     }
 
-    protected static boolean isApplicationStarted() {
-        return appContainer.get() != null && appContainer.get().isStarted();
+    protected boolean isAppStarted() {
+        return app != null && app.isStarted();
     }
 
-    protected static <T extends IApplication> void setApplication(T application) {
-        if (appContainer.get() != null){
-            appContainer.remove();
-        }
-        appContainer.set(application);
+    protected void setApp(T application) {
+        this.app = application;
     }
 
-    protected static <T extends IApplication, V extends AqualityModule> T getApplication (
-            Function<Injector, T> startApplicationFunction, Supplier<V> servicesModuleSupplier){
-        if (!isApplicationStarted()) {
-            setApplication(startApplicationFunction.apply(
-                    getInjector(() -> getApplication(startApplicationFunction, servicesModuleSupplier),
-                            servicesModuleSupplier)));
-        }
-
-        return (T) appContainer.get();
-    }
-
-    /**
-     * Gets existing injector or initializes new with based on {@link AqualityModule}.
-     *
-     * @return existing or new injector.
-     */
-    protected static <T extends IApplication, V extends AqualityModule> Injector getInjector(Provider<T> applicationProvider,
-                                                                     Supplier<V> servicesModuleSupplier) {
-        if (injectorContainer.get() == null) {
-            if (servicesModuleSupplier == null) {
-                initInjector(new AqualityModule<>(applicationProvider));
-            }
-            else {
-                initInjector(servicesModuleSupplier.get());
-            }
+    protected T getApp(Function<Injector, T> startApplicationFunction) {
+        if (!isAppStarted()) {
+            setApp(startApplicationFunction.apply(injector));
         }
 
-        return injectorContainer.get();
+        return app;
     }
 
-    /**
-     * Initializes custom injector.
-     *
-     * @param module - custom module with dependencies.
-     * @param <T> is type of custom module. Custom module should be inherited from {@link AqualityModule}.
-     */
-    protected static <T extends AqualityModule> void initInjector(T module) {
-        injectorContainer.remove();
-        injectorContainer.set(Guice.createInjector(module));
+    protected Injector getInjector() {
+        return injector;
     }
 }

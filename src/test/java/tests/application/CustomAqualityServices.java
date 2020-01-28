@@ -5,20 +5,33 @@ import aquality.selenium.core.application.AqualityServices;
 import com.google.inject.Injector;
 import tests.application.browser.ChromeApplication;
 
-public abstract class CustomAqualityServices extends AqualityServices {
+public class CustomAqualityServices extends AqualityServices<ChromeApplication> {
+    private static final ThreadLocal<CustomAqualityServices> instanceContainer = ThreadLocal.withInitial(CustomAqualityServices::new);
 
     private CustomAqualityServices() {
+        super(CustomAqualityServices::getApplication, null);
+    }
+
+    private <T extends AqualityModule<ChromeApplication>>  CustomAqualityServices(T module) {
+        super(CustomAqualityServices::getApplication, () -> module);
+    }
+
+    private static CustomAqualityServices getInstance() {
+        return instanceContainer.get();
     }
 
     public static ChromeApplication getApplication() {
-        return getApplication(injector -> tests.application.browser.AqualityServices.getApplication(), null);
+        return getInstance().getApp(injector -> tests.application.browser.AqualityServices.getApplication());
     }
 
-    public static Injector getInjector() {
-        return getInjector(CustomAqualityServices::getApplication, null);
+    public static Injector getServiceProvider() {
+        return getInstance().getInjector();
     }
 
-    public static <T extends AqualityModule> void initInjector(T module) {
-        AqualityServices.initInjector(module);
+    public static <T extends AqualityModule<ChromeApplication>> void initInjector(T module) {
+        if (instanceContainer.get() != null){
+            instanceContainer.remove();
+        }
+        instanceContainer.set(new CustomAqualityServices(module));
     }
 }

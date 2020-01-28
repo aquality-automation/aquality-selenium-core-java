@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 public class BrowserTests {
     @Test
     public void testShouldBePossibleToGetApplication() {
-        IApplication browser = AqualityServices.getInjector().getInstance(IApplication.class);
+        IApplication browser = AqualityServices.getServiceProvider().getInstance(IApplication.class);
         Assert.assertNotNull(browser, "should be possible to resolve app instance from aquality services");
         Assert.assertEquals(AqualityServices.getApplication(), browser,
                 "should return the same instance of app");

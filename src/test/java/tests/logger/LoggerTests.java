@@ -1,24 +1,28 @@
 package tests.logger;
 
+import aquality.selenium.core.logging.Logger;
 import org.apache.log4j.*;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import tests.application.CustomAqualityServices;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
-import aquality.selenium.core.logging.Logger;
-import tests.application.CustomAqualityServices;
 
 import static org.testng.Assert.*;
 
 public class LoggerTests {
-    private final static String appenderLogFilePattern = "target/log/appender-%s.log";
-    private final static String testMessage = "test message";
-    private final static String testExceptionText = "test exception";
-    private final static String log4jFieldName = "log4J";
-    private Logger logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
+    private static final String appenderLogFilePattern = "target/log/appender-%s.log";
+    private static final String testMessage = "test message";
+    private static final String testExceptionText = "test exception";
+    private static final String log4jFieldName = "log4J";
+    private Logger logger = CustomAqualityServices.getServiceProvider().getInstance(Logger.class);
     private org.apache.log4j.Logger log4j;
     private Appender appender;
     private File appenderFile;
