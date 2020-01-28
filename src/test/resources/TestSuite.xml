@@ -5,6 +5,7 @@
         <classes>
             <class name="tests.application.AqualityServicesTests"/>
             <class name="tests.configurations.LoggerConfigurationTests"/>
+            <class name="tests.configurations.TimeoutConfigurationTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
