@@ -40,14 +40,14 @@ public class SettingsFileTests {
         CustomAqualityServices.initInjector(new TestModule());
         jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
 
-        String expectedContent = Files.asCharSource(new File(getClass().getClassLoader().getResource(defaultFileName).getFile()), Charsets.UTF_8).read();
+        String expectedContent = Files.asCharSource(new File(getClass().getClassLoader().getResource(defaultFileName).getFile()), Charsets.UTF_8).read().trim();
         String actualContent = jsonSettingsFile.getContent();
         assertEquals(actualContent, expectedContent, String.format("Settings file %s should be read correctly", defaultFileName));
     }
 
     @Test
     public void testShouldBePossibleToGetContent() throws IOException {
-        String expectedContent = Files.asCharSource(new File(getClass().getClassLoader().getResource(fileName).getFile()), Charsets.UTF_8).read();
+        String expectedContent = Files.asCharSource(new File(getClass().getClassLoader().getResource(fileName).getFile()), Charsets.UTF_8).read().trim();
         String actualContent = jsonSettingsFile.getContent();
         assertEquals(actualContent, expectedContent, String.format("Settings file %s should be read correctly", fileName));
     }
