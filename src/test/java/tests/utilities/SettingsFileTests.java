@@ -6,6 +6,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
 import tests.application.TestModule;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,22 +23,24 @@ public class SettingsFileTests {
     private static final String PROFILE_KEY = "profile";
     private static final String FILE_NAME = String.format("settings.%s.json", PROFILE);
     private ISettingsFile jsonSettingsFile;
+    private String previousProfile;
     private static final Map EXPECTED_LANGUAGES = new HashMap<String, String>() {{
         put("language", "ru");
     }};
 
     @BeforeMethod
     public void before() {
+        previousProfile = System.getProperty(PROFILE_KEY);
         System.setProperty(PROFILE_KEY, PROFILE);
-        CustomAqualityServices.initInjector(new TestModule());
-        jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
+        CustomAqualityServices.initInjector(getTestModule());
+        jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
     }
 
     @Test
-    public void testShouldBePossibleToGetDefaultContent(){
+    public void testShouldBePossibleToGetDefaultContent() {
         System.clearProperty(PROFILE_KEY);
-        CustomAqualityServices.initInjector(new TestModule());
-        jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
+        CustomAqualityServices.initInjector(getTestModule());
+        jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
         String language = jsonSettingsFile.getValue("/logger/language").toString();
         assertEquals(language, "en", "Logger language in default settings file should be read correctly");
     }
@@ -103,9 +106,18 @@ public class SettingsFileTests {
 
     @AfterMethod
     public void after() {
-        System.clearProperty(PROFILE_KEY);
+        if (previousProfile == null) {
+            System.clearProperty(PROFILE_KEY);
+        } else {
+            System.setProperty(PROFILE_KEY, previousProfile);
+        }
+
         System.clearProperty(LANGUAGE_ENV_KEY);
         System.clearProperty(TIMEOUT_POLLING_INTERVAL_KEY);
         System.clearProperty(ARGUMENTS_ENV_KEY);
+    }
+
+    private TestModule getTestModule() {
+        return new TestModule(CustomAqualityServices::getApplication);
     }
 }
