@@ -28,10 +28,12 @@ public class EnvConfigurationTests {
         System.setProperty(CONDITION_TIMEOUT_KEY, NEW_TIMEOUT_VALUE);
         CustomAqualityServices.initInjector(new TestModule());
         injector = CustomAqualityServices.getInjector();
+        initInjector();
     }
 
     @Test
     public void testShouldBePossibleToOverrideLanguageWithEnvVariable() {
+        SupportedLanguage language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
         SupportedLanguage language = injector.getInstance(ILoggerConfiguration.class).getLanguage();
         assertEquals(language, SupportedLanguage.RU, "Current language should be overridden with env variable");
     }
@@ -57,6 +59,11 @@ public class EnvConfigurationTests {
     @AfterMethod
     public void after(){
         System.clearProperty(LANGUAGE_KEY);
+        initInjector();
+    }
+
+    private void initInjector(){
+        CustomAqualityServices.initInjector(new AqualityModule<>(CustomAqualityServices::getApplication));
         System.clearProperty(CONDITION_TIMEOUT_KEY);
         CustomAqualityServices.initInjector(new TestModule());
     }

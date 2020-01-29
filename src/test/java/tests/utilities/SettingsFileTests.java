@@ -1,11 +1,14 @@
 package tests.utilities;
 
+import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
 import tests.application.TestModule;
+import tests.configurations.BaseProfileTest;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +16,12 @@ import java.util.Map;
 
 import static org.testng.Assert.*;
 
-public class SettingsFileTests {
+public class SettingsFileTests extends BaseProfileTest {
     private static final String TIMEOUT_POLLING_INTERVAL_PATH = "/timeouts/timeoutPollingInterval";
     private static final String TIMEOUT_POLLING_INTERVAL_KEY = "timeouts.timeoutPollingInterval";
     private static final String LANGUAGE_ENV_KEY = "logger.language";
     private static final String ARGUMENTS_ENV_KEY = "arguments.start";
     private static final String PROFILE = "jsontest";
-    private static final String PROFILE_KEY = "profile";
     private static final String FILE_NAME = String.format("settings.%s.json", PROFILE);
     private ISettingsFile jsonSettingsFile;
     private static final Map EXPECTED_LANGUAGES = new HashMap<String, String>() {{
@@ -29,15 +31,15 @@ public class SettingsFileTests {
     @BeforeMethod
     public void before() {
         System.setProperty(PROFILE_KEY, PROFILE);
-        CustomAqualityServices.initInjector(new TestModule());
-        jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
+        CustomAqualityServices.initInjector(getTestModule());
+        jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
     }
 
     @Test
-    public void testShouldBePossibleToGetDefaultContent(){
+    public void testShouldBePossibleToGetDefaultContent() {
         System.clearProperty(PROFILE_KEY);
-        CustomAqualityServices.initInjector(new TestModule());
-        jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
+        CustomAqualityServices.initInjector(getTestModule());
+        jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
         String language = jsonSettingsFile.getValue("/logger/language").toString();
         assertEquals(language, "en", "Logger language in default settings file should be read correctly");
     }
@@ -103,9 +105,13 @@ public class SettingsFileTests {
 
     @AfterMethod
     public void after() {
-        System.clearProperty(PROFILE_KEY);
         System.clearProperty(LANGUAGE_ENV_KEY);
         System.clearProperty(TIMEOUT_POLLING_INTERVAL_KEY);
         System.clearProperty(ARGUMENTS_ENV_KEY);
+        CustomAqualityServices.initInjector(new AqualityModule<>(CustomAqualityServices::getApplication));
+    }
+
+    private TestModule getTestModule() {
+        return new TestModule(CustomAqualityServices::getApplication);
     }
 }
