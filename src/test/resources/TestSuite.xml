@@ -5,6 +5,7 @@
         <classes>
             <class name="tests.application.AqualityServicesTests"/>
             <class name="tests.application.browser.BrowserTests"/>
+            <class name="tests.utilities.CustomSettingsFileTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">

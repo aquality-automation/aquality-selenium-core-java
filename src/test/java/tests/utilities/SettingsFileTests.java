@@ -29,15 +29,15 @@ public class SettingsFileTests {
     @BeforeMethod
     public void before() {
         System.setProperty(PROFILE_KEY, PROFILE);
-        CustomAqualityServices.initInjector(new TestModule());
-        jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
+        CustomAqualityServices.initInjector(getTestModule());
+        jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
     }
 
     @Test
     public void testShouldBePossibleToGetDefaultContent(){
         System.clearProperty(PROFILE_KEY);
-        CustomAqualityServices.initInjector(new TestModule());
-        jsonSettingsFile = CustomAqualityServices.getInjector().getInstance(ISettingsFile.class);
+        CustomAqualityServices.initInjector(getTestModule());
+        jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
         String language = jsonSettingsFile.getValue("/logger/language").toString();
         assertEquals(language, "en", "Logger language in default settings file should be read correctly");
     }
@@ -107,5 +107,9 @@ public class SettingsFileTests {
         System.clearProperty(LANGUAGE_ENV_KEY);
         System.clearProperty(TIMEOUT_POLLING_INTERVAL_KEY);
         System.clearProperty(ARGUMENTS_ENV_KEY);
+    }
+
+    private TestModule getTestModule(){
+        return new TestModule(CustomAqualityServices::getApplication);
     }
 }
