@@ -1,10 +1,6 @@
 package aquality.selenium.core.application;
 
 import aquality.selenium.core.logging.Logger;
-import aquality.selenium.core.configurations.ILoggerConfiguration;
-import aquality.selenium.core.configurations.ITimeoutConfiguration;
-import aquality.selenium.core.configurations.LoggerConfiguration;
-import aquality.selenium.core.configurations.TimeoutConfiguration;
 import aquality.selenium.core.configurations.*;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
