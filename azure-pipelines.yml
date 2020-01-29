@@ -19,6 +19,11 @@ steps:
     inputs:
       displaySettings: 'optimal'
 
+  - task: Windows Application Driver@0
+    displayName: 'Start WinAppDriver'
+    inputs:
+      OperationType: 'Start'
+
   - task: Maven@3
     inputs:
       mavenPomFile: 'pom.xml'
@@ -35,3 +40,8 @@ steps:
   - task: SonarCloudPublish@1
     inputs:
       pollingTimeoutSec: '300'
+
+  - task: Windows Application Driver@0
+    displayName: stop WinAppDriver
+    inputs:
+      OperationType: 'Stop'

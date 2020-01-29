@@ -4,18 +4,27 @@ import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
 import com.google.inject.AbstractModule;
 import aquality.selenium.core.logging.Logger;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 
 /**
  * Describes all dependencies which is registered for the project.
  */
-public class AqualityModule extends AbstractModule {
+public class AqualityModule<T extends IApplication> extends AbstractModule {
+
+    private final Provider<T> applicationProvider;
+
+    public AqualityModule (Provider<T> applicationProvider) {
+        this.applicationProvider = applicationProvider;
+    }
 
     /**
      * Registers dependencies to a container.
      */
     @Override
     protected void configure() {
+        bind(IApplication.class).toProvider(applicationProvider);
         bind(Logger.class).toInstance(Logger.getInstance());
     }
 

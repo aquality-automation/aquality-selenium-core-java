@@ -4,6 +4,7 @@
     <test name="Integration tests" parallel="methods" thread-count="10">
         <classes>
             <class name="tests.application.AqualityServicesTests"/>
+            <class name="tests.application.browser.BrowserTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
@@ -12,6 +13,7 @@
     </test>
     <test name="Non-threadsafe tests" parallel="none">
         <classes>
+            <class name="tests.application.windowsApp.ApplicationTests"/>
             <class name="tests.logger.LoggerTests"/>
             <class name="tests.utilities.SettingsFileTests"/>
         </classes>

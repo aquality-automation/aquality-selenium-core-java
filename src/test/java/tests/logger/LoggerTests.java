@@ -1,24 +1,28 @@
 package tests.logger;
 
+import aquality.selenium.core.logging.Logger;
 import org.apache.log4j.*;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+import tests.application.CustomAqualityServices;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
-import aquality.selenium.core.logging.Logger;
-import tests.application.CustomAqualityServices;
 
 import static org.testng.Assert.*;
 
 public class LoggerTests {
-    private final static String APPENDER_LOG_FILE_PATTERN = "target/log/appender-%s.log";
-    private final static String TEST_MESSAGE = "test message";
-    private final static String TEST_EXCEPTION_TEXT = "test exception";
-    private final static String LOG4J_FIELD_NAME = "log4J";
-    private Logger logger = CustomAqualityServices.getInjector().getInstance(Logger.class);
+    private static final String APPENDER_LOG_FILE_PATTERN = "target/log/appender-%s.log";
+    private static final String TEST_MESSAGE = "test message";
+    private static final String TEST_EXCEPTION_TEXT = "test exception";
+    private static final String LOG_4_J_FIELD_NAME = "log4J";
+    private Logger logger = CustomAqualityServices.getServiceProvider().getInstance(Logger.class);
     private org.apache.log4j.Logger log4j;
     private Appender appender;
     private File appenderFile;
@@ -32,7 +36,7 @@ public class LoggerTests {
 
     @BeforeGroups("messages")
     private void initializeLog4jField() throws NoSuchFieldException, IllegalAccessException {
-        Field log4jField = Logger.class.getDeclaredField(LOG4J_FIELD_NAME);
+        Field log4jField = Logger.class.getDeclaredField(LOG_4_J_FIELD_NAME);
         log4jField.setAccessible(true);
         log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(logger)).get();
     }
