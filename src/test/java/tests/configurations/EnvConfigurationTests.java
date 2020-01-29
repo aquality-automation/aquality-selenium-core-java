@@ -1,5 +1,6 @@
 package tests.configurations;
 
+import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.localization.SupportedLanguage;
 import org.testng.annotations.AfterMethod;
@@ -17,18 +18,22 @@ public class EnvConfigurationTests {
     @BeforeMethod
     public void before(){
         System.setProperty(LANGUAGE_KEY, "ru");
-        CustomAqualityServices.initInjector(new TestModule());
+        initInjector();
     }
 
     @Test
     public void testShouldBePossibleToOverrideLanguageWithEnvVariable() {
-        SupportedLanguage language = CustomAqualityServices.getInjector().getInstance(ILoggerConfiguration.class).getLanguage();
+        SupportedLanguage language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
         assertEquals(language, SupportedLanguage.RU, "Current language should be overridden with env variable");
     }
 
     @AfterMethod
     public void after(){
         System.clearProperty(LANGUAGE_KEY);
-        CustomAqualityServices.initInjector(new TestModule());
+        initInjector();
+    }
+
+    private void initInjector(){
+        CustomAqualityServices.initInjector(new AqualityModule<>(CustomAqualityServices::getApplication));
     }
 }
