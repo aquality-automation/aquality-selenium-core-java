@@ -2,43 +2,61 @@ package aquality.selenium.core.application;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Provider;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
- * Describes static methods which help work with Application and dependency injector.
- * Injector is thread safe.
+ * Describes methods which help work with Application and dependency injector.
  */
-public class AqualityServices {
+public abstract class AqualityServices <T extends IApplication> {
 
-    private static final ThreadLocal<Injector> injectorContainer = new ThreadLocal<>();
+    private T app;
+    private final Injector injector;
 
-    protected AqualityServices() {
+    protected <V extends AqualityModule<T>> AqualityServices(Provider<T> applicationProvider,
+                                                             Supplier<V> servicesModuleSupplier) {
+        AqualityModule<T> module = servicesModuleSupplier == null
+                ? new AqualityModule<>(applicationProvider)
+                : servicesModuleSupplier.get();
+        injector = Guice.createInjector(module);
     }
 
     /**
-     * Gets existing injector or initializes new with based on {@link AqualityModule}.
-     *
-     * @return existing or new injector.
+     * @return true if the application is already started, false otherwise.
      */
-    protected static Injector getInjector() {
-        if (injectorContainer.get() == null) {
-            initInjector();
+    protected boolean isAppStarted() {
+        return app != null && app.isStarted();
+    }
+
+    /**
+     * Sets the application instance, saving it to DI container.
+     * @param application instance to set into container.
+     */
+    protected void setApp(T application) {
+        this.app = application;
+    }
+
+    /**
+     * Returns an existing application or initializes a new one based on passed parameter.
+     * @param startApplicationFunction function to start the application, where the injector could be used.
+     * @return started application.
+     */
+    protected T getApp(Function<Injector, T> startApplicationFunction) {
+        if (!isAppStarted()) {
+            setApp(startApplicationFunction.apply(injector));
         }
 
-        return injectorContainer.get();
-    }
-
-    private static void initInjector() {
-        initInjector(new AqualityModule());
+        return app;
     }
 
     /**
-     * Initializes custom injector.
+     * Gets existing injector based on {@link AqualityModule} supplier passed to constructor.
      *
-     * @param module - custom module with dependencies.
-     * @param <T> is type of custom module. Custom module should be inherited from {@link AqualityModule}.
+     * @return existing injector.
      */
-    protected static <T extends AqualityModule> void initInjector(T module) {
-        injectorContainer.remove();
-        injectorContainer.set(Guice.createInjector(module));
+    protected Injector getInjector() {
+        return injector;
     }
 }
