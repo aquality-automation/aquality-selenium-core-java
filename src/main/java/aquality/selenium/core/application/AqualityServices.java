@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Describes static methods which help work with Application and dependency injector.
+ * Describes methods which help work with Application and dependency injector.
  */
 public abstract class AqualityServices <T extends IApplication> {
 
