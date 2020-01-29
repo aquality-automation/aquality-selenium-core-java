@@ -10,7 +10,7 @@ public class LoggerConfigurationTests {
 
     @Test
     public void testShouldBePossibleToGetLanguage() {
-        SupportedLanguage language = CustomAqualityServices.getInjector().getInstance(ILoggerConfiguration.class).getLanguage();
+        SupportedLanguage language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
         assertEquals(language, SupportedLanguage.EN, "Current language should be got from logger configuration");
     }
 }
