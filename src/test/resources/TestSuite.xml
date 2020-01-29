@@ -4,6 +4,8 @@
     <test name="Integration tests" parallel="methods" thread-count="10">
         <classes>
             <class name="tests.application.AqualityServicesTests"/>
+            <class name="tests.application.browser.BrowserTests"/>
+            <class name="tests.utilities.CustomSettingsFileTests"/>
             <class name="tests.configurations.LoggerConfigurationTests"/>
             <class name="tests.configurations.TimeoutConfigurationTests"/>
             <class name="tests.configurations.RetryConfigurationTests"/>
@@ -15,6 +17,7 @@
     </test>
     <test name="Non-threadsafe tests" parallel="none">
         <classes>
+            <class name="tests.application.windowsApp.ApplicationTests"/>
             <class name="tests.logger.LoggerTests"/>
             <class name="tests.utilities.SettingsFileTests"/>
             <class name="tests.configurations.EnvConfigurationTests"/>

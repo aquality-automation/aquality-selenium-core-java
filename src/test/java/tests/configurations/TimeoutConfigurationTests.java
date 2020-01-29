@@ -10,7 +10,7 @@ public class TimeoutConfigurationTests {
 
     @Test
     public void testShouldBePossibleToGetTimeoutConfiguration() {
-        ITimeoutConfiguration timeoutConfiguration = CustomAqualityServices.getInjector().getInstance(ITimeoutConfiguration.class);
+        ITimeoutConfiguration timeoutConfiguration = CustomAqualityServices.getServiceProvider().getInstance(ITimeoutConfiguration.class);
         assertEquals(timeoutConfiguration.getCommand(), 60, "Command timeout should be got");
         assertEquals(timeoutConfiguration.getCondition(), 30, "Condition timeout should be got");
         assertEquals(timeoutConfiguration.getImplicit(), 0, "Implicit timeout should be got");
