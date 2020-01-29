@@ -114,4 +114,8 @@ public class SettingsFileTests extends BaseProfileTest {
     private TestModule getTestModule() {
         return new TestModule(CustomAqualityServices::getApplication);
     }
+
+    private TestModule getTestModule(){
+        return new TestModule(CustomAqualityServices::getApplication);
+    }
 }
