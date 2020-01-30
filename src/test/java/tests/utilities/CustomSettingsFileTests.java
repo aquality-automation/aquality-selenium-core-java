@@ -4,6 +4,7 @@ import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.utilities.ISettingsFile;
 import com.google.inject.Provider;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
 import tests.application.browser.ChromeApplication;
@@ -19,6 +20,11 @@ public class CustomSettingsFileTests {
         ISettingsFile jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
         Object value = jsonSettingsFile.getValue("/timeouts/timeoutPollingInterval");
         Assert.assertNull(value, "Value should be got from CustomSettingsFile");
+    }
+
+    @AfterMethod
+    public void after(){
+        CustomAqualityServices.initInjector(new AqualityModule<>(CustomAqualityServices::getApplication));
     }
 
     private class CustomModule extends AqualityModule<ChromeApplication> {

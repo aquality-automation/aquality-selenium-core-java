@@ -1,11 +1,10 @@
 package aquality.selenium.core.application;
 
-import aquality.selenium.core.configurations.ILoggerConfiguration;
-import aquality.selenium.core.configurations.LoggerConfiguration;
 import aquality.selenium.core.localization.*;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
+import aquality.selenium.core.configurations.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -31,6 +30,9 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(ISettingsFile.class).toInstance(getSettings());
         bind(Logger.class).toInstance(Logger.getInstance());
         bind(ILoggerConfiguration.class).to(LoggerConfiguration.class).in(Singleton.class);
+        bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class).in(Singleton.class);
+        bind(IRetryConfiguration.class).to(RetryConfiguration.class).in(Singleton.class);
+        bind(IElementCacheConfiguration.class).to(ElementCacheConfiguration.class).in(Singleton.class);
         bind(ILocalizationManager.class).to(getLocalizationManagerImplementation()).in(Singleton.class);
         bind(ILocalizedLogger.class).to(getLocalizedLoggerImplementation()).in(Singleton.class);
     }
