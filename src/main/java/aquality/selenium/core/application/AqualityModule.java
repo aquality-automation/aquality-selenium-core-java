@@ -29,6 +29,7 @@ public class AqualityModule<T extends IApplication> extends AbstractModule {
         bind(ILoggerConfiguration.class).to(LoggerConfiguration.class);
         bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class);
         bind(IRetryConfiguration.class).to(RetryConfiguration.class);
+        bind(IElementCacheConfiguration.class).to(ElementCacheConfiguration.class);
     }
 
     /**

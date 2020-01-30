@@ -11,5 +11,8 @@
   },
   "logger": {
     "language": "ru"
+  },
+  "elementCache": {
+    "isEnabled": false
   }
 }
