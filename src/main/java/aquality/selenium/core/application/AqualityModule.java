@@ -1,6 +1,8 @@
 package aquality.selenium.core.application;
 
 import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.utilities.ISettingsFile;
+import aquality.selenium.core.utilities.JsonSettingsFile;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 
@@ -21,6 +23,20 @@ public class AqualityModule<T extends IApplication> extends AbstractModule {
     @Override
     protected void configure() {
         bind(IApplication.class).toProvider(applicationProvider);
+        bind(ISettingsFile.class).toInstance(getSettings());
         bind(Logger.class).toInstance(Logger.getInstance());
+    }
+
+    /**
+     * Provides default {@link ISettingsFile}. with settings.
+     * Default value is settings.json.
+     * You are able to override this path, by setting environment variable 'profile'.
+     * In this case, settings file will be settings.{profile}.json.
+     *
+     * @return An instance of settings.
+     */
+    protected ISettingsFile getSettings() {
+        String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
+        return new JsonSettingsFile(settingsProfile);
     }
 }
