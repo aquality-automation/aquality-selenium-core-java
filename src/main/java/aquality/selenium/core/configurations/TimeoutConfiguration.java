@@ -21,7 +21,7 @@ public class TimeoutConfiguration implements ITimeoutConfiguration{
     }
 
     private long getTimeout(TIMEOUT timeout){
-        return Long.valueOf(settingsFile.getValue("/timeouts/" + timeout.getKey()).toString());
+        return Long.valueOf(settingsFile.getValue(timeout.getKey()).toString());
     }
 
     public long getImplicit(){
@@ -41,10 +41,10 @@ public class TimeoutConfiguration implements ITimeoutConfiguration{
     }
 
     private enum TIMEOUT {
-        IMPLICIT("timeoutImplicit"),
-        CONDITION("timeoutCondition"),
-        POLL_INTERVAL("timeoutPollingInterval"),
-        COMMAND("timeoutCommand");
+        IMPLICIT("/timeouts/timeoutImplicit"),
+        CONDITION("/timeouts/timeoutCondition"),
+        POLL_INTERVAL("/timeouts/timeoutPollingInterval"),
+        COMMAND("/timeouts/timeoutCommand");
 
         private String key;
         TIMEOUT(String key){

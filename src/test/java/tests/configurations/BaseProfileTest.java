@@ -9,12 +9,12 @@ public class BaseProfileTest {
     private String previousProfile;
 
     @BeforeMethod
-    public void before1() {
+    public void saveProfile() {
         previousProfile = System.getProperty(PROFILE_KEY);
     }
 
     @AfterMethod
-    public void after() {
+    public void restoreProfile() {
         if (previousProfile == null) {
             System.clearProperty(PROFILE_KEY);
         } else {

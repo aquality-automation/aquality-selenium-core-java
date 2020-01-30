@@ -5,12 +5,12 @@ import com.google.inject.Inject;
 
 public class ElementCacheConfiguration implements IElementCacheConfiguration{
 
-    private static final String JSON_PATH = "/elementCache/isEnabled";
+    private static final String IS_ENABLED_PATH = "/elementCache/isEnabled";
     private boolean isEnabled;
 
     @Inject
     public ElementCacheConfiguration(ISettingsFile settingsFile){
-        isEnabled = settingsFile.isValuePresent(JSON_PATH) && Boolean.valueOf(settingsFile.getValue(JSON_PATH).toString());
+        isEnabled = settingsFile.isValuePresent(IS_ENABLED_PATH) && Boolean.valueOf(settingsFile.getValue(IS_ENABLED_PATH).toString());
     }
 
     @Override

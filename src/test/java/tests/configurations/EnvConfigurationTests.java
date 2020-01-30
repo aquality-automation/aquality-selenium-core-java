@@ -5,7 +5,6 @@ import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.configurations.IRetryConfiguration;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
-import aquality.selenium.core.localization.SupportedLanguage;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -22,6 +21,7 @@ public class EnvConfigurationTests extends BaseProfileTest {
     private static final String ELEMENT_CACHE = "elementCache.isEnabled";
     private static final String NEW_BOOL_VALUE = "true";
     private static final String NEW_STRING_VALUE = "ru";
+    private static final String DEFAULT_LANGUAGE = "en";
     private static final String CONDITION_TIMEOUT_KEY = "timeouts.timeoutCondition";
     private static final String NEW_INT_VALUE = "10000";
     private static final String RETRY_NUMBER_KEY = "retry.number";
@@ -37,8 +37,8 @@ public class EnvConfigurationTests extends BaseProfileTest {
 
     @Test
     public void testShouldBePossibleToOverrideLanguageWithEnvVariable() {
-        SupportedLanguage language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
-        assertEquals(language, SupportedLanguage.RU, "Current language should be overridden with env variable");
+        String language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
+        assertEquals(language, "ru", "Current language should be overridden with env variable");
     }
 
     @Test
@@ -71,6 +71,15 @@ public class EnvConfigurationTests extends BaseProfileTest {
         checkNumberFormatException(() -> CustomAqualityServices.getServiceProvider().getInstance(IRetryConfiguration.class).getNumber());
     }
 
+    @Test
+    public void testShouldGetDefaultLanguageIfConfigurationIsAbsent() {
+        System.setProperty(PROFILE_KEY, "empty");
+        System.clearProperty(LANGUAGE_KEY);
+        CustomAqualityServices.initInjector(new TestModule(CustomAqualityServices::getApplication));
+        String language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
+        assertEquals(language, DEFAULT_LANGUAGE, "Current language should be got from logger configuration");
+    }
+
     @AfterMethod
     public void after() {
         System.clearProperty(LANGUAGE_KEY);
@@ -86,7 +95,6 @@ public class EnvConfigurationTests extends BaseProfileTest {
             getNumberAction.run();
         } catch (Exception e) {
             Assert.assertSame(e.getCause().getClass(), NumberFormatException.class);
-            Assert.assertTrue(e.getMessage().contains("NumberFormatException"));
         }
     }
 }
