@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
+import tests.application.browser.AqualityServices;
 
 import java.util.MissingFormatArgumentException;
 
@@ -39,7 +40,7 @@ public class LocalizationManagerTests {
 
     private LocalizationManager getLocalizationManager() {
         return new LocalizationManager(
-                CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class),
+                AqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class),
                 Logger.getInstance());
     }
 
@@ -110,5 +111,4 @@ public class LocalizationManagerTests {
         Assert.assertThrows(IllegalArgumentException.class, () ->
                 getLocalizationManager("invalid").getLocalizedMessage(CLICKING_MESSAGE_KEY));
     }
-
 }

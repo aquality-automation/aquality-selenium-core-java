@@ -10,7 +10,6 @@ public class LocalizedLogger implements ILocalizedLogger {
 
     @Inject
     public LocalizedLogger(ILocalizationManager localizationManager, Logger logger) {
-
         this.localizationManager = localizationManager;
         this.logger = logger;
     }

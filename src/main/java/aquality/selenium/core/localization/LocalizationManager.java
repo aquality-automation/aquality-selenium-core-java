@@ -10,12 +10,13 @@ public class LocalizationManager implements ILocalizationManager {
     private static final String LANG_RESOURCE_TEMPLATE = "localization/%1$s.json";
     private final ISettingsFile localizationFile;
     private final Logger logger;
+    private final String locResourceName;
 
     @Inject
     public LocalizationManager(ILoggerConfiguration loggerConfiguration, Logger logger) {
         this.logger = logger;
         String language = loggerConfiguration.getLanguage();
-        String locResourceName = String.format(LANG_RESOURCE_TEMPLATE, language.toLowerCase());
+        locResourceName = String.format(LANG_RESOURCE_TEMPLATE, language.toLowerCase());
         localizationFile = new JsonSettingsFile(locResourceName);
     }
 
@@ -26,7 +27,8 @@ public class LocalizationManager implements ILocalizationManager {
             return String.format(localizationFile.getValue(jsonKeyPath).toString(), args);
         }
 
-        logger.warn(String.format("Cannot find localized message by key '%1$s'", jsonKeyPath));
+        logger.warn(String.format("Cannot find localized message by key '%1$s' in resource file %2$s",
+                jsonKeyPath, locResourceName));
         return messageKey;
     }
 }
