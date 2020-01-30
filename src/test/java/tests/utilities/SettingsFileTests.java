@@ -22,14 +22,17 @@ public class SettingsFileTests extends BaseProfileTest {
     private static final String LANGUAGE_ENV_KEY = "logger.language";
     private static final String ARGUMENTS_ENV_KEY = "arguments.start";
     private static final String PROFILE = "jsontest";
+    private static final String PROFILE_KEY = "profile";
     private static final String FILE_NAME = String.format("settings.%s.json", PROFILE);
     private ISettingsFile jsonSettingsFile;
+    private String previousProfile;
     private static final Map EXPECTED_LANGUAGES = new HashMap<String, String>() {{
         put("language", "ru");
     }};
 
     @BeforeMethod
     public void before() {
+        previousProfile = System.getProperty(PROFILE_KEY);
         System.setProperty(PROFILE_KEY, PROFILE);
         CustomAqualityServices.initInjector(getTestModule());
         jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);

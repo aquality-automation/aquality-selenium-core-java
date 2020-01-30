@@ -1,9 +1,9 @@
 package aquality.selenium.core.application;
 
 import aquality.selenium.core.logging.Logger;
-import aquality.selenium.core.configurations.*;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
+import aquality.selenium.core.configurations.*;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 
