@@ -39,4 +39,15 @@ public interface ISettingsFile {
      * @return True if exists, false otherwise.
      */
     boolean isValuePresent(String path);
+
+    /**
+     * Gets value from settings file or default value.
+     *
+     * @param path         Path to the values. Depending on file format, it can be jsonPath, xpath etc.
+     * @param defaultValue will be returned if there is no value by path in settings file.
+     * @return Value from settings file or default value.
+     */
+    default Object getValueOrDefault(String path, Object defaultValue) {
+        return this.isValuePresent(path) ? this.getValue(path) : defaultValue;
+    }
 }

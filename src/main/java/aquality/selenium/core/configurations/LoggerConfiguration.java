@@ -1,10 +1,9 @@
 package aquality.selenium.core.configurations;
 
 import aquality.selenium.core.utilities.ISettingsFile;
-import aquality.selenium.core.utilities.SettingsFileUtil;
 import com.google.inject.Inject;
 
-public class LoggerConfiguration implements ILoggerConfiguration{
+public class LoggerConfiguration implements ILoggerConfiguration {
 
     private static final String DEFAULT_LANGUAGE = "en";
     private final ISettingsFile settingsFile;
@@ -16,6 +15,6 @@ public class LoggerConfiguration implements ILoggerConfiguration{
 
     @Override
     public String getLanguage() {
-        return SettingsFileUtil.getValueOrDefault(settingsFile, "/logger/language", DEFAULT_LANGUAGE).toString();
+        return settingsFile.getValueOrDefault("/logger/language", DEFAULT_LANGUAGE).toString();
     }
 }
