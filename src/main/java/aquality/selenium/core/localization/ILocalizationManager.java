@@ -6,7 +6,7 @@ package aquality.selenium.core.localization;
 public interface ILocalizationManager {
 
     /**
-     * Get localized message from resources by its key.
+     * Gets localized message from resources by its key.
      *
      * @param messageKey Key in resource file.
      * @param args Arguments, which will be provided to template of localized message.
