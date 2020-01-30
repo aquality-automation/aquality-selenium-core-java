@@ -95,7 +95,6 @@ public class EnvConfigurationTests extends BaseProfileTest {
             getNumberAction.run();
         } catch (Exception e) {
             Assert.assertSame(e.getCause().getClass(), NumberFormatException.class);
-            Assert.assertTrue(e.getMessage().contains("NumberFormatException"));
         }
     }
 }

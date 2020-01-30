@@ -6,9 +6,8 @@ package aquality.selenium.core.configurations;
 public interface ILoggerConfiguration {
 
     /**
-     * Gets language of the library.
-     *
-     * @return Language.
+     * Gets language used inside the library for logging.
+     * @return language used for logging.
      */
     String getLanguage();
 }
