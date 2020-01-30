@@ -5,16 +5,16 @@ import aquality.selenium.core.localization.LocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
-import aquality.selenium.core.waitings.ConditionalWait;
 import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.core.configurations.*;
+import aquality.selenium.core.waitings.IWaitingsModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 
 /**
  * Describes all dependencies which is registered for the project.
  */
-public class AqualityModule<T extends IApplication> extends AbstractModule {
+public class AqualityModule<T extends IApplication> extends AbstractModule implements IWaitingsModule {
 
     private final Provider<T> applicationProvider;
 
@@ -35,7 +35,7 @@ public class AqualityModule<T extends IApplication> extends AbstractModule {
         bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class);
         bind(IRetryConfiguration.class).to(RetryConfiguration.class);
         bind(IElementCacheConfiguration.class).to(ElementCacheConfiguration.class);
-        bind(IConditionalWait.class).to(ConditionalWait.class);
+        bind(IConditionalWait.class).to(getConditionalWaitImplementation());
     }
 
     /**
