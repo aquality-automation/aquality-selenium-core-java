@@ -1,5 +1,9 @@
 package aquality.selenium.core.application;
 
+import aquality.selenium.core.localization.ILocalizationManager;
+import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.localization.LocalizationManager;
+import aquality.selenium.core.localization.LocalizedLogger;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.JsonSettingsFile;
@@ -25,6 +29,8 @@ public class AqualityModule<T extends IApplication> extends AbstractModule {
         bind(IApplication.class).toProvider(applicationProvider);
         bind(ISettingsFile.class).toInstance(getSettings());
         bind(Logger.class).toInstance(Logger.getInstance());
+        bind(ILocalizationManager.class).to(LocalizationManager.class);
+        bind(ILocalizedLogger.class).to(LocalizedLogger.class);
     }
 
     /**
