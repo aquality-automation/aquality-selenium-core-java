@@ -1,4 +1,4 @@
-package aquality.selenium.core.application;
+package aquality.selenium.core.applications;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -24,14 +24,14 @@ public abstract class AqualityServices <T extends IApplication> {
     }
 
     /**
-     * @return true if the application is already started, false otherwise.
+     * @return true if the applications is already started, false otherwise.
      */
     protected boolean isAppStarted() {
         return app != null && app.isStarted();
     }
 
     /**
-     * Sets the application instance, saving it to DI container.
+     * Sets the applications instance, saving it to DI container.
      * @param application instance to set into container.
      */
     protected void setApp(T application) {
@@ -39,9 +39,9 @@ public abstract class AqualityServices <T extends IApplication> {
     }
 
     /**
-     * Returns an existing application or initializes a new one based on passed parameter.
-     * @param startApplicationFunction function to start the application, where the injector could be used.
-     * @return started application.
+     * Returns an existing applications or initializes a new one based on passed parameter.
+     * @param startApplicationFunction function to start the applications, where the injector could be used.
+     * @return started applications.
      */
     protected T getApp(Function<Injector, T> startApplicationFunction) {
         if (!isAppStarted()) {

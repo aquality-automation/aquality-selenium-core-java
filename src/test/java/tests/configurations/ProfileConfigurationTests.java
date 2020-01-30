@@ -1,6 +1,6 @@
 package tests.configurations;
 
-import aquality.selenium.core.application.AqualityModule;
+import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.localization.SupportedLanguage;
 import org.testng.annotations.BeforeMethod;

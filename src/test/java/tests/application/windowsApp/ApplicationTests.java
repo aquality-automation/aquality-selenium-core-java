@@ -1,6 +1,6 @@
 package tests.application.windowsApp;
 
-import aquality.selenium.core.application.IApplication;
+import aquality.selenium.core.applications.IApplication;
 import com.google.inject.Injector;
 import tests.application.IApplicationTests;
 

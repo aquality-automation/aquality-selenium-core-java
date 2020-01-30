@@ -9,7 +9,7 @@ public class BaseProfileTest {
     private String previousProfile;
 
     @BeforeMethod
-    public void before() {
+    public void before1() {
         previousProfile = System.getProperty(PROFILE_KEY);
     }
 

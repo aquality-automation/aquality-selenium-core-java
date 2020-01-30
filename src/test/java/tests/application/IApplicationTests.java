@@ -1,6 +1,6 @@
 package tests.application;
 
-import aquality.selenium.core.application.IApplication;
+import aquality.selenium.core.applications.IApplication;
 import com.google.inject.Injector;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -22,7 +22,7 @@ public interface IApplicationTests {
 
     @Test
     default void testShouldBePossibleToGetDriver() {
-        Assert.assertNotNull(getApplication().getDriver(), "should be possible get driver from the application");
+        Assert.assertNotNull(getApplication().getDriver(), "should be possible get driver from the applications");
     }
 
     @Test
@@ -42,17 +42,17 @@ public interface IApplicationTests {
     @Test
     default void testShouldBePossibleToDefineIsStarted() {
         Assert.assertFalse(isApplicationStarted(),
-                "application should not be started before getting");
+                "applications should not be started before getting");
         IApplication application = getApplication();
         Assert.assertTrue(application.isStarted(),
-                "application should be started when got it from the aquality services");
+                "applications should be started when got it from the aquality services");
         Assert.assertTrue(isApplicationStarted(),
-                "application should be started when check it's state from the aquality services");
+                "applications should be started when check it's state from the aquality services");
         application.getDriver().quit();
         Assert.assertFalse(application.isStarted(),
-                "application should not be started after quit");
+                "applications should not be started after quit");
         Assert.assertFalse(isApplicationStarted(),
-                "application should not be started when check it's state from the aquality services after quit");
+                "applications should not be started when check it's state from the aquality services after quit");
     }
 
     @AfterMethod

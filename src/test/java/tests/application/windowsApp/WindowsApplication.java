@@ -1,6 +1,6 @@
 package tests.application.windowsApp;
 
-import aquality.selenium.core.application.IApplication;
+import aquality.selenium.core.applications.IApplication;
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.WindowsElement;
 import org.openqa.selenium.remote.DesiredCapabilities;

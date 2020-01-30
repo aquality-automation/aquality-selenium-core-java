@@ -1,6 +1,6 @@
 package aquality.selenium.core.waitings;
 
-import aquality.selenium.core.application.IApplication;
+import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
 import aquality.selenium.core.localization.ILocalizationManager;
 import com.google.inject.Inject;

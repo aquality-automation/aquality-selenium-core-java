@@ -3,7 +3,7 @@ package tests.application.browser;
 import com.google.inject.Injector;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class AqualityServices  extends aquality.selenium.core.application.AqualityServices<ChromeApplication> {
+public class AqualityServices  extends aquality.selenium.core.applications.AqualityServices<ChromeApplication> {
     private static final ThreadLocal<AqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(AqualityServices::new);
 
     private AqualityServices() {

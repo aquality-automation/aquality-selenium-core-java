@@ -1,4 +1,4 @@
-package aquality.selenium.core.application;
+package aquality.selenium.core.applications;
 
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.LocalizationManager;
