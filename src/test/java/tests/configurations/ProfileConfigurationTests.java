@@ -2,7 +2,6 @@ package tests.configurations;
 
 import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
-import aquality.selenium.core.localization.SupportedLanguage;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
@@ -21,8 +20,7 @@ public class ProfileConfigurationTests extends BaseProfileTest {
 
     @Test
     public void testShouldBePossibleToGetLanguageFromNewSettingsFile() {
-
-        SupportedLanguage language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
-        assertEquals(language, SupportedLanguage.RU, String.format("Current language should be got from %s profile", PROFILE));
+        String language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
+        assertEquals(language, "ru", String.format("Current language should be got from %s profile", PROFILE));
     }
 }

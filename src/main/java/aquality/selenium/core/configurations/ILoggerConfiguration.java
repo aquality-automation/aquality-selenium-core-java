@@ -1,16 +1,14 @@
 package aquality.selenium.core.configurations;
 
-import aquality.selenium.core.localization.SupportedLanguage;
-
 /**
  * Describes logger configuration.
  */
 public interface ILoggerConfiguration {
 
     /**
-     * Gets language of framework.
+     * Gets language of the library.
      *
-     * @return Supported language.
+     * @return Language.
      */
-    SupportedLanguage getLanguage();
+    String getLanguage();
 }
