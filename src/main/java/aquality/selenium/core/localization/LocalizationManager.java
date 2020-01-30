@@ -26,7 +26,7 @@ public class LocalizationManager implements ILocalizationManager {
             return String.format(localizationFile.getValue(jsonKeyPath).toString(), args);
         }
 
-        logger.debug(String.format("Cannot find localized message by key '%1$s'", jsonKeyPath));
+        logger.warn(String.format("Cannot find localized message by key '%1$s'", jsonKeyPath));
         return messageKey;
     }
 }
