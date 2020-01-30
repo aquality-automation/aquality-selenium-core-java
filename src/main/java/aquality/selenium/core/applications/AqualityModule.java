@@ -35,11 +35,7 @@ public class AqualityModule<T extends IApplication> extends AbstractModule imple
         bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class).in(Singleton.class);
         bind(IRetryConfiguration.class).to(RetryConfiguration.class).in(Singleton.class);
         bind(IElementCacheConfiguration.class).to(ElementCacheConfiguration.class).in(Singleton.class);
-        bind(ILoggerConfiguration.class).to(LoggerConfiguration.class);
         bind(ILocalizationManager.class).to(LocalizationManager.class);
-        bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class);
-        bind(IRetryConfiguration.class).to(RetryConfiguration.class);
-        bind(IElementCacheConfiguration.class).to(ElementCacheConfiguration.class);
         bind(IConditionalWait.class).to(getConditionalWaitImplementation());
     }
 
