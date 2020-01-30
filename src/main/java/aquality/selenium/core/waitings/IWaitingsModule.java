@@ -6,7 +6,7 @@ package aquality.selenium.core.waitings;
 public interface IWaitingsModule {
 
     /**
-     * @return implementation of {@link IConditionalWait}
+     * @return implementation of {@link IConditionalWait}.
      */
     default Class<? extends IConditionalWait> getConditionalWaitImplementation() {
         return ConditionalWait.class;
