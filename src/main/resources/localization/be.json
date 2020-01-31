@@ -1,0 +1,11 @@
+{
+  "loc.clicking": "Націскаем",
+  "loc.el.getattr": "Атрымліваем атрыбут '%1$s'",
+  "loc.get.text": "Атрымліваем тэкст элемента",
+  "loc.text.sending.keys": "Націскаем клавішы '%1$s'",
+  "loc.no.elements.found.in.state": "Не знайшлі элементаў па лакатару '%1$s' у %2$s стане",
+  "loc.no.elements.found.by.locator": "Не знайшлі элементаў па лакатару '%1$s'",
+  "loc.elements.were.found.but.not.in.state": "Знайшлі элементы па лакатару '%1$s', але яны не ў жаданым стане %2$s",
+  "loc.elements.found.but.should.not": "Не павінна быць знойдзена элементаў па лакатару '%1$s' у %2$s стане",
+  "loc.search.of.elements.failed": "Пошук элемента па лакатару '%1$s' прайшоў няўдала"
+}

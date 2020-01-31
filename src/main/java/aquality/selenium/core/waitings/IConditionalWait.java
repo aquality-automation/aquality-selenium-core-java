@@ -20,7 +20,28 @@ public interface IConditionalWait {
      * @param message   Part of error message in case of Timeout exception
      * @return true if the condition has been met during the timeout
      */
-    boolean waitForTrue(BooleanSupplier condition, String message);
+    boolean waitFor(BooleanSupplier condition, String message);
+
+    /**
+     * Wait for some condition within timeout. Method does not use WebDriverWait
+     *
+     * @param condition                     condition with boolean result (predicate)
+     * @param timeoutInSeconds              Condition timeout
+     * @param pollingIntervalInMilliseconds Condition check interval
+     * @param message                       Part of error message in case of Timeout exception
+     * @return true if the condition has been met during the timeout
+     */
+    boolean waitFor(BooleanSupplier condition, long timeoutInSeconds, long pollingIntervalInMilliseconds, String message);
+
+    /**
+     * Wait for some condition within timeout. Method does not use WebDriverWait
+     * Default values for timeouts used from configuration settings file
+     *
+     * @param condition                     condition with boolean result (predicate)
+     * @param message                       Part of error message in case of Timeout exception
+     * @throws TimeoutException will be thrown in case if timeout is over but condition was not met
+     */
+    void waitForTrue(BooleanSupplier condition, String message) throws TimeoutException;
 
     /**
      * Wait for some condition within timeout. Method does not use WebDriverWait

@@ -1,10 +1,9 @@
 package aquality.selenium.core.localization;
 
 /**
- * This interface is using for translation messages to different languages
+ * This interface is used for translation messages to different languages.
  */
 public interface ILocalizationManager {
-
     /**
      * Gets localized message from resources by its key.
      *

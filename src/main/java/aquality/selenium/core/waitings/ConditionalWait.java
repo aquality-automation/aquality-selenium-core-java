@@ -30,13 +30,23 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public boolean waitForTrue(BooleanSupplier condition, String message) {
+    public boolean waitFor(BooleanSupplier condition, String message) {
+        return waitFor(condition, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval(), message);
+    }
+
+    @Override
+    public boolean waitFor(BooleanSupplier condition, long timeoutInSeconds, long pollingIntervalInMilliseconds, String message) {
         try {
-            waitForTrue(condition, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval(), message);
+            waitForTrue(condition, timeoutInSeconds, pollingIntervalInMilliseconds, message);
             return true;
         } catch (TimeoutException e) {
             return false;
         }
+    }
+
+    @Override
+    public void waitForTrue(BooleanSupplier condition, String message) throws TimeoutException {
+        waitForTrue(condition, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval(), message);
     }
 
     @Override

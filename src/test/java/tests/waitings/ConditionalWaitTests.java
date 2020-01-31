@@ -15,6 +15,7 @@ import utils.Timer;
 
 import java.util.Collections;
 import java.util.concurrent.TimeoutException;
+import java.util.function.BooleanSupplier;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -45,7 +46,7 @@ public class ConditionalWaitTests {
     @Test
     public void testFalseShouldBeReturnedIfConditionIsNotMetAndDefaultTimeoutIsOver() {
         long timeoutCondition = timeoutConfiguration.getCondition();
-        boolean result = conditionalWait.waitForTrue(() ->
+        boolean result = conditionalWait.waitFor(() ->
         {
             timer.get().start();
             return false;
@@ -77,7 +78,7 @@ public class ConditionalWaitTests {
     public void testTimeoutExceptionShouldNotBeThrownIfConditionIsMetAndDefaultTimeoutIsNotOver() {
         long timeoutCondition = timeoutConfiguration.getCondition();
 
-        boolean result = conditionalWait.waitForTrue(() ->
+        boolean result = conditionalWait.waitFor(() ->
         {
             timer.get().start();
             return true;
@@ -104,7 +105,7 @@ public class ConditionalWaitTests {
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void testNullCannotBePassedAsCondition() {
-        conditionalWait.waitForTrue(null, "Condition should not be null");
+        conditionalWait.waitFor((BooleanSupplier) null, "Condition should not be null");
     }
 
     @Test
