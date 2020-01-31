@@ -10,6 +10,7 @@
             <class name="tests.configurations.TimeoutConfigurationTests"/>
             <class name="tests.configurations.RetryConfigurationTests"/>
             <class name="tests.configurations.ElementCacheConfigurationTests"/>
+            <class name="tests.localization.LocalizationManagerTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
