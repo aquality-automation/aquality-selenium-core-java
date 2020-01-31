@@ -11,7 +11,7 @@
             <class name="tests.configurations.RetryConfigurationTests"/>
             <class name="tests.configurations.ElementCacheConfigurationTests"/>
             <class name="tests.localization.LocalizationManagerTests"/>
-            <class name="tests.waitings.ConditionalWaitTests"/>
+            <class name="tests.waitings.WaitForTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">

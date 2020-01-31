@@ -3,6 +3,7 @@ package aquality.selenium.core.waitings;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
 import aquality.selenium.core.localization.ILocalizationManager;
+import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -30,14 +31,9 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public boolean waitFor(BooleanSupplier condition, String message) {
-        return waitFor(condition, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval(), message);
-    }
-
-    @Override
-    public boolean waitFor(BooleanSupplier condition, long timeoutInSeconds, long pollingIntervalInMilliseconds, String message) {
+    public boolean waitFor(BooleanSupplier condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
         try {
-            waitForTrue(condition, timeoutInSeconds, pollingIntervalInMilliseconds, message);
+            waitForTrue(condition, timeoutInSeconds, pollingIntervalInMilliseconds, message, exceptionsToIgnore);
             return true;
         } catch (TimeoutException e) {
             return false;
@@ -45,30 +41,28 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public void waitForTrue(BooleanSupplier condition, String message) throws TimeoutException {
-        waitForTrue(condition, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval(), message);
-    }
-
-    @Override
-    public void waitForTrue(BooleanSupplier condition, long timeoutInSeconds, long pollingIntervalInMilliseconds, String message) throws TimeoutException {
+    public void waitForTrue(BooleanSupplier condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) throws TimeoutException {
         if (condition == null) {
             throw new IllegalArgumentException(localizationManager.getLocalizedMessage("loc.wait.condition.cant.be.null"));
         }
 
+        Long timeout = resolveConditionTimeout(timeoutInSeconds);
+        Long pollingInterval = resolvePollingInterval(pollingIntervalInMilliseconds);
+        String exMessage = resolveMessage(message);
         double startTime = getCurrentTime();
         while (true) {
-            if (condition.getAsBoolean()) {
+            if (isConditionSatisfied(condition, exceptionsToIgnore)) {
                 return;
             }
 
             double currentTime = getCurrentTime();
-            if ((currentTime - startTime) > timeoutInSeconds) {
-                String exceptionMessage = String.format(localizationManager.getLocalizedMessage("loc.wait.timeout.condition"), timeoutInSeconds, message);
+            if ((currentTime - startTime) > timeout) {
+                String exceptionMessage = localizationManager.getLocalizedMessage("loc.wait.timeout.condition", timeout, exMessage);
                 throw new TimeoutException(exceptionMessage);
             }
 
             try {
-                Thread.sleep(pollingIntervalInMilliseconds);
+                Thread.sleep(pollingInterval);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -76,21 +70,15 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public <T> T waitFor(ExpectedCondition<T> condition, String message) {
-        return waitFor(condition,
-                timeoutConfiguration.getCondition(),
-                timeoutConfiguration.getPollingInterval(),
-                message,
-                Collections.singleton(StaleElementReferenceException.class));
-    }
-
-    @Override
-    public <T> T waitFor(ExpectedCondition<T> condition, long timeOutInSeconds, long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
+    public <T> T waitFor(ExpectedCondition<T> condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
         application.setImplicitWaitTimeout(0, TimeUnit.SECONDS);
-        WebDriverWait wait = new WebDriverWait(application.getDriver(), timeOutInSeconds);
-        wait.pollingEvery(Duration.ofMillis(pollingIntervalInMilliseconds));
-        wait.withMessage(message);
-        wait.ignoreAll(exceptionsToIgnore);
+        Long timeout = resolveConditionTimeout(timeoutInSeconds);
+        Long pollingInterval = resolvePollingInterval(pollingIntervalInMilliseconds);
+        String exMessage = resolveMessage(message);
+        WebDriverWait wait = new WebDriverWait(application.getDriver(), timeout);
+        wait.pollingEvery(Duration.ofMillis(pollingInterval));
+        wait.withMessage(exMessage);
+        wait.ignoreAll(exceptionsToIgnore == null ? Collections.singleton(StaleElementReferenceException.class) : exceptionsToIgnore);
         try {
             return wait.until(condition);
         } finally {
@@ -100,5 +88,29 @@ public class ConditionalWait implements IConditionalWait {
 
     private double getCurrentTime() {
         return System.nanoTime() / Math.pow(10, 9);
+    }
+
+    private boolean isConditionSatisfied(BooleanSupplier condition, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
+        try {
+            return condition.getAsBoolean();
+        } catch (Exception e) {
+            if (exceptionsToIgnore == null || !exceptionsToIgnore.contains(e.getClass())) {
+                throw e;
+            }
+
+            return false;
+        }
+    }
+
+    private Long resolveConditionTimeout(Long timeout) {
+        return timeout == null ? timeoutConfiguration.getCommand() : timeout;
+    }
+
+    private Long resolvePollingInterval(Long timeout) {
+        return timeout == null ? timeoutConfiguration.getPollingInterval() : timeout;
+    }
+
+    private String resolveMessage(String message) {
+        return Strings.isNullOrEmpty(message) ? "" : message;
     }
 }
