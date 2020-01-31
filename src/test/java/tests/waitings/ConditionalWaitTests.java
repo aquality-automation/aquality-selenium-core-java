@@ -1,7 +1,11 @@
 package tests.waitings;
 
+import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
-import aquality.selenium.core.waitings.IConditionalWait;
+import aquality.selenium.core.localization.ILocalizationManager;
+import aquality.selenium.core.waitings.ConditionalWait;
+import com.google.inject.Injector;
+import com.google.inject.Provider;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -21,17 +25,21 @@ public class ConditionalWaitTests {
     private static final long waitForTimeoutPolling = 150;
     private ThreadLocal<Timer> timer = ThreadLocal.withInitial(Timer::new);
     private ITimeoutConfiguration timeoutConfiguration;
-    private IConditionalWait conditionalWait;
+    private Provider<IApplication> application;
+    private ConditionalWait conditionalWait;
 
     @BeforeMethod
     public void init() {
-        timeoutConfiguration = CustomAqualityServices.getServiceProvider().getInstance(ITimeoutConfiguration.class);
-        conditionalWait = CustomAqualityServices.getServiceProvider().getInstance(IConditionalWait.class);
+        Injector serviceProvider = CustomAqualityServices.getServiceProvider();
+        ILocalizationManager localizationManager = serviceProvider.getInstance(ILocalizationManager.class);
+        application = serviceProvider.getProvider(IApplication.class);
+        timeoutConfiguration = serviceProvider.getInstance(ITimeoutConfiguration.class);
+        conditionalWait = new ConditionalWait(application, timeoutConfiguration, localizationManager);
     }
 
     @AfterMethod
     public void quitApplication() {
-        CustomAqualityServices.getApplication().getDriver().quit();
+        application.get().getDriver().quit();
     }
 
     @Test
@@ -78,7 +86,7 @@ public class ConditionalWaitTests {
         assertTrue(result, "waitForTrue should return true when condition is satisfied.");
         assertTrue(duration < timeoutCondition,
                 String.format("Duration '%s' should be less than timeoutCondition '%s' when condition is satisfied.",
-                duration, timeoutCondition));
+                        duration, timeoutCondition));
     }
 
     @Test

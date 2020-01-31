@@ -23,7 +23,7 @@ public class ConditionalWait implements IConditionalWait {
     private ILocalizationManager localizationManager;
 
     @Inject
-    private ConditionalWait(Provider<IApplication> applicationProvider, ITimeoutConfiguration timeoutConfiguration, ILocalizationManager localizationManager) {
+    public ConditionalWait(Provider<IApplication> applicationProvider, ITimeoutConfiguration timeoutConfiguration, ILocalizationManager localizationManager) {
         application = applicationProvider.get();
         this.timeoutConfiguration = timeoutConfiguration;
         this.localizationManager = localizationManager;
