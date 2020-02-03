@@ -22,7 +22,7 @@ public class LoggerTests {
     private static final String TEST_MESSAGE = "test message";
     private static final String TEST_EXCEPTION_TEXT = "test exception";
     private static final String LOG_4_J_FIELD_NAME = "log4J";
-    private Logger logger = CustomAqualityServices.getServiceProvider().getInstance(Logger.class);
+    private Logger logger = Logger.getInstance();
     private org.apache.log4j.Logger log4j;
     private Appender appender;
     private File appenderFile;

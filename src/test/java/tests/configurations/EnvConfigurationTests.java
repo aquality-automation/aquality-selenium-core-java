@@ -5,6 +5,9 @@ import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.configurations.IRetryConfiguration;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
+import aquality.selenium.core.application.AqualityModule;
+import aquality.selenium.core.configurations.*;
+import aquality.selenium.core.utilities.ISettingsFile;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -25,6 +28,7 @@ public class EnvConfigurationTests extends BaseProfileTest {
     private static final String CONDITION_TIMEOUT_KEY = "timeouts.timeoutCondition";
     private static final String NEW_INT_VALUE = "10000";
     private static final String RETRY_NUMBER_KEY = "retry.number";
+    private ISettingsFile settingsFile;
 
     @BeforeMethod
     public void before() {
@@ -33,29 +37,30 @@ public class EnvConfigurationTests extends BaseProfileTest {
         System.setProperty(RETRY_NUMBER_KEY, NEW_INT_VALUE);
         System.setProperty(ELEMENT_CACHE, NEW_BOOL_VALUE);
         CustomAqualityServices.initInjector(new TestModule(CustomAqualityServices::getApplication));
+        settingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
     }
 
     @Test
     public void testShouldBePossibleToOverrideLanguageWithEnvVariable() {
-        String language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
+        String language = new LoggerConfiguration(settingsFile).getLanguage();
         assertEquals(language, "ru", "Current language should be overridden with env variable");
     }
 
     @Test
     public void testShouldBePossibleToOverrideTimeoutWithEnvVariable() {
-        long conditionTimeout = CustomAqualityServices.getServiceProvider().getInstance(ITimeoutConfiguration.class).getCondition();
+        long conditionTimeout = new TimeoutConfiguration(settingsFile).getCondition();
         assertEquals(conditionTimeout, Long.parseLong(NEW_INT_VALUE), "Condition timeout should be overridden with env variable");
     }
 
     @Test
     public void testShouldBePossibleToOverrideRetryConfigurationWithEnvVariable() {
-        int retryNumber = CustomAqualityServices.getServiceProvider().getInstance(IRetryConfiguration.class).getNumber();
+        int retryNumber = new RetryConfiguration(settingsFile).getNumber();
         assertEquals(retryNumber, Long.parseLong(NEW_INT_VALUE), "Number of retry attempts should be overridden with env variable");
     }
 
     @Test
     public void testShouldBePossibleToOverrideElementCacheStateWithEnvVariable() {
-        boolean isEnabled = CustomAqualityServices.getServiceProvider().getInstance(IElementCacheConfiguration.class).isEnabled();
+        boolean isEnabled = new ElementCacheConfiguration(settingsFile).isEnabled();
         assertTrue(isEnabled, "Element cache state should be overridden with env variable");
     }
 
@@ -76,7 +81,7 @@ public class EnvConfigurationTests extends BaseProfileTest {
         System.setProperty(PROFILE_KEY, "empty");
         System.clearProperty(LANGUAGE_KEY);
         CustomAqualityServices.initInjector(new TestModule(CustomAqualityServices::getApplication));
-        String language = CustomAqualityServices.getServiceProvider().getInstance(ILoggerConfiguration.class).getLanguage();
+        String language = new LoggerConfiguration(settingsFile).getLanguage();
         assertEquals(language, DEFAULT_LANGUAGE, "Current language should be got from logger configuration");
     }
 
