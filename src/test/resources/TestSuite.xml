@@ -6,6 +6,11 @@
             <class name="tests.application.AqualityServicesTests"/>
             <class name="tests.application.browser.BrowserTests"/>
             <class name="tests.utilities.CustomSettingsFileTests"/>
+            <class name="tests.configurations.LoggerConfigurationTests"/>
+            <class name="tests.configurations.TimeoutConfigurationTests"/>
+            <class name="tests.configurations.RetryConfigurationTests"/>
+            <class name="tests.configurations.ElementCacheConfigurationTests"/>
+            <class name="tests.localization.LocalizationManagerTests"/>
             <class name="tests.configurations.ConfigurationTests"/>
             <class name="tests.utilities.ElementActionRetrierTests"/>
         </classes>
