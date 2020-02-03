@@ -1,11 +1,6 @@
 package tests.configurations;
 
 import aquality.selenium.core.applications.AqualityModule;
-import aquality.selenium.core.configurations.IElementCacheConfiguration;
-import aquality.selenium.core.configurations.ILoggerConfiguration;
-import aquality.selenium.core.configurations.IRetryConfiguration;
-import aquality.selenium.core.configurations.ITimeoutConfiguration;
-import aquality.selenium.core.application.AqualityModule;
 import aquality.selenium.core.configurations.*;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.testng.Assert;

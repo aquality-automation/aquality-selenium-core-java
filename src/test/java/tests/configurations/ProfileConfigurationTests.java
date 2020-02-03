@@ -1,10 +1,8 @@
 package tests.configurations;
 
-import aquality.selenium.core.application.AqualityModule;
+import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.configurations.LoggerConfiguration;
 import aquality.selenium.core.utilities.ISettingsFile;
-import aquality.selenium.core.applications.AqualityModule;
-import aquality.selenium.core.configurations.ILoggerConfiguration;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;

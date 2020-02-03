@@ -18,8 +18,7 @@ import com.google.inject.Singleton;
  * Describes all dependencies which is registered for the project.
  */
 public class AqualityModule<T extends IApplication> extends AbstractModule
-        implements ILocalizationModule, IUtilitiesModule {
-        implements ILocalizationModule, IWaitingsModule {
+        implements ILocalizationModule, IUtilitiesModule, IWaitingsModule {
 
     private final Provider<T> applicationProvider;
 
