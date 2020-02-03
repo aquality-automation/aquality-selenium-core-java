@@ -34,7 +34,7 @@ public class CustomSettingsFileTests {
         }
 
         @Override
-        protected ISettingsFile getSettings() {
+        public ISettingsFile getInstanceOfSettingsFile() {
             return new CustomSettingsFile();
         }
     }
