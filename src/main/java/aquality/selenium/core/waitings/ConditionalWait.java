@@ -19,8 +19,8 @@ import java.util.function.BooleanSupplier;
 
 public class ConditionalWait implements IConditionalWait {
 
-    private Provider<IApplication> applicationProvider;
-    private ITimeoutConfiguration timeoutConfiguration;
+    private final Provider<IApplication> applicationProvider;
+    private final ITimeoutConfiguration timeoutConfiguration;
 
     @Inject
     public ConditionalWait(Provider<IApplication> applicationProvider, ITimeoutConfiguration timeoutConfiguration) {
