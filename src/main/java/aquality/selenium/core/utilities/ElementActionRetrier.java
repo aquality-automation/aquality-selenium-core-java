@@ -48,7 +48,7 @@ public class ElementActionRetrier implements IElementActionRetrier {
         return result.orElse(null);
     }
 
-    private boolean isExceptionHandled(Exception exception) {
+    protected boolean isExceptionHandled(Exception exception) {
         return getHandledExceptions().contains(exception.getClass());
     }
 }

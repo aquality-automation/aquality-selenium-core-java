@@ -108,12 +108,8 @@ public class ElementActionRetrierTests {
         checkRetrierShouldWorkCorrectTimes(handledException, actualAttempts, () ->
                 ELEMENT_ACTION_RETRIER.doWithRetry(() -> {
                     LOGGER.info("current attempt is " + actualAttempts.incrementAndGet());
-                    throwHandledArgumentException(handledException);
+                    throw handledException;
                 }));
-    }
-
-    private void throwHandledArgumentException(RuntimeException handledException) {
-        throw handledException;
     }
 
     @Test(dataProvider = "handledExceptions")

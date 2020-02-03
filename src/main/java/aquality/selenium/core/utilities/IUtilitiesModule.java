@@ -20,7 +20,7 @@ public interface IUtilitiesModule {
      *
      * @return An instance of settings.
      */
-    default ISettingsFile getSettingsFileImplementation() {
+    default ISettingsFile getInstanceOfSettingsFile() {
         String settingsProfile = System.getProperty("profile") == null ? "settings.json" : "settings." + System.getProperty("profile") + ".json";
         return new JsonSettingsFile(settingsProfile);
     }

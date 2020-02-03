@@ -26,7 +26,7 @@ public class AqualityModule<T extends IApplication> extends AbstractModule imple
     @Override
     protected void configure() {
         bind(IApplication.class).toProvider(applicationProvider);
-        bind(ISettingsFile.class).toInstance(getSettingsFileImplementation());
+        bind(ISettingsFile.class).toInstance(getInstanceOfSettingsFile());
         bind(Logger.class).toInstance(Logger.getInstance());
         bind(ILoggerConfiguration.class).to(LoggerConfiguration.class).in(Singleton.class);
         bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class).in(Singleton.class);
