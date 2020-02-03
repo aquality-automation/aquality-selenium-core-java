@@ -12,6 +12,8 @@
             <class name="tests.configurations.ElementCacheConfigurationTests"/>
             <class name="tests.localization.LocalizationManagerTests"/>
             <class name="tests.waitings.WaitForTests"/>
+            <class name="tests.waitings.WaitForObjectTests"/>
+            <class name="tests.waitings.WaitForTrueTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">

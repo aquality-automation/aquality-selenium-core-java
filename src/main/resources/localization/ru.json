@@ -7,7 +7,5 @@
   "loc.no.elements.found.by.locator": "Не удалось найти элементов по локатору '%1$s'",
   "loc.elements.were.found.but.not.in.state": "Удалось найти элементы по локатору '%1$s', но они не в желаемом состоянии %2$s",
   "loc.elements.found.but.should.not": "Не должно быть найдено элементов по локатору '%1$s' в %2$s состоянии",
-  "loc.search.of.elements.failed":  "Поиск элемента по локатору '%1$s' прошел неудачно",
-  "loc.wait.condition.cant.be.null": "Ожидаемое условие не должно быть null",
-  "loc.wait.timeout.condition": "Не удалось дождаться ожидаемого условия '%2$s' в течении %1$s секунд(ы)"
+  "loc.search.of.elements.failed":  "Поиск элемента по локатору '%1$s' прошел неудачно"
 }
