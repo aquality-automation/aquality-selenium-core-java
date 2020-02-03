@@ -1,15 +1,15 @@
 package aquality.selenium.core.applications;
 
 import aquality.selenium.core.configurations.*;
-import aquality.selenium.core.localization.*;
+import aquality.selenium.core.localization.ILocalizationManager;
+import aquality.selenium.core.localization.ILocalizationModule;
+import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.core.utilities.ISettingsFile;
-import aquality.selenium.core.utilities.JsonSettingsFile;
-import aquality.selenium.core.waitings.IConditionalWait;
-import aquality.selenium.core.configurations.*;
-import aquality.selenium.core.waitings.IWaitingsModule;
 import aquality.selenium.core.utilities.IUtilitiesModule;
+import aquality.selenium.core.waitings.IConditionalWait;
+import aquality.selenium.core.waitings.IWaitingsModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
