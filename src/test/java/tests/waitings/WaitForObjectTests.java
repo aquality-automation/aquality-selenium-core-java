@@ -1,5 +1,6 @@
 package tests.waitings;
 
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -8,7 +9,6 @@ import org.testng.annotations.Test;
 
 import java.util.Collections;
 import java.util.concurrent.Callable;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 
@@ -32,11 +32,11 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @DataProvider(name = "failWaitForAction", parallel = true)
-    public Object[][] successWaitForAction1() {
+    public Object[][] failWaitForAction() {
         return getDataProvider((app) -> false);
     }
 
-    @Test(dataProvider = "successWaitForAction")
+    @Test(dataProvider = "failWaitForAction")
     public void testShouldThrowTimeoutExceptionIfConditionIsNotMetAndTimeoutIsOver(Callable failedAction, long timeout) throws Exception {
         timer.get().start();
         try {
