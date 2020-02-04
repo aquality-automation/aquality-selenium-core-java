@@ -3,14 +3,13 @@ package tests.application;
 import aquality.selenium.core.applications.IApplication;
 import com.google.inject.Injector;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
+import tests.ITestWithApplication;
+
 import java.util.concurrent.TimeUnit;
 
-public interface IApplicationTests {
-    IApplication getApplication();
+public interface IApplicationTests extends ITestWithApplication {
     Injector getServiceProvider();
-    boolean isApplicationStarted();
 
     @Test
     default void testShouldBePossibleToGetApplication() {
@@ -53,12 +52,5 @@ public interface IApplicationTests {
                 "application should not be started after quit");
         Assert.assertFalse(isApplicationStarted(),
                 "application should not be started when check it's state from the aquality services after quit");
-    }
-
-    @AfterMethod
-    default void cleanUp () {
-        if (isApplicationStarted()) {
-            getApplication().getDriver().quit();
-        }
     }
 }
