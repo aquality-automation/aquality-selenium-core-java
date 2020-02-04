@@ -10,6 +10,9 @@
             <class name="tests.localization.LocalizationManagerTests"/>
             <class name="tests.configurations.ConfigurationTests"/>
             <class name="tests.utilities.ElementActionRetrierTests"/>
+            <class name="tests.waitings.WaitForTests"/>
+            <class name="tests.waitings.WaitForObjectTests"/>
+            <class name="tests.waitings.WaitForTrueTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">

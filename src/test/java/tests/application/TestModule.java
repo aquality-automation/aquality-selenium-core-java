@@ -1,6 +1,6 @@
 package tests.application;
 
-import aquality.selenium.core.application.AqualityModule;
+import aquality.selenium.core.applications.AqualityModule;
 import com.google.inject.Provider;
 import tests.application.browser.ChromeApplication;
 

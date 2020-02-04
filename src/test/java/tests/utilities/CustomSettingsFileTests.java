@@ -1,6 +1,6 @@
 package tests.utilities;
 
-import aquality.selenium.core.application.AqualityModule;
+import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.utilities.ISettingsFile;
 import com.google.inject.Provider;
 import org.testng.Assert;

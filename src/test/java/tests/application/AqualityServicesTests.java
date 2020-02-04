@@ -1,6 +1,6 @@
 package tests.application;
 
-import aquality.selenium.core.application.AqualityModule;
+import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.logging.Logger;
 import com.google.inject.ConfigurationException;
 import com.google.inject.Injector;

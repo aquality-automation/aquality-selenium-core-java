@@ -1,6 +1,6 @@
 package tests.application.browser;
 
-import aquality.selenium.core.application.IApplication;
+import aquality.selenium.core.applications.IApplication;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;

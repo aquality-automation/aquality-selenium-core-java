@@ -1,4 +1,4 @@
-package aquality.selenium.core.application;
+package aquality.selenium.core.applications;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;

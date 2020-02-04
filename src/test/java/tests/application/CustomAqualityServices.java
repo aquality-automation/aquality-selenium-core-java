@@ -1,7 +1,7 @@
 package tests.application;
 
-import aquality.selenium.core.application.AqualityModule;
-import aquality.selenium.core.application.AqualityServices;
+import aquality.selenium.core.applications.AqualityModule;
+import aquality.selenium.core.applications.AqualityServices;
 import com.google.inject.Injector;
 import tests.application.browser.ChromeApplication;
 

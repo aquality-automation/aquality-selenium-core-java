@@ -1,4 +1,4 @@
-package aquality.selenium.core.application;
+package aquality.selenium.core.applications;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 

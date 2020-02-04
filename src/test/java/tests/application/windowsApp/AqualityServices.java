@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-public class AqualityServices extends aquality.selenium.core.application.AqualityServices<WindowsApplication> {
+public class AqualityServices extends aquality.selenium.core.applications.AqualityServices<WindowsApplication> {
     private static final ThreadLocal<AqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(AqualityServices::new);
     private static final String APP_PATH = "./src/test/resources/apps/Day Maxi Calc.exe";
     private static final String DEFAULT_SERVICE_URL =  "http://127.0.0.1:4723/";
