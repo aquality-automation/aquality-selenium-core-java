@@ -31,15 +31,11 @@ public class RelativeElementFinder extends ElementFinder {
         AtomicBoolean wasAnyElementFound = new AtomicBoolean(false);
         List<WebElement> resultElements = new ArrayList<>();
         try {
-            conditionalWait.waitForTrue(() -> {
-                List<WebElement> currentFoundElements = searchContextSupplier.get().findElements(locator);
-                wasAnyElementFound.set(!currentFoundElements.isEmpty());
-                currentFoundElements
-                        .stream()
-                        .filter(desiredState.getElementStateCondition())
-                        .forEachOrdered(resultElements::add);
-                return !resultElements.isEmpty();
-            }, timeoutInSeconds, null);
+            conditionalWait.waitForTrue(() ->
+                            tryToFindElements(locator, desiredState, wasAnyElementFound, resultElements,
+                                    searchContextSupplier.get()),
+                    timeoutInSeconds,
+                    null);
         } catch (TimeoutException e) {
             handleTimeoutException(new org.openqa.selenium.TimeoutException(e.getMessage(), e), locator, desiredState,
                     wasAnyElementFound.get());

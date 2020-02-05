@@ -4,10 +4,7 @@ import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import com.google.inject.Inject;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,15 +28,10 @@ public class ElementFinder implements IElementFinder {
         AtomicBoolean wasAnyElementFound = new AtomicBoolean(false);
         List<WebElement> resultElements = new ArrayList<>();
         try {
-            conditionalWait.waitFor(driver -> {
-                List<WebElement> currentFoundElements = driver == null ? new ArrayList<>() : driver.findElements(locator);
-                wasAnyElementFound.set(!currentFoundElements.isEmpty());
-                currentFoundElements
-                        .stream()
-                        .filter(desiredState.getElementStateCondition())
-                        .forEachOrdered(resultElements::add);
-                return !resultElements.isEmpty();
-            }, timeoutInSeconds, null);
+            conditionalWait.waitFor(driver ->
+                            tryToFindElements(locator, desiredState, wasAnyElementFound, resultElements, driver),
+                    timeoutInSeconds,
+                    null);
         } catch (TimeoutException e) {
             handleTimeoutException(e, locator, desiredState, wasAnyElementFound.get());
         }
@@ -47,12 +39,23 @@ public class ElementFinder implements IElementFinder {
         return resultElements;
     }
 
+    protected boolean tryToFindElements(By locator, DesiredState desiredState, AtomicBoolean wasAnyElementFound,
+                                        List<WebElement> resultElements, SearchContext context) {
+        List<WebElement> currentFoundElements = context.findElements(locator);
+        wasAnyElementFound.set(!currentFoundElements.isEmpty());
+        currentFoundElements
+                .stream()
+                .filter(desiredState.getElementStateCondition())
+                .forEachOrdered(resultElements::add);
+        return !resultElements.isEmpty();
+    }
+
     /**
      * depends on configuration of DesiredState object it can be required to throw or not NoSuchElementException
      *
-     * @param exception     TimeoutException to handle
-     * @param locator       locator that is using to find elements
-     * @param desiredState  DesiredState object
+     * @param exception          TimeoutException to handle
+     * @param locator            locator that is using to find elements
+     * @param desiredState       DesiredState object
      * @param wasAnyElementFound was any element found by locator or not.
      */
     protected void handleTimeoutException(TimeoutException exception, By locator, DesiredState desiredState, boolean wasAnyElementFound) {
