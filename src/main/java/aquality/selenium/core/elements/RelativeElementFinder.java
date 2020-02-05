@@ -9,8 +9,8 @@ import org.openqa.selenium.WebElement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of IElementFinder for a relative SearchContext.
@@ -28,22 +28,23 @@ public class RelativeElementFinder extends ElementFinder {
 
     @Override
     public List<WebElement> findElements(By locator, DesiredState desiredState, Long timeoutInSeconds) {
-        List<WebElement> foundElements = new ArrayList<>();
+        AtomicBoolean wasAnyElementFound = new AtomicBoolean(false);
         List<WebElement> resultElements = new ArrayList<>();
         try {
             conditionalWait.waitForTrue(() -> {
                 List<WebElement> currentFoundElements = searchContextSupplier.get().findElements(locator);
-                foundElements.addAll(currentFoundElements);
-                List<WebElement> filteredElements = currentFoundElements
+                wasAnyElementFound.set(!currentFoundElements.isEmpty());
+                currentFoundElements
                         .stream()
                         .filter(desiredState.getElementStateCondition())
-                        .collect(Collectors.toList());
-                resultElements.addAll(filteredElements);
-                return !filteredElements.isEmpty();
+                        .forEachOrdered(resultElements::add);
+                return !resultElements.isEmpty();
             }, timeoutInSeconds, null);
         } catch (TimeoutException e) {
             handleTimeoutException(new org.openqa.selenium.TimeoutException(e.getMessage(), e), locator, desiredState,
-                    foundElements);
+                    wasAnyElementFound.get());
+        } catch (org.openqa.selenium.TimeoutException e) {
+            handleTimeoutException(e, locator, desiredState, wasAnyElementFound.get());
         }
 
         return resultElements;
