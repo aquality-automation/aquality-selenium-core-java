@@ -10,14 +10,20 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Provides ability to find elements in desired ElementState.
+ * Provides ability to find elements by locator and search criteria.
+ * The criteria for search could be:
+ * - empty - to get all elements;
+ * - desired {@link ElementState};
+ * - with {@link DesiredState};
+ * - with {@link Predicate<WebElement>}.
  */
 public interface IElementFinder extends SearchContext {
 
     /**
-     * Provides DesiredState with predicate for desired ElementState.
-     * @param state desired ElementState
-     * @return DesiredState with predicate.
+     * Provides {@link DesiredState} with predicate for desired {@link ElementState}.
+     *
+     * @param state desired {@link ElementState}
+     * @return {@link DesiredState} with predicate.
      */
     default DesiredState resolveState(ElementState state) {
         Predicate<WebElement> elementStateCondition;
@@ -32,23 +38,25 @@ public interface IElementFinder extends SearchContext {
     }
 
     /**
-     * Finds element in desired ElementState
-     * @param locator elements locator
-     * @param state desired ElementState
+     * Finds element in desired {@link ElementState}
+     *
+     * @param locator          elements locator
+     * @param state            desired {@link ElementState}
      * @param timeoutInSeconds timeout for search
-     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
      * @return found element
+     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
      */
     default WebElement findElement(By locator, ElementState state, Long timeoutInSeconds) {
         return findElements(locator, resolveState(state).withThrowingNoSuchElementException(), timeoutInSeconds).get(0);
     }
 
     /**
-     * Finds element in desired ElementState with default timeout.
+     * Finds element in desired {@link ElementState} with default timeout.
+     *
      * @param locator elements locator
-     * @param state desired ElementState
-     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
+     * @param state   desired {@link ElementState}
      * @return found element
+     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
      */
     default WebElement findElement(By locator, ElementState state) {
         return findElement(locator, state, null);
@@ -56,10 +64,11 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds element in any state.
-     * @param locator elements locator
+     *
+     * @param locator          elements locator
      * @param timeoutInSeconds timeout for search
-     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time
      * @return found element
+     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time
      */
     default WebElement findElement(By locator, Long timeoutInSeconds) {
         return findElement(locator, ElementState.EXISTS_IN_ANY_STATE, timeoutInSeconds);
@@ -67,21 +76,23 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds element in any state with default timeout.
+     *
      * @param locator elements locator
-     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time
      * @return found element
+     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time
      */
     default WebElement findElement(By locator) {
         return findElement(locator, ElementState.EXISTS_IN_ANY_STATE, null);
     }
 
     /**
-     * Finds element in desired ElementState defined by predicate.
-     * @param locator elements locator
+     * Finds element in desired element's state defined by predicate.
+     *
+     * @param locator               elements locator
      * @param elementStateCondition predicate to define element state
-     * @param timeoutInSeconds timeout for search
-     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
+     * @param timeoutInSeconds      timeout for search
      * @return found element
+     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
      */
     default WebElement findElement(By locator, Predicate<WebElement> elementStateCondition, Long timeoutInSeconds) {
         DesiredState state = new DesiredState(elementStateCondition, "desired")
@@ -91,19 +102,21 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds element in desired ElementState defined by predicate with default timeout.
-     * @param locator elements locator
+     *
+     * @param locator               elements locator
      * @param elementStateCondition predicate to define element state
-     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
      * @return found element
+     * @throws org.openqa.selenium.NoSuchElementException if element was not found in time in desired state
      */
     default WebElement findElement(By locator, Predicate<WebElement> elementStateCondition) {
         return findElement(locator, elementStateCondition, null);
     }
 
     /**
-     * Finds elements in desired ElementState.
-     * @param locator elements locator
-     * @param state desired ElementState
+     * Finds elements in desired {@link ElementState}.
+     *
+     * @param locator          elements locator
+     * @param state            desired {@link ElementState}
      * @param timeoutInSeconds timeout for search
      * @return list of found elements
      */
@@ -113,7 +126,8 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds elements in any state.
-     * @param locator elements locator
+     *
+     * @param locator          elements locator
      * @param timeoutInSeconds timeout for search
      * @return list of found elements
      */
@@ -122,9 +136,10 @@ public interface IElementFinder extends SearchContext {
     }
 
     /**
-     * Finds elements in desired ElementState with default timeout.
+     * Finds elements in desired {@link ElementState} with default timeout.
+     *
      * @param locator elements locator
-     * @param state desired ElementState
+     * @param state   desired {@link ElementState}
      * @return list of found elements
      */
     default List<WebElement> findElements(By locator, ElementState state) {
@@ -133,6 +148,7 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds elements in any state with default timeout.
+     *
      * @param locator elements locator
      * @return list of found elements
      */
@@ -142,8 +158,9 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds elements in state defined by predicate.
-     * @param locator elements locator
-     * @param timeoutInSeconds timeout for search
+     *
+     * @param locator               elements locator
+     * @param timeoutInSeconds      timeout for search
      * @param elementStateCondition predicate to define element state
      * @return list of found elements
      */
@@ -154,7 +171,8 @@ public interface IElementFinder extends SearchContext {
 
     /**
      * Finds elements in state defined by predicate with default timeout.
-     * @param locator elements locator
+     *
+     * @param locator               elements locator
      * @param elementStateCondition predicate to define element state
      * @return list of found elements
      */
@@ -163,18 +181,20 @@ public interface IElementFinder extends SearchContext {
     }
 
     /**
-     * Finds elements in state defined by DesiredState.
-     * @param locator elements locator
+     * Finds elements in state defined by {@link DesiredState}.
+     *
+     * @param locator          elements locator
      * @param timeoutInSeconds timeout for search
-     * @param desiredState predicate to define element state
+     * @param desiredState     object with predicate to define element state
      * @return list of found elements
      */
     List<WebElement> findElements(By locator, DesiredState desiredState, Long timeoutInSeconds);
 
     /**
-     * Finds elements in state defined by DesiredState with default timeout.
-     * @param locator elements locator
-     * @param desiredState predicate to define element state
+     * Finds elements in state defined by {@link DesiredState} with default timeout.
+     *
+     * @param locator      elements locator
+     * @param desiredState object with predicate to define element state
      * @return list of found elements
      */
     default List<WebElement> findElements(By locator, DesiredState desiredState) {
