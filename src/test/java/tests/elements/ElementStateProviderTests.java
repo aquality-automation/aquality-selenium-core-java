@@ -1,96 +1,36 @@
 package tests.elements;
 
-import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
 import aquality.selenium.core.elements.ElementStateProvider;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.application.browser.AqualityServices;
+import tests.application.browser.ITheInternetPageTest;
 import theinternet.DynamicControlsForm;
 import theinternet.DynamicLoadingForm;
 import theinternet.TheInternetPage;
 
+import java.util.function.Predicate;
+
 import static utils.TimeUtil.calculateDuration;
 import static utils.TimeUtil.getCurrentTime;
 
-public class ElementStateProviderTests {
+public class ElementStateProviderTests implements ITheInternetPageTest {
     private static final double OPERATION_TIME = 5;
     private static final long CUSTOM_WAIT_TIME = 2L;
-    private static final Dimension DEFAULT_SIZE = new Dimension(1024, 768);
     private static final By absentElementLocator = By.xpath("//div[@class='not exist element']");
-
-    private IApplication getBrowser() {
-        return AqualityServices.getApplication();
-    }
-
-    private boolean isApplicationStarted() {
-        return AqualityServices.isApplicationStarted();
-    }
-
-    private void navigate(TheInternetPage page) {
-        getBrowser().getDriver().navigate().to(page.getAddress());
-    }
-
-    @BeforeMethod
-    protected void beforeMethod() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        getBrowser().getDriver().manage().window().setSize(DEFAULT_SIZE);
-    }
-
-    @AfterMethod
-    private void cleanUp () {
-        if (isApplicationStarted()) {
-            getBrowser().getDriver().quit();
-        }
-    }
+    private final DynamicControlsForm dynamicControlsForm = new DynamicControlsForm(this::getBrowser, this::state);
+    private final DynamicLoadingForm dynamicLoadingForm = new DynamicLoadingForm(this::getBrowser, this::state);
 
     private ElementStateProvider state(By locator) {
         return new ElementStateProvider(locator,
                 AqualityServices.get(IConditionalWait.class),
                 AqualityServices.get(IElementFinder.class));
-    }
-
-    private ElementStateProvider inputState() {
-        return state(DynamicControlsForm.getInputTextboxLocator());
-    }
-
-    private ElementStateProvider checkboxState() {
-        return state(DynamicControlsForm.getCheckboxLocator());
-    }
-
-    private ElementStateProvider loaderState() {
-        return state(DynamicLoadingForm.getLoadingLabelLocator());
-    }
-
-    private ElementStateProvider startButtonState() {
-        return state(DynamicLoadingForm.getStartButtonLocator());
-    }
-
-    private ElementStateProvider absentElementState() {
-        return state(absentElementLocator);
-    }
-
-    private void click(By locator) {
-        locator.findElement(getBrowser().getDriver()).click();
-    }
-
-    private void clickEnable() {
-        click(DynamicControlsForm.getEnableButtonLocator());
-    }
-
-    private void clickRemove() {
-        click(DynamicControlsForm.getRemoveButtonLocator());
-    }
-
-    private void clickStart() {
-        click(DynamicLoadingForm.getStartButtonLocator());
     }
 
     private long getConditionTimeout() {
@@ -99,127 +39,101 @@ public class ElementStateProviderTests {
 
     @Test
     public void testElementShouldWaitForEnabledWithCustomTimeout() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = CUSTOM_WAIT_TIME;
-
-        long startTime = getCurrentTime();
-        boolean isEnabled = inputState().waitForEnabled(waitTime);
-        double duration = calculateDuration(startTime);
-
-        Assert.assertFalse(isEnabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + OPERATION_TIME));
+        checkWaitingTimeForInputState(waitTime, state -> state.waitForEnabled(waitTime));
     }
 
     @Test
     public void testElementShouldWaitForEnabledWithDefaultTimeout() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = getConditionTimeout();
-
-        long startTime = getCurrentTime();
-        boolean isEnabled = inputState().waitForEnabled();
-        double duration = calculateDuration(startTime);
-
-        Assert.assertFalse(isEnabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + OPERATION_TIME));
+        checkWaitingTimeForInputState(waitTime, IElementStateProvider::waitForEnabled);
     }
 
     @Test
     public void testElementShouldWaitForNotEnabledWithCustomTimeout() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = CUSTOM_WAIT_TIME;
+        dynamicControlsForm.clickEnable();
+        dynamicControlsForm.inputState().waitForEnabled();
 
-        clickEnable();
-        inputState().waitForEnabled();
+        checkWaitingTimeForInputState(waitTime, state -> state.waitForNotEnabled(waitTime));
+    }
 
+    private void checkWaitingTimeForInputState(Long waitTime, Predicate<IElementStateProvider> notExpectedCondition) {
         long startTime = getCurrentTime();
-        boolean isDisabled = inputState().waitForNotEnabled(waitTime);
+        boolean isConditionSatisfied = notExpectedCondition.test(dynamicControlsForm.inputState());
         double duration = calculateDuration(startTime);
 
-        Assert.assertFalse(isDisabled);
+        Assert.assertFalse(isConditionSatisfied);
         Assert.assertTrue(duration >= waitTime && duration <= (waitTime + OPERATION_TIME));
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)
-    public void testNoSuchShouldBeThrownForWaitEnabledIfElementNotFound(){
-        absentElementState().waitForEnabled(CUSTOM_WAIT_TIME);
+    public void testNoSuchShouldBeThrownForWaitEnabledIfElementNotFound() {
+        state(absentElementLocator).waitForEnabled(CUSTOM_WAIT_TIME);
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)
-    public void testNoSuchShouldBeThrownForWaitNotEnabledIfElementNotFound(){
-        absentElementState().waitForNotEnabled(CUSTOM_WAIT_TIME);
+    public void testNoSuchShouldBeThrownForWaitNotEnabledIfElementNotFound() {
+        state(absentElementLocator).waitForNotEnabled(CUSTOM_WAIT_TIME);
     }
 
     @Test
     public void testElementShouldWaitForNotEnabledWithDefaultTimeout() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
         long waitTime = getConditionTimeout();
 
+        dynamicControlsForm.clickEnable();
+        dynamicControlsForm.inputState().waitForEnabled();
 
-        clickEnable();
-        inputState().waitForEnabled();
-
-        long startTime = getCurrentTime();
-        boolean isDisabled = inputState().waitForNotEnabled();
-        double duration = calculateDuration(startTime);
-
-        Assert.assertFalse(isDisabled);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + OPERATION_TIME));
+        checkWaitingTimeForInputState(waitTime, IElementStateProvider::waitForNotEnabled);
     }
 
     @Test
     public void testTextBoxEnabled() {
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
-        clickEnable();
-        inputState().waitForEnabled();
-        Assert.assertTrue(inputState().isEnabled());
+        dynamicControlsForm.clickEnable();
+        dynamicControlsForm.inputState().waitForEnabled();
+        Assert.assertTrue(dynamicControlsForm.inputState().isEnabled());
     }
 
     @Test
     public void testWaitInvisibility() {
         navigate(TheInternetPage.DYNAMIC_LOADING);
 
-        startButtonState().waitForClickable();
-        clickStart();
+        dynamicLoadingForm.startButtonState().waitForClickable();
+        dynamicLoadingForm.clickStart();
 
-        loaderState().waitForDisplayed(DynamicLoadingForm.getSmallTimeout());
+        dynamicLoadingForm.loaderState().waitForDisplayed(dynamicLoadingForm.getSmallTimeout());
 
-        boolean status = loaderState().waitForNotDisplayed(DynamicLoadingForm.getSmallTimeout());
+        boolean status = dynamicLoadingForm.loaderState().waitForNotDisplayed(dynamicLoadingForm.getSmallTimeout());
         Assert.assertFalse(status);
 
-        status = loaderState().waitForNotDisplayed();
+        status = dynamicLoadingForm.loaderState().waitForNotDisplayed();
         Assert.assertTrue(status);
     }
 
     @Test
-    public void testWaitForExist(){
+    public void testWaitForExist() {
         navigate(TheInternetPage.DYNAMIC_LOADING);
-        boolean status = loaderState().waitForExist(DynamicLoadingForm.getTimeout());
+        boolean status = dynamicLoadingForm.loaderState().waitForExist(dynamicLoadingForm.getTimeout());
 
         Assert.assertFalse(status);
-        Assert.assertTrue(startButtonState().waitForExist());
+        Assert.assertTrue(dynamicLoadingForm.startButtonState().waitForExist());
     }
 
     @Test
-    public void testShouldBePossibleToWaitElementNotExistsCustom(){
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
+    public void testShouldBePossibleToWaitElementNotExistsCustomTime() {
         long waitTime = CUSTOM_WAIT_TIME;
-        clickRemove();
-        long startTime = getCurrentTime();
-        boolean isMissed = checkboxState().waitForNotExist(waitTime);
-        double duration = calculateDuration(startTime);
+        dynamicControlsForm.clickRemove();
 
-        Assert.assertFalse(isMissed);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + OPERATION_TIME));
+        checkWaitingTimeForInputState(waitTime, inputState -> dynamicControlsForm.checkboxState().waitForNotExist(waitTime));
     }
 
     @Test
-    public void testShouldBePossibleToWaitElementNotExists(){
-        navigate(TheInternetPage.DYNAMIC_CONTROLS);
+    public void testShouldBePossibleToWaitElementNotExists() {
         long waitTime = getConditionTimeout();
-        clickRemove();
+        dynamicControlsForm.clickRemove();
 
         long startTime = getCurrentTime();
-        boolean isMissed = checkboxState().waitForNotExist();
+        boolean isMissed = dynamicControlsForm.checkboxState().waitForNotExist();
         double duration = calculateDuration(startTime);
 
         Assert.assertTrue(isMissed);
