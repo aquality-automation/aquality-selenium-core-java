@@ -15,7 +15,7 @@ public class ElementStateProvider implements IElementStateProvider {
     private final IConditionalWait conditionalWait;
     private final IElementFinder elementFinder;
 
-    ElementStateProvider(By locator, IConditionalWait conditionalWait, IElementFinder elementFinder) {
+    public ElementStateProvider(By locator, IConditionalWait conditionalWait, IElementFinder elementFinder) {
         this.locator = locator;
         this.conditionalWait = conditionalWait;
         this.elementFinder = elementFinder;
@@ -99,6 +99,6 @@ public class ElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForNotEnabled(Long timeout) {
-        return isElementInDesiredCondition(this::isElementEnabled, "NOT ENABLED", timeout);
+        return isElementInDesiredCondition(element -> !isElementEnabled(element), "NOT ENABLED", timeout);
     }
 }
