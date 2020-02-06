@@ -10,6 +10,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BooleanSupplier;
@@ -36,10 +37,14 @@ public class CachedElementStateProvider implements IElementStateProvider {
     }
 
     protected boolean tryInvokeFunction(Predicate<WebElement> predicate) {
+        return tryInvokeFunction(predicate, getHandledExceptions());
+    }
+
+    protected boolean tryInvokeFunction(Predicate<WebElement> predicate, List<Class<? extends Exception>> handledExceptions) {
         try {
             return predicate.test(elementCacheHandler.getElement(ZERO_TIMEOUT, ElementState.EXISTS_IN_ANY_STATE));
         } catch (Exception exception) {
-            if (getHandledExceptions().contains(exception.getClass())) {
+            if (handledExceptions.contains(exception.getClass())) {
                 return false;
             }
             throw exception;
@@ -51,7 +56,7 @@ public class CachedElementStateProvider implements IElementStateProvider {
         if (!result) {
             String timeoutString = timeout == null ? "" : String.format("of %1$s seconds", timeout);
             String message = String.format(
-                    "Element %1$s has not become %2$s after timeout %3$s", locator, conditionName, timeoutString);
+                    "Element %1$s has not become %2$s after timeout %3$s", locator, conditionName.toUpperCase(), timeoutString);
             Logger.getInstance().warn(message);
         }
         return result;
@@ -99,12 +104,17 @@ public class CachedElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForNotExist(Long timeout) {
-        return waitForCondition(() -> tryInvokeFunction(element -> !element.isDisplayed()), "absent", timeout);
+        return waitForCondition(() -> !isExist(), "absent", timeout);
     }
 
     @Override
     public boolean isEnabled() {
-        return tryInvokeFunction(WebElement::isEnabled);
+        return tryInvokeFunction(this::isElementEnabled, Collections.singletonList(StaleElementReferenceException.class));
+    }
+
+    // todo: move to base class/expected conditions/Desired states
+    protected boolean isElementEnabled(WebElement element) {
+        return element.isEnabled();
     }
 
     @Override
@@ -114,6 +124,6 @@ public class CachedElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForNotEnabled(Long timeout) {
-        return waitForCondition(() -> tryInvokeFunction(element -> !element.isDisplayed()), "disabled", timeout);
+        return waitForCondition(() -> !isEnabled(), "disabled", timeout);
     }
 }

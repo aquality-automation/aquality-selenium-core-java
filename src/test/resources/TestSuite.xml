@@ -14,6 +14,7 @@
             <class name="tests.waitings.WaitForObjectTests"/>
             <class name="tests.waitings.WaitForTrueTests"/>
             <class name="tests.elements.ElementStateProviderTests"/>
+            <class name="tests.elements.CachedElementStateProviderTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
