@@ -1,8 +1,10 @@
 package theinternet;
 
 import aquality.selenium.core.applications.IApplication;
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import org.openqa.selenium.By;
+import tests.application.browser.CachedLabel;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -16,6 +18,14 @@ public class DynamicLoadingForm extends BaseForm {
 
     public DynamicLoadingForm(Supplier<IApplication> appSupplier, Function<By, IElementStateProvider> stateProviderFunction) {
         super(appSupplier, stateProviderFunction);
+    }
+
+    public static CachedLabel getLoadingLabel() {
+        return new CachedLabel(LOADING_LABEL_LOCATOR, ElementState.DISPLAYED);
+    }
+
+    public static CachedLabel getStartLabel() {
+        return new CachedLabel(START_BUTTON_LOCATOR, ElementState.DISPLAYED);
     }
 
     public long getTimeout() {

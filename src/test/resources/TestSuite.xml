@@ -15,6 +15,7 @@
             <class name="tests.waitings.WaitForTrueTests"/>
             <class name="tests.elements.DefaultElementStateProviderTests"/>
             <class name="tests.elements.CachedElementStateProviderTests"/>
+            <class name="tests.elements.CachedWebElementTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
@@ -26,6 +27,7 @@
             <class name="tests.application.windowsApp.ApplicationTests"/>
             <class name="tests.elements.ElementFinderTests"/>
             <class name="tests.elements.RelativeElementFinderTests"/>
+            <class name="tests.elements.CachedWindowsElementTests"/>
             <class name="tests.logger.LoggerTests"/>
             <class name="tests.utilities.SettingsFileTests"/>
             <class name="tests.configurations.EnvConfigurationTests"/>

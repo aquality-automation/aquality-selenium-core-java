@@ -87,7 +87,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForNotDisplayed(Long timeout) {
-        return waitForCondition(() -> tryInvokeFunction(element -> !element.isDisplayed()), "invisible or absent", timeout);
+        return waitForCondition(() -> !isDisplayed(), "invisible or absent", timeout);
     }
 
     @Override
