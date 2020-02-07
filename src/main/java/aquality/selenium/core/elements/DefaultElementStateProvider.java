@@ -6,13 +6,11 @@ import org.openqa.selenium.By;
 
 public class DefaultElementStateProvider extends ElementStateProvider {
 
-    private static final long ZERO_TIMEOUT = 0L;
     private final By locator;
     private final IConditionalWait conditionalWait;
     private final IElementFinder elementFinder;
 
     public DefaultElementStateProvider(By locator, IConditionalWait conditionalWait, IElementFinder elementFinder) {
-        super(locator, conditionalWait);
         this.locator = locator;
         this.conditionalWait = conditionalWait;
         this.elementFinder = elementFinder;
@@ -20,7 +18,7 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean isClickable() {
-        return waitForIsClickable(ZERO_TIMEOUT, true);
+        return waitForIsClickable(getZeroTImeout(), true);
     }
 
     @Override
@@ -40,7 +38,7 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean isDisplayed() {
-        return waitForDisplayed(ZERO_TIMEOUT);
+        return waitForDisplayed(getZeroTImeout());
     }
 
     @Override
@@ -59,7 +57,7 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean isExist() {
-        return waitForExist(ZERO_TIMEOUT);
+        return waitForExist(getZeroTImeout());
     }
 
     @Override
@@ -74,7 +72,7 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean isEnabled() {
-        return waitForEnabled(ZERO_TIMEOUT);
+        return waitForEnabled(getZeroTImeout());
     }
 
     @Override

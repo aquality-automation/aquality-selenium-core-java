@@ -1,18 +1,13 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
-import aquality.selenium.core.waitings.IConditionalWait;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public abstract class ElementStateProvider implements IElementStateProvider {
-    static final long ZERO_TIMEOUT = 0L;
-    protected final By locator;
-    protected final IConditionalWait conditionalWait;
+    private static final long ZERO_TIMEOUT = 0L;
 
-    protected ElementStateProvider(By locator, IConditionalWait conditionalWait) {
-        this.locator = locator;
-        this.conditionalWait = conditionalWait;
+    protected Long getZeroTImeout() {
+        return ZERO_TIMEOUT;
     }
 
     protected boolean isElementEnabled(WebElement element) {

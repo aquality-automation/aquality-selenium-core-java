@@ -20,10 +20,13 @@ import java.util.function.Predicate;
  */
 public class CachedElementStateProvider extends ElementStateProvider {
 
+    private final By locator;
+    private final IConditionalWait conditionalWait;
     private final IElementCacheHandler elementCacheHandler;
 
     public CachedElementStateProvider(By locator, IConditionalWait conditionalWait, IElementCacheHandler elementCacheHandler) {
-        super(locator, conditionalWait);
+        this.locator = locator;
+        this.conditionalWait = conditionalWait;
         this.elementCacheHandler = elementCacheHandler;
     }
 
@@ -37,7 +40,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
 
     protected boolean tryInvokeFunction(Predicate<WebElement> predicate, List<Class<? extends Exception>> handledExceptions) {
         try {
-            return predicate.test(elementCacheHandler.getElement(ZERO_TIMEOUT, ElementState.EXISTS_IN_ANY_STATE));
+            return predicate.test(elementCacheHandler.getElement(getZeroTImeout(), ElementState.EXISTS_IN_ANY_STATE));
         } catch (Exception exception) {
             if (handledExceptions.contains(exception.getClass())) {
                 return false;
