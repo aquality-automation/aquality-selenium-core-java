@@ -1,7 +1,6 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
-import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
@@ -19,16 +18,12 @@ import java.util.function.Predicate;
 /**
  * Provides functions to retrive the state for cached element.
  */
-public class CachedElementStateProvider implements IElementStateProvider {
+public class CachedElementStateProvider extends ElementStateProvider {
 
-    private static final long ZERO_TIMEOUT = 0L;
-    private final By locator;
-    private final IConditionalWait conditionalWait;
     private final IElementCacheHandler elementCacheHandler;
 
     public CachedElementStateProvider(By locator, IConditionalWait conditionalWait, IElementCacheHandler elementCacheHandler) {
-        this.locator = locator;
-        this.conditionalWait = conditionalWait;
+        super(locator, conditionalWait);
         this.elementCacheHandler = elementCacheHandler;
     }
 
@@ -64,7 +59,7 @@ public class CachedElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean isClickable() {
-        return tryInvokeFunction(element -> element.isDisplayed() && element.isEnabled());
+        return tryInvokeFunction(elementClickable().getElementStateCondition());
     }
 
     @Override
@@ -84,7 +79,7 @@ public class CachedElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForDisplayed(Long timeout) {
-        return waitForCondition(() -> tryInvokeFunction(WebElement::isDisplayed), "displayed", timeout);
+        return waitForCondition(() -> tryInvokeFunction(WebElement::isDisplayed), ElementState.DISPLAYED.toString(), timeout);
     }
 
     @Override
@@ -99,7 +94,7 @@ public class CachedElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean waitForExist(Long timeout) {
-        return waitForCondition(() -> tryInvokeFunction(element -> true), "exist", timeout);
+        return waitForCondition(() -> tryInvokeFunction(element -> true), ElementState.EXISTS_IN_ANY_STATE.toString(), timeout);
     }
 
     @Override
@@ -109,21 +104,16 @@ public class CachedElementStateProvider implements IElementStateProvider {
 
     @Override
     public boolean isEnabled() {
-        return tryInvokeFunction(this::isElementEnabled, Collections.singletonList(StaleElementReferenceException.class));
-    }
-
-    // todo: move to base class/expected conditions/Desired states
-    protected boolean isElementEnabled(WebElement element) {
-        return element.isEnabled();
+        return tryInvokeFunction(elementEnabled().getElementStateCondition(), Collections.singletonList(StaleElementReferenceException.class));
     }
 
     @Override
     public boolean waitForEnabled(Long timeout) {
-        return waitForCondition(this::isEnabled, "enabled", timeout);
+        return waitForCondition(this::isEnabled, elementEnabled().getStateName(), timeout);
     }
 
     @Override
     public boolean waitForNotEnabled(Long timeout) {
-        return waitForCondition(() -> !isEnabled(), "disabled", timeout);
+        return waitForCondition(() -> !isEnabled(), elementNotEnabled().getStateName(), timeout);
     }
 }

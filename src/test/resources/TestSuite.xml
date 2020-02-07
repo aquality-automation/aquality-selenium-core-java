@@ -13,7 +13,7 @@
             <class name="tests.waitings.WaitForTests"/>
             <class name="tests.waitings.WaitForObjectTests"/>
             <class name="tests.waitings.WaitForTrueTests"/>
-            <class name="tests.elements.ElementStateProviderTests"/>
+            <class name="tests.elements.DefaultElementStateProviderTests"/>
             <class name="tests.elements.CachedElementStateProviderTests"/>
         </classes>
     </test>

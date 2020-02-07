@@ -47,7 +47,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test
     default void testElementShouldWaitForEnabledWithCustomTimeout() {
-        long waitTime = ElementStateProviderTests.CUSTOM_WAIT_TIME;
+        long waitTime = CUSTOM_WAIT_TIME;
         checkWaitingTimeForInputState(waitTime, state -> state.waitForEnabled(waitTime));
     }
 
@@ -59,7 +59,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test
     default void testElementShouldWaitForNotEnabledWithCustomTimeout() {
-        long waitTime = ElementStateProviderTests.CUSTOM_WAIT_TIME;
+        long waitTime = CUSTOM_WAIT_TIME;
         getDynamicControlsForm().clickEnable();
         getDynamicControlsForm().inputState().waitForEnabled();
 
@@ -68,12 +68,12 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test(expectedExceptions = NoSuchElementException.class)
     default void testNoSuchShouldBeThrownForWaitEnabledIfElementNotFound() {
-        state(ElementStateProviderTests.ABSENT_ELEMENT_LOCATOR).waitForEnabled(ElementStateProviderTests.CUSTOM_WAIT_TIME);
+        state(ABSENT_ELEMENT_LOCATOR).waitForEnabled(CUSTOM_WAIT_TIME);
     }
 
     @Test(expectedExceptions = NoSuchElementException.class)
     default void testNoSuchShouldBeThrownForWaitNotEnabledIfElementNotFound() {
-        state(ElementStateProviderTests.ABSENT_ELEMENT_LOCATOR).waitForNotEnabled(ElementStateProviderTests.CUSTOM_WAIT_TIME);
+        state(ABSENT_ELEMENT_LOCATOR).waitForNotEnabled(CUSTOM_WAIT_TIME);
     }
 
     @Test
@@ -120,7 +120,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test
     default void testShouldBePossibleToWaitElementNotExistsCustomTime() {
-        long waitTime = ElementStateProviderTests.CUSTOM_WAIT_TIME;
+        long waitTime = CUSTOM_WAIT_TIME;
         getDynamicControlsForm().clickRemove();
 
         checkWaitingTimeForInputState(waitTime, inputState -> getDynamicControlsForm().checkboxState().waitForNotExist(waitTime));
