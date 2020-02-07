@@ -32,7 +32,7 @@ public class ElementCacheHandler implements IElementCacheHandler {
             // refresh is needed only if the property is not match to expected element state
             ElementState requiredState = customState == null ? state : customState;
             return requiredState == ElementState.DISPLAYED && !isDisplayed;
-        } catch (Throwable e) {
+        } catch (Exception e) {
             // refresh is needed if the property is not available
             return true;
         }
