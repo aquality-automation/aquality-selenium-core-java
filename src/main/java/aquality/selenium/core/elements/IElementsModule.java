@@ -1,5 +1,6 @@
 package aquality.selenium.core.elements;
 
+import aquality.selenium.core.elements.interfaces.IElementFactory;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 
 /**
@@ -11,5 +12,12 @@ public interface IElementsModule {
      */
     default Class<? extends IElementFinder> getElementFinderImplementation() {
         return ElementFinder.class;
+    }
+
+    /**
+     * @return class which implements IElementFactory
+     */
+    default Class<? extends IElementFactory> getElementFactoryImplementation() {
+        return ElementFactory.class;
     }
 }
