@@ -1,6 +1,8 @@
 package aquality.selenium.core.applications;
 
 import aquality.selenium.core.configurations.*;
+import aquality.selenium.core.elements.IElementsModule;
+import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizationModule;
 import aquality.selenium.core.localization.ILocalizedLogger;
@@ -18,7 +20,7 @@ import com.google.inject.Singleton;
  * Describes all dependencies which is registered for the project.
  */
 public class AqualityModule<T extends IApplication> extends AbstractModule
-        implements ILocalizationModule, IUtilitiesModule, IWaitingsModule {
+        implements ILocalizationModule, IUtilitiesModule, IWaitingsModule, IElementsModule {
 
     private final Provider<T> applicationProvider;
 
@@ -42,5 +44,6 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(ILocalizationManager.class).to(getLocalizationManagerImplementation()).in(Singleton.class);
         bind(ILocalizedLogger.class).to(getLocalizedLoggerImplementation()).in(Singleton.class);
         bind(IConditionalWait.class).to(getConditionalWaitImplementation());
+        bind(IElementFinder.class).to(getElementFinderImplementation());
     }
 }

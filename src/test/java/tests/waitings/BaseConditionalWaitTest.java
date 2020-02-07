@@ -20,9 +20,8 @@ class BaseConditionalWaitTest {
     static final long accuracy = 3;
     static final Collection<Class<? extends Throwable>> ignoredExceptions = Collections.singleton(IllegalStateException.class);
     ThreadLocal<Timer> timer = ThreadLocal.withInitial(Timer::new);
-    private Injector serviceProvider = AqualityServices.getServiceProvider();
-    protected Provider<IApplication> application = serviceProvider.getProvider(IApplication.class);
-    ITimeoutConfiguration timeoutConfiguration = serviceProvider.getInstance(ITimeoutConfiguration.class);
+    protected Provider<IApplication> application = AqualityServices.getServiceProvider().getProvider(IApplication.class);
+    ITimeoutConfiguration timeoutConfiguration = AqualityServices.getServiceProvider().getInstance(ITimeoutConfiguration.class);
     ConditionalWait conditionalWait = new ConditionalWait(application, timeoutConfiguration);
 
     @AfterMethod

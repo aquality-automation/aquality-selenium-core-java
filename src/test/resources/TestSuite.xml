@@ -22,6 +22,8 @@
     <test name="Non-threadsafe tests" parallel="none">
         <classes>
             <class name="tests.application.windowsApp.ApplicationTests"/>
+            <class name="tests.elements.ElementFinderTests"/>
+            <class name="tests.elements.RelativeElementFinderTests"/>
             <class name="tests.logger.LoggerTests"/>
             <class name="tests.utilities.SettingsFileTests"/>
             <class name="tests.configurations.EnvConfigurationTests"/>
