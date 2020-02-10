@@ -134,7 +134,7 @@ public interface IElementFactory {
      * @return List of elements.
      */
     default <T extends IElement> List<T> findElements(By locator, Class<? extends IElement> clazz) {
-        return findElements(locator, clazz, ElementsCount.Any, ElementState.DISPLAYED);
+        return findElements(locator, clazz, ElementsCount.ANY, ElementState.DISPLAYED);
     }
 
     /**

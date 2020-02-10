@@ -16,13 +16,11 @@ import org.openqa.selenium.support.pagefactory.ByChained;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public class ElementFactory implements IElementFactory {
 
@@ -62,32 +60,39 @@ public class ElementFactory implements IElementFactory {
     public <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier,
                                                      ElementsCount count, ElementState state) {
         try {
-            switch (count) {
-                case ZERO:
-                    conditionalWait.waitForTrue(() -> elementFinder.findElements(locator, state, ZERO_TIMEOUT).isEmpty(),
-                            localizationManager.getLocalizedMessage("loc.elements.found.but.should.not",
-                                    locator.toString(), state.toString()));
-                    break;
-                case MORE_THEN_ZERO:
-                    conditionalWait.waitForTrue(() -> !elementFinder.findElements(locator, state, ZERO_TIMEOUT).isEmpty(),
-                            localizationManager.getLocalizedMessage("loc.no.elements.found.by.locator",
-                                    locator.toString(), state.toString()));
-                    break;
-                case Any:
-                    conditionalWait.waitFor(() -> elementFinder.findElements(locator, state, ZERO_TIMEOUT) != null);
-                    break;
-                default:
-                    throw new IllegalArgumentException("No such expected value:".concat(count.toString()));
-            }
+            waitForElementsCount(locator, count, state);
         } catch (TimeoutException e) {
             throw new org.openqa.selenium.TimeoutException(e.getMessage());
         }
         List<WebElement> webElements = elementFinder.findElements(locator, state, ZERO_TIMEOUT);
         String namePrefix = name == null ? "element" : name;
-        AtomicInteger index = new AtomicInteger(1);
-        return webElements.stream()
-                .map(webElement -> supplier.get(generateXpathLocator(locator, webElement, index.get()), namePrefix, state))
-                .collect(Collectors.toList());
+        List<T> list = new ArrayList<>();
+        for (int index = 1; index <= webElements.size(); index++) {
+            WebElement webElement = webElements.get(index);
+            T element = supplier.get(generateXpathLocator(locator, webElement, index), namePrefix, state);
+            list.add(element);
+        }
+        return list;
+    }
+
+    protected void waitForElementsCount(By locator, ElementsCount count, ElementState state) throws TimeoutException {
+        switch (count) {
+            case ZERO:
+                conditionalWait.waitForTrue(() -> elementFinder.findElements(locator, state, ZERO_TIMEOUT).isEmpty(),
+                        localizationManager.getLocalizedMessage("loc.elements.found.but.should.not",
+                                locator.toString(), state.toString()));
+                break;
+            case MORE_THEN_ZERO:
+                conditionalWait.waitForTrue(() -> !elementFinder.findElements(locator, state, ZERO_TIMEOUT).isEmpty(),
+                        localizationManager.getLocalizedMessage("loc.no.elements.found.by.locator",
+                                locator.toString(), state.toString()));
+                break;
+            case ANY:
+                conditionalWait.waitFor(() -> elementFinder.findElements(locator, state, ZERO_TIMEOUT) != null);
+                break;
+            default:
+                throw new IllegalArgumentException("No such expected value: ".concat(count.toString()));
+        }
     }
 
     @Override
@@ -126,7 +131,7 @@ public class ElementFactory implements IElementFactory {
         return new HashMap<>();
     }
 
-    protected Type convertElementClassToType(Class<? extends IElement> clazz) {
+    protected Class<? extends IElement> resolveElementClass(Class<? extends IElement> clazz) {
         if (clazz.isInterface() && !getElementTypesMap().containsKey(clazz)) {
             throw new IllegalArgumentException(
                     String.format("Interface %1$s is not found in getElementTypesMap()", clazz));
@@ -136,12 +141,10 @@ public class ElementFactory implements IElementFactory {
     }
 
     protected <T extends IElement> IElementSupplier<T> getDefaultElementSupplier(Class<? extends IElement> clazz) {
-        Type type = convertElementClassToType(clazz);
-
         return (locator, name, state) -> {
-            Constructor ctor;
             try {
-                ctor = ((Class) type).getDeclaredConstructor(By.class, String.class, ElementState.class);
+                Class<? extends IElement> type = resolveElementClass(clazz);
+                Constructor ctor = type.getDeclaredConstructor(By.class, String.class, ElementState.class);
                 return (T) ctor.newInstance(locator, name, state);
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 Logger.getInstance().debug(e.getMessage());
