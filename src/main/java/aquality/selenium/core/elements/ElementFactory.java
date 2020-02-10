@@ -44,7 +44,13 @@ public class ElementFactory implements IElementFactory {
     }
 
     @Override
-    public <T extends IElement> T findChildElement(IElement parentElement, By childLoc, String name, Class<? extends IElement> clazz, ElementState state) {
+    public <T extends IElement> T getCustomElement(Class<T> clazz, By locator, String name, ElementState state) {
+        IElementSupplier<T> elementSupplier = getDefaultElementSupplier(clazz);
+        return getCustomElement(elementSupplier, locator, name, state);
+    }
+
+    @Override
+    public <T extends IElement> T findChildElement(IElement parentElement, By childLoc, String name, Class<T> clazz, ElementState state) {
         IElementSupplier<T> elementSupplier = getDefaultElementSupplier(clazz);
         return findChildElement(parentElement, childLoc, name, elementSupplier, state);
     }
@@ -68,8 +74,9 @@ public class ElementFactory implements IElementFactory {
         String namePrefix = name == null ? "element" : name;
         List<T> list = new ArrayList<>();
         for (int index = 1; index <= webElements.size(); index++) {
-            WebElement webElement = webElements.get(index);
-            T element = supplier.get(generateXpathLocator(locator, webElement, index), namePrefix, state);
+            WebElement webElement = webElements.get(index - 1);
+            String currentName = String.format("%1$s %2$s", namePrefix, index);
+            T element = supplier.get(generateXpathLocator(locator, webElement, index), currentName, state);
             list.add(element);
         }
         return list;
@@ -96,7 +103,7 @@ public class ElementFactory implements IElementFactory {
     }
 
     @Override
-    public <T extends IElement> List<T> findElements(By locator, String name, Class<? extends IElement> clazz,
+    public <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz,
                                                      ElementsCount count, ElementState state) {
         IElementSupplier<T> elementSupplier = getDefaultElementSupplier(clazz);
         return findElements(locator, name, elementSupplier, count, state);
@@ -131,21 +138,24 @@ public class ElementFactory implements IElementFactory {
         return new HashMap<>();
     }
 
-    protected Class<? extends IElement> resolveElementClass(Class<? extends IElement> clazz) {
+    protected <T extends IElement> Class<T> resolveElementClass(Class<T> clazz) {
         if (clazz.isInterface() && !getElementTypesMap().containsKey(clazz)) {
             throw new IllegalArgumentException(
                     String.format("Interface %1$s is not found in getElementTypesMap()", clazz));
         }
 
-        return clazz.isInterface() ? getElementTypesMap().get(clazz) : clazz;
+        return clazz.isInterface() ? (Class<T>) getElementTypesMap().get(clazz) : clazz;
     }
 
-    protected <T extends IElement> IElementSupplier<T> getDefaultElementSupplier(Class<? extends IElement> clazz) {
+    protected <T extends IElement> IElementSupplier<T> getDefaultElementSupplier(Class<T> clazz) {
         return (locator, name, state) -> {
             try {
-                Class<? extends IElement> type = resolveElementClass(clazz);
-                Constructor ctor = type.getDeclaredConstructor(By.class, String.class, ElementState.class);
-                return (T) ctor.newInstance(locator, name, state);
+                Constructor<T> ctor = resolveElementClass(clazz)
+                        .getDeclaredConstructor(By.class, String.class, ElementState.class);
+                ctor.setAccessible(true);
+                T instance = ctor.newInstance(locator, name, state);
+                ctor.setAccessible(false);
+                return instance;
             } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                 Logger.getInstance().debug(e.getMessage());
                 throw new IllegalArgumentException("Something went wrong during element casting");

@@ -99,7 +99,7 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     private Long resolveConditionTimeout(Long timeout) {
-        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getCommand());
+        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getCondition());
     }
 
     private Long resolvePollingInterval(Long timeout) {

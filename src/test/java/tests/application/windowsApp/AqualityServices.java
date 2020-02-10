@@ -54,4 +54,11 @@ public class AqualityServices extends aquality.selenium.core.applications.Aquali
     public static Injector getServiceProvider() {
         return getInstance().getInjector();
     }
+
+    public static void resetInjector() {
+        if (INSTANCE_CONTAINER.get() != null){
+            INSTANCE_CONTAINER.remove();
+        }
+        INSTANCE_CONTAINER.set(new AqualityServices());
+    }
 }
