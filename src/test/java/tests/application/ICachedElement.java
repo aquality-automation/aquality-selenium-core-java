@@ -6,6 +6,7 @@ import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
+import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
@@ -18,6 +19,7 @@ public interface ICachedElement {
     void setElementCacheHandler(IElementCacheHandler elementCacheHandler);
     IElementFinder getElementFinder();
     IConditionalWait getConditionalWait();
+    ILocalizedLogger getLocalizedLogger();
 
 
     default IElementCacheHandler cache() {
@@ -36,6 +38,6 @@ public interface ICachedElement {
     }
 
     default IElementStateProvider state() {
-        return new CachedElementStateProvider(getLocator(), getConditionalWait(), cache());
+        return new CachedElementStateProvider(getLocator(), getConditionalWait(), cache(), getLocalizedLogger());
     }
 }

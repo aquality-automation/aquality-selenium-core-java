@@ -1,7 +1,7 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
-import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -23,11 +23,13 @@ public class CachedElementStateProvider extends ElementStateProvider {
     private final By locator;
     private final IConditionalWait conditionalWait;
     private final IElementCacheHandler elementCacheHandler;
+    private final ILocalizedLogger localizedLogger;
 
-    public CachedElementStateProvider(By locator, IConditionalWait conditionalWait, IElementCacheHandler elementCacheHandler) {
+    public CachedElementStateProvider(By locator, IConditionalWait conditionalWait, IElementCacheHandler elementCacheHandler, ILocalizedLogger localizedLogger) {
         this.locator = locator;
         this.conditionalWait = conditionalWait;
         this.elementCacheHandler = elementCacheHandler;
+        this.localizedLogger = localizedLogger;
     }
 
     protected List<Class<? extends Exception>> getHandledExceptions() {
@@ -52,10 +54,8 @@ public class CachedElementStateProvider extends ElementStateProvider {
     protected boolean waitForCondition(BooleanSupplier condition, String conditionName, Long timeout) {
         boolean result = conditionalWait.waitFor(condition, timeout, null);
         if (!result) {
-            String timeoutString = timeout == null ? "" : String.format("of %1$s seconds", timeout);
-            String message = String.format(
-                    "Element %1$s has not become %2$s after timeout %3$s", locator, conditionName.toUpperCase(), timeoutString);
-            Logger.getInstance().warn(message);
+            String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout);
+            localizedLogger.warn("loc.element.not.in.state", locator, conditionName.toUpperCase(), timeoutString);
         }
         return result;
     }
@@ -71,6 +71,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
         try {
             conditionalWait.waitForTrue(this::isClickable, timeout, null, errorMessage);
         } catch (TimeoutException e) {
+            localizedLogger.error("loc.element.not.in.state", elementClickable().getStateName(), ". ".concat(e.getMessage()));
             throw new org.openqa.selenium.TimeoutException(e.getMessage(), e);
         }
     }
