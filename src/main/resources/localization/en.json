@@ -8,5 +8,6 @@
   "loc.elements.were.found.but.not.in.state": "Elements were found by locator '%1$s' but not in desired state %2$s",
   "loc.elements.found.but.should.not": "No elements should be found by locator '%1$s' in %2$s state",
   "loc.search.of.elements.failed": "Search of element by locator '%1$s' failed",
+  "loc.element.not.in.state": "Element %1$s has not become %2$s after timeout %3$s",
   "loc.get.page.source.failed": "An exception occurred while tried to save the page source"
 }

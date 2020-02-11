@@ -2,6 +2,7 @@ package aquality.selenium.core.applications;
 
 import aquality.selenium.core.configurations.*;
 import aquality.selenium.core.elements.IElementsModule;
+import aquality.selenium.core.elements.interfaces.IElementFactory;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizationModule;
@@ -45,5 +46,6 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(ILocalizedLogger.class).to(getLocalizedLoggerImplementation()).in(Singleton.class);
         bind(IConditionalWait.class).to(getConditionalWaitImplementation());
         bind(IElementFinder.class).to(getElementFinderImplementation());
+        bind(IElementFactory.class).to(getElementFactoryImplementation());
     }
 }

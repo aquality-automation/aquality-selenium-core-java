@@ -82,7 +82,7 @@ public class ElementActionRetrierTests {
         retryFunction.run();
         long duration = new Date().getTime() - startTime.getTime();
         assertTrue(duration >= POLLING_INTERVAL, String.format("duration '%s' should be more than polling interval '%s'", duration, POLLING_INTERVAL));
-        assertTrue(duration <= 2 * POLLING_INTERVAL, String.format("duration '%s' less than doubled polling interval '%s'", duration, POLLING_INTERVAL));
+        assertTrue(duration <= 2 * POLLING_INTERVAL, String.format("duration '%s' should be less than doubled polling interval '%s'", duration, POLLING_INTERVAL));
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)

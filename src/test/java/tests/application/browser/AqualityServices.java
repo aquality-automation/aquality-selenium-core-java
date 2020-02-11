@@ -34,4 +34,8 @@ public class AqualityServices  extends aquality.selenium.core.applications.Aqual
     public static Injector getServiceProvider() {
         return getInstance().getInjector();
     }
+
+    public static <T> T get(Class<T> type) {
+        return getServiceProvider().getInstance(type);
+    }
 }

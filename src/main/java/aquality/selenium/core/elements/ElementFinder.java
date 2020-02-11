@@ -70,7 +70,7 @@ public class ElementFinder implements IElementFinder {
                 localizedLogger.debug("loc.elements.were.found.but.not.in.state", locator, desiredState.getStateName());
             }
         } else {
-            String combinedMessage = String.format("%1$s: %2$s", exception.getMessage(), message);
+            String combinedMessage = String.format("%1$s: %2$s", message, exception.getMessage());
             if (desiredState.isThrowingNoSuchElementException() && !wasAnyElementFound) {
                 throw new NoSuchElementException(combinedMessage);
             }
