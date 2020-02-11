@@ -1,50 +1,64 @@
 package tests.elements.factory;
 
+import aquality.selenium.core.applications.IApplication;
+import aquality.selenium.core.configurations.IElementCacheConfiguration;
+import aquality.selenium.core.elements.Element;
 import aquality.selenium.core.elements.ElementState;
-import aquality.selenium.core.elements.interfaces.IElement;
-import aquality.selenium.core.elements.interfaces.IElementSupplier;
-import org.apache.commons.lang3.NotImplementedException;
+import aquality.selenium.core.elements.interfaces.IElementFactory;
+import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.utilities.IElementActionRetrier;
+import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebElement;
+import tests.application.windowsApp.AqualityServices;
 
-public class CustomElement implements ICustomElement {
+public class CustomElement extends Element implements ICustomElement {
 
-    private final By locator;
-    private final String name;
-    private final ElementState state;
-
-    protected CustomElement(By locator, String name, ElementState state) {
-        this.locator = locator;
-        this.name = name;
-        this.state = state;
+    CustomElement(By locator, String name, ElementState state) {
+        super(locator, name, state);
     }
 
     @Override
-    public RemoteWebElement getElement(Long timeout) {
-        return null;
+    protected IApplication getApplication() {
+        return AqualityServices.getApplication();
     }
 
     @Override
-    public String getName() {
-        return name;
+    protected IElementFactory getElementFactory() {
+        return AqualityServices.get(IElementFactory.class);
     }
 
     @Override
-    public By getLocator() {
-        return locator;
+    protected IElementFinder getElementFinder() {
+        return AqualityServices.get(IElementFinder.class);
     }
 
     @Override
-    public <T extends IElement> T findChildElement(By childLoc, Class<? extends IElement> clazz, ElementState state) {
-        throw new NotImplementedException("not implemented in tests");
+    protected IElementCacheConfiguration getElementCacheConfiguration() {
+        return AqualityServices.get(IElementCacheConfiguration.class);
     }
 
     @Override
-    public <T extends IElement> T findChildElement(By childLoc, IElementSupplier<T> supplier, ElementState state) {
-        throw new NotImplementedException("not implemented in tests");
+    protected IElementActionRetrier getElementActionRetrier() {
+        return AqualityServices.get(IElementActionRetrier.class);
+    }
+
+    @Override
+    protected ILocalizedLogger getLocalizedLogger() {
+        return AqualityServices.get(ILocalizedLogger.class);
+    }
+
+    @Override
+    protected IConditionalWait getConditionalWait() {
+        return AqualityServices.get(IConditionalWait.class);
+    }
+
+    @Override
+    protected String getElementType() {
+        return "Custom";
     }
 
     public ElementState getState() {
-        return state;
+        return getElementState();
     }
 }

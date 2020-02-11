@@ -27,15 +27,6 @@ public interface IParent {
     <T extends IElement> T findChildElement(By childLoc, Class<? extends IElement> clazz, ElementState state);
 
     /**
-     * Find an element in the parent element
-     *
-     * @param childLoc Child element locator
-     * @param supplier required element's supplier
-     * @param state visibility state of target element
-     * @return found child element
-     */
-    <T extends IElement> T findChildElement(By childLoc, IElementSupplier<T> supplier, ElementState state);
-    /**
      * Finds an element in the parent element
      *
      * @param childLoc child element locator

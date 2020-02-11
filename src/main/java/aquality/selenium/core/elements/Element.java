@@ -6,7 +6,7 @@ import aquality.selenium.core.elements.interfaces.*;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
-import aquality.selenium.core.waitings.ConditionalWait;
+import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
@@ -42,9 +42,9 @@ public abstract class Element implements IElement {
 
     protected abstract ILocalizedLogger getLocalizedLogger();
 
-    protected abstract String getElementType();
+    protected abstract IConditionalWait getConditionalWait();
 
-    protected abstract ConditionalWait getConditionalWait();
+    protected abstract String getElementType();
 
     protected IElementCacheHandler getCache() {
         if (elementCacheHandler == null) {
@@ -56,6 +56,10 @@ public abstract class Element implements IElement {
 
     protected Logger getLogger() {
         return Logger.getInstance();
+    }
+
+    protected ElementState getElementState() {
+        return elementState;
     }
 
     @Override
@@ -118,6 +122,11 @@ public abstract class Element implements IElement {
     public void click() {
         logElementAction("loc.clicking");
         doWithRetry(() -> getElement().click());
+    }
+
+    @Override
+    public <T extends IElement> T findChildElement(By childLoc, Class<? extends IElement> clazz, ElementState state) {
+        return (T) getElementFactory().findChildElement(this, childLoc, clazz, state);
     }
 
     @Override
