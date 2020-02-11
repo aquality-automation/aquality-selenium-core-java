@@ -2,9 +2,7 @@ package aquality.selenium.core.elements;
 
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
-import aquality.selenium.core.elements.interfaces.IElement;
-import aquality.selenium.core.elements.interfaces.IElementFinder;
-import aquality.selenium.core.elements.interfaces.IElementSupplier;
+import aquality.selenium.core.elements.interfaces.*;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
@@ -48,10 +46,12 @@ public abstract class Element implements IElement {
 
     protected abstract ConditionalWait getConditionalWait();
 
-    protected abstract IElementCacheHandler getCache() {
+    protected IElementCacheHandler getCache() {
         if (elementCacheHandler == null) {
             elementCacheHandler = new ElementCacheHandler(locator, elementState, getElementFinder());
         }
+
+        return elementCacheHandler;
     }
 
     protected Logger getLogger() {
@@ -71,8 +71,8 @@ public abstract class Element implements IElement {
     @Override
     public IElementStateProvider state() {
         return getElementCacheConfiguration().isEnabled()
-                ? (IElementStateProvider) new CachedElementStateProvider(locator, getConditionalWait(), getCache())
-                : new ElementStateProvider(locator, getConditionalWait(), getElementFinder());
+                ? new CachedElementStateProvider(locator, getConditionalWait(), getCache(), getLocalizedLogger())
+                : new DefaultElementStateProvider(locator, getConditionalWait(), getElementFinder());
     }
 
     @Override
@@ -122,7 +122,7 @@ public abstract class Element implements IElement {
 
     @Override
     public <T extends IElement> T findChildElement(By childLoc, String name, IElementSupplier<T> supplier, ElementState state) {
-        return getElementFactory.findChildElement(this, childLoc, name, supplier, state);
+        return getElementFactory().findChildElement(this, childLoc, name, supplier, state);
     }
 
     protected <T> T doWithRetry(Supplier<T> action) {
