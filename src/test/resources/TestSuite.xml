@@ -32,6 +32,7 @@
             <class name="tests.utilities.SettingsFileTests"/>
             <class name="tests.configurations.EnvConfigurationTests"/>
             <class name="tests.configurations.ProfileConfigurationTests"/>
+            <class name="tests.elements.factory.ElementFactoryTests"/>
         </classes>
     </test>
 </suite>

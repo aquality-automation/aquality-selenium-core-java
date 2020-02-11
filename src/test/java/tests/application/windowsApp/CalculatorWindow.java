@@ -27,6 +27,10 @@ public class CalculatorWindow {
         return By.name("=");
     }
 
+    public static By getEqualsButtonByXPath() {
+        return By.xpath("//*[@Name='=']");
+    }
+
     public static By getResultsLabel() {
         return MobileBy.AccessibilityId("48");
     }
