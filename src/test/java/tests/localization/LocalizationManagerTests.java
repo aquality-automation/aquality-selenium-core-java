@@ -27,7 +27,8 @@ public class LocalizationManagerTests {
                 "loc.no.elements.found.by.locator",
                 "loc.elements.were.found.but.not.in.state",
                 "loc.elements.found.but.should.not",
-                "loc.search.of.elements.failed"};
+                "loc.search.of.elements.failed",
+                "loc.element.not.in.state"};
     }
 
     @DataProvider
