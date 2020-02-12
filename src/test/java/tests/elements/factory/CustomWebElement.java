@@ -12,7 +12,7 @@ import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import tests.applications.browser.AqualityServices;
 
-public class CustomWebElement extends Element implements IWebCustomElement {
+public class CustomWebElement extends Element {
 
     public CustomWebElement(By locator, String name, ElementState state) {
         super(locator, name, state);
@@ -56,9 +56,5 @@ public class CustomWebElement extends Element implements IWebCustomElement {
     @Override
     protected String getElementType() {
         return "Custom Web";
-    }
-
-    public ElementState getState() {
-        return getElementState();
     }
 }

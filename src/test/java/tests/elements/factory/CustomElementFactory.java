@@ -18,7 +18,6 @@ public class CustomElementFactory extends ElementFactory {
     protected Map<Class<? extends IElement>, Class<? extends IElement>> getElementTypesMap() {
         Map<Class<? extends IElement>, Class<? extends IElement>> typesMap = new HashMap<>();
         typesMap.put(ICustomElement.class, CustomElement.class);
-        typesMap.put(IWebCustomElement.class, CustomWebElement.class);
         return typesMap;
     }
 }

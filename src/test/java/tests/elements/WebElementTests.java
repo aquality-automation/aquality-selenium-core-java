@@ -51,7 +51,7 @@ public class WebElementTests implements ITestWithApplication {
     }
 
     @Test
-    public void testShouldBePossibleToGetbElement() {
+    public void testShouldBePossibleToGetElement() {
         getApplication().getDriver().navigate().to(TheInternetPage.DYNAMIC_CONTROLS.getAddress());
         RemoteWebElement element = DynamicControlsForm.getEnableButton().getElement();
         Assert.assertNotNull(element, "RemoteWebElement should not be null");

@@ -55,10 +55,6 @@ public abstract class Element implements IElement {
         return Logger.getInstance();
     }
 
-    protected ElementState getElementState() {
-        return elementState;
-    }
-
     @Override
     public By getLocator() {
         return locator;

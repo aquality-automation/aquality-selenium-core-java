@@ -57,8 +57,4 @@ public class CustomElement extends Element implements ICustomElement {
     protected String getElementType() {
         return "Custom";
     }
-
-    public ElementState getState() {
-        return getElementState();
-    }
 }

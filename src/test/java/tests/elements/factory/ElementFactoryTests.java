@@ -96,9 +96,9 @@ public class ElementFactoryTests implements ITestWithApplication {
 
     @Test
     public void shouldBePossibleToFindCustomElementsViaSupplierWithCustomState() {
-        Assert.assertEquals(customFactory().findElements(
+        Assert.assertTrue(customFactory().findElements(
                 CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementsCount.MORE_THEN_ZERO,
-                ElementState.EXISTS_IN_ANY_STATE).get(0).getState(), ElementState.EXISTS_IN_ANY_STATE);
+                ElementState.EXISTS_IN_ANY_STATE).size() > 0);
     }
 
     @Test
@@ -180,10 +180,10 @@ public class ElementFactoryTests implements ITestWithApplication {
     @Test
     public void shouldBePossibleToFindChildElementWithCustomState() {
         IElement parent = getParentElement();
-        Assert.assertEquals(
+        Assert.assertNotNull(
                 defaultFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), CustomElement.class,
-                        ElementState.EXISTS_IN_ANY_STATE).getState(),
-                ElementState.EXISTS_IN_ANY_STATE);
+                        ElementState.EXISTS_IN_ANY_STATE).getElement(),
+                "Element should be found");
     }
 
     @Test
@@ -192,7 +192,6 @@ public class ElementFactoryTests implements ITestWithApplication {
         CustomElement element = defaultFactory().getCustomElement(CustomElement::new, CalculatorWindow.getEqualsButtonLoc(), name, ElementState.EXISTS_IN_ANY_STATE);
         Assert.assertEquals(element.getLocator(), CalculatorWindow.getEqualsButtonLoc());
         Assert.assertEquals(element.getName(), name);
-        Assert.assertEquals(element.getState(), ElementState.EXISTS_IN_ANY_STATE);
     }
 
     @Override
