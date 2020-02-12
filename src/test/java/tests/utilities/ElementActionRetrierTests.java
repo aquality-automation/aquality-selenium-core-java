@@ -35,7 +35,7 @@ public class ElementActionRetrierTests {
 
     @Test
     public void testRetrierShouldWorkOnceIfMethodSucceeded() {
-        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> LOGGER.info("")));
+        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> ""));
     }
 
     @Test
