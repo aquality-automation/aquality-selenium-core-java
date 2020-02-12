@@ -10,8 +10,8 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.ITestWithApplication;
-import tests.application.windowsApp.AqualityServices;
-import tests.application.windowsApp.CalculatorWindow;
+import tests.applications.windowsApp.AqualityServices;
+import tests.applications.windowsApp.CalculatorWindow;
 
 public interface IElementFinderTests extends ITestWithApplication {
     IElementFinder getElementFinder();
@@ -44,52 +44,52 @@ public interface IElementFinderTests extends ITestWithApplication {
     @Test()
     default void shouldFindMultipleElementsInDefaultStateWithCustomTimeout() {
         Assert.assertTrue(getElementFinder()
-                .findElements(CalculatorWindow.getEqualsButton(), getCustomTimeout())
+                .findElements(CalculatorWindow.getEqualsButtonLoc(), getCustomTimeout())
                 .size() > 1);
     }
 
     @Test(dataProvider = "elementStates")
     default void shouldFindMultipleElements(ElementState state) {
         Assert.assertTrue(getElementFinder()
-                .findElements(CalculatorWindow.getEqualsButton(), state)
+                .findElements(CalculatorWindow.getEqualsButtonLoc(), state)
                 .size() > 1);
     }
 
     @Test(dataProvider = "elementStates")
     default void shouldFindSingleElementViaFindElements(ElementState state) {
         Assert.assertEquals(getElementFinder()
-                .findElements(CalculatorWindow.getOneButton(), state, getCustomTimeout())
+                .findElements(CalculatorWindow.getOneButtonLoc(), state, getCustomTimeout())
                 .size(), 1);
     }
 
     @Test(dataProvider = "elementStates")
     default void shouldFindSingleElement(ElementState state) {
         Assert.assertNotNull(getElementFinder()
-                .findElement(CalculatorWindow.getOneButton(), state));
+                .findElement(CalculatorWindow.getOneButtonLoc(), state));
     }
 
     @Test(dataProvider = "elementStates")
     default void shouldFindSingleElementWithCustomTimeout(ElementState state) {
         Assert.assertNotNull(getElementFinder()
-                .findElement(CalculatorWindow.getOneButton(), state, getCustomTimeout()));
+                .findElement(CalculatorWindow.getOneButtonLoc(), state, getCustomTimeout()));
     }
 
     @Test
     default void shouldFindSingleElementByPredicate() {
         Assert.assertNotNull(getElementFinder()
-                .findElement(CalculatorWindow.getOneButton(), WebElement::isEnabled));
+                .findElement(CalculatorWindow.getOneButtonLoc(), WebElement::isEnabled));
     }
 
     @Test
     default void shouldFindMultipleElementsByPredicate() {
         Assert.assertTrue(getElementFinder()
-                .findElements(CalculatorWindow.getEqualsButton(), WebElement::isEnabled).size() > 1);
+                .findElements(CalculatorWindow.getEqualsButtonLoc(), WebElement::isEnabled).size() > 1);
     }
 
     @Test
     default void shouldFindSingleElementByPredicateWithCustomTimeout() {
         Assert.assertNotNull(getElementFinder()
-                .findElement(CalculatorWindow.getOneButton(), WebElement::isEnabled, getCustomTimeout()));
+                .findElement(CalculatorWindow.getOneButtonLoc(), WebElement::isEnabled, getCustomTimeout()));
     }
 
     @Test(dataProvider = "elementStates")

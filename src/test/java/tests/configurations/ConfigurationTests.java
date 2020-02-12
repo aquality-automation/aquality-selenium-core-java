@@ -3,7 +3,7 @@ package tests.configurations;
 import aquality.selenium.core.configurations.*;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.testng.annotations.Test;
-import tests.application.CustomAqualityServices;
+import tests.applications.CustomAqualityServices;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;

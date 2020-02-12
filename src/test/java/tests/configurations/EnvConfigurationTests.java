@@ -7,8 +7,8 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import tests.application.CustomAqualityServices;
-import tests.application.TestModule;
+import tests.applications.CustomAqualityServices;
+import tests.applications.TestModule;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;

@@ -3,10 +3,9 @@ package tests.waitings;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
 import aquality.selenium.core.waitings.ConditionalWait;
-import com.google.inject.Injector;
 import com.google.inject.Provider;
 import org.testng.annotations.AfterMethod;
-import tests.application.browser.AqualityServices;
+import tests.applications.browser.AqualityServices;
 import utils.Timer;
 
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package tests.application;
+package tests.applications;
 
 import aquality.selenium.core.applications.IApplication;
 import com.google.inject.Injector;
@@ -21,7 +21,7 @@ public interface IApplicationTests extends ITestWithApplication {
 
     @Test
     default void testShouldBePossibleToGetDriver() {
-        Assert.assertNotNull(getApplication().getDriver(), "should be possible get driver from the application");
+        Assert.assertNotNull(getApplication().getDriver(), "should be possible get driver from the applications");
     }
 
     @Test
@@ -41,16 +41,16 @@ public interface IApplicationTests extends ITestWithApplication {
     @Test
     default void testShouldBePossibleToDefineIsStarted() {
         Assert.assertFalse(isApplicationStarted(),
-                "application should not be started before getting");
+                "applications should not be started before getting");
         IApplication application = getApplication();
         Assert.assertTrue(application.isStarted(),
-                "application should be started when got it from the aquality services");
+                "applications should be started when got it from the aquality services");
         Assert.assertTrue(isApplicationStarted(),
-                "application should be started when check it's state from the aquality services");
+                "applications should be started when check it's state from the aquality services");
         application.getDriver().quit();
         Assert.assertFalse(application.isStarted(),
-                "application should not be started after quit");
+                "applications should not be started after quit");
         Assert.assertFalse(isApplicationStarted(),
-                "application should not be started when check it's state from the aquality services after quit");
+                "applications should not be started when check it's state from the aquality services after quit");
     }
 }

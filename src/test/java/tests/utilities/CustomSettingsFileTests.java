@@ -6,8 +6,8 @@ import com.google.inject.Provider;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
-import tests.application.CustomAqualityServices;
-import tests.application.browser.ChromeApplication;
+import tests.applications.CustomAqualityServices;
+import tests.applications.browser.ChromeApplication;
 
 import java.util.List;
 import java.util.Map;

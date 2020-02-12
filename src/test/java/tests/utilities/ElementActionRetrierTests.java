@@ -8,7 +8,7 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import tests.application.browser.AqualityServices;
+import tests.applications.browser.AqualityServices;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;

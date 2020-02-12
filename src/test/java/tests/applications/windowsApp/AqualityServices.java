@@ -1,4 +1,4 @@
-package tests.application.windowsApp;
+package tests.applications.windowsApp;
 
 import aquality.selenium.core.logging.Logger;
 import com.google.inject.Injector;

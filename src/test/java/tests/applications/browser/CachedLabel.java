@@ -1,4 +1,4 @@
-package tests.application.browser;
+package tests.applications.browser;
 
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
@@ -6,7 +6,7 @@ import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import tests.application.ICachedElement;
+import tests.applications.ICachedElement;
 
 public class CachedLabel implements ICachedElement {
     private final By locator;
