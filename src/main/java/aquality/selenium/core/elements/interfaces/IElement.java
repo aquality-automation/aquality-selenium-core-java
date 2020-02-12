@@ -3,6 +3,9 @@ package aquality.selenium.core.elements.interfaces;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+/**
+ * Describes behavior of any UI element.
+ */
 public interface IElement extends IParent {
     /**
      * Gets unique locator of element.

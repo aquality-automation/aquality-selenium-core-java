@@ -14,9 +14,6 @@ import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.util.function.Supplier;
 
-/**
- * Abstract class, describing wrapper of WebElement.
- */
 public abstract class Element implements IElement {
 
     private final String name;
