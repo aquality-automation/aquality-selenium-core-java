@@ -5,7 +5,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Interface of any applications controlled by Selenium WebDriver API
+ * Interface of any application controlled by Selenium WebDriver API
  */
 public interface IApplication {
 
@@ -15,7 +15,7 @@ public interface IApplication {
     RemoteWebDriver getDriver();
 
     /**
-     * @return Is the applications already running or not.
+     * @return Is the application already running or not.
      */
     boolean isStarted();
 

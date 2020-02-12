@@ -21,7 +21,7 @@ public interface IApplicationTests extends ITestWithApplication {
 
     @Test
     default void testShouldBePossibleToGetDriver() {
-        Assert.assertNotNull(getApplication().getDriver(), "should be possible get driver from the applications");
+        Assert.assertNotNull(getApplication().getDriver(), "should be possible get driver from the application");
     }
 
     @Test
@@ -41,16 +41,16 @@ public interface IApplicationTests extends ITestWithApplication {
     @Test
     default void testShouldBePossibleToDefineIsStarted() {
         Assert.assertFalse(isApplicationStarted(),
-                "applications should not be started before getting");
+                "application should not be started before getting");
         IApplication application = getApplication();
         Assert.assertTrue(application.isStarted(),
-                "applications should be started when got it from the aquality services");
+                "application should be started when got it from the aquality services");
         Assert.assertTrue(isApplicationStarted(),
-                "applications should be started when check it's state from the aquality services");
+                "application should be started when check it's state from the aquality services");
         application.getDriver().quit();
         Assert.assertFalse(application.isStarted(),
-                "applications should not be started after quit");
+                "application should not be started after quit");
         Assert.assertFalse(isApplicationStarted(),
-                "applications should not be started when check it's state from the aquality services after quit");
+                "application should not be started when check it's state from the aquality services after quit");
     }
 }
