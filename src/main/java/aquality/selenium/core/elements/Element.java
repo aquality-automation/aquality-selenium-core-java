@@ -138,4 +138,8 @@ public abstract class Element implements IElement {
     protected void logElementAction(String messageKey, Object... args) {
         getLocalizedLogger().infoElementAction(getElementType(), name, messageKey, args);
     }
+
+    protected ElementState getElementState() {
+        return elementState;
+    }
 }
