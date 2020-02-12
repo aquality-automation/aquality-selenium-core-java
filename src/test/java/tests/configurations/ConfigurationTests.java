@@ -27,7 +27,7 @@ public class ConfigurationTests {
     public void testShouldBePossibleToGetRetryConfiguration() {
         RetryConfiguration retryConfiguration = new RetryConfiguration(settingsFile);
         assertEquals(retryConfiguration.getNumber(), 2, "Number of retry attempts timeout should be got");
-        assertEquals(retryConfiguration.getPollingInterval(), 300, "Polling interval of retrier should be got");
+        assertEquals(retryConfiguration.getPollingInterval().toMillis(), 300, "Polling interval of retrier should be got");
     }
 
     @Test
