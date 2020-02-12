@@ -33,7 +33,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
     IElementStateProvider state(By locator);
 
     default long getConditionTimeout() {
-        return AqualityServices.get(ITimeoutConfiguration.class).getCondition();
+        return AqualityServices.get(ITimeoutConfiguration.class).getCondition().getSeconds();
     }
 
     default void checkWaitingTimeForInputState(Long waitTime, Predicate<IElementStateProvider> notExpectedCondition) {

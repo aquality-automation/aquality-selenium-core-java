@@ -91,14 +91,14 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     public void testShouldIgnoreExceptionForWaitingWithoutCustomParameters() {
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         BooleanSupplier actionWithExceptions = () -> conditionalWait.waitFor((driver) -> throwNewException(atomicBoolean).getAsBoolean(), ignoredExceptions);
-        checkWaitForMethodForPassedCondition(actionWithExceptions, timeoutConfiguration.getCondition());
+        checkWaitForMethodForPassedCondition(actionWithExceptions, timeoutConfiguration.getCondition().getSeconds());
     }
 
     @Test
     public void testShouldIgnoreExceptionForWaitingWithDefaultTimeout() {
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         BooleanSupplier actionWithMessageAndExceptions = () -> conditionalWait.waitFor((driver) -> throwNewException(atomicBoolean).getAsBoolean(), "Condition should be true", ignoredExceptions);
-        checkWaitForMethodForPassedCondition(actionWithMessageAndExceptions, timeoutConfiguration.getCondition());
+        checkWaitForMethodForPassedCondition(actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds());
     }
 
     @Test
@@ -136,10 +136,10 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         Callable actionWithCustomTimeoutsAndExceptions = () -> conditionalWait.waitFor(action, waitForTimeoutCondition, waitForTimeoutPolling, Collections.emptyList());
         Callable actionWithAllParameters = () -> conditionalWait.waitFor(action, waitForTimeoutCondition, waitForTimeoutPolling, "Condition should be true", Collections.emptyList());
         return new Object[][]{
-                {onlyAction, timeoutConfiguration.getCondition()},
-                {actionWithMessage, timeoutConfiguration.getCondition()},
-                {actionWithExceptions, timeoutConfiguration.getCondition()},
-                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition()},
+                {onlyAction, timeoutConfiguration.getCondition().getSeconds()},
+                {actionWithMessage, timeoutConfiguration.getCondition().getSeconds()},
+                {actionWithExceptions, timeoutConfiguration.getCondition().getSeconds()},
+                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds()},
                 {actionWithCustomTimeouts, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndExceptions, waitForTimeoutCondition},

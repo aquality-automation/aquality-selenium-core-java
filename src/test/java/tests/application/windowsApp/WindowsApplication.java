@@ -7,17 +7,18 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class WindowsApplication implements IApplication {
     private long implicitWaitSeconds;
     private final RemoteWebDriver driver;
 
-    public WindowsApplication(long implicitWaitSeconds, String appPath, URL serviceUrl) {
+    WindowsApplication(long implicitWaitSeconds, String appPath, URL serviceUrl) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("app", appPath);
         driver = new WindowsDriver<WindowsElement>(serviceUrl, capabilities);
-        setImplicitWaitTimeout(implicitWaitSeconds, TimeUnit.SECONDS);
+        setImplicitWaitTimeout(Duration.ofSeconds(implicitWaitSeconds));
     }
 
     @Override
@@ -31,10 +32,10 @@ public class WindowsApplication implements IApplication {
     }
 
     @Override
-    public void setImplicitWaitTimeout(long value, TimeUnit timeUnit) {
-        long valueInSeconds = TimeUnit.SECONDS.convert(value, timeUnit);
+    public void setImplicitWaitTimeout(Duration value) {
+        long valueInSeconds = value.getSeconds();
         if (implicitWaitSeconds != valueInSeconds){
-            driver.manage().timeouts().implicitlyWait(value, timeUnit);
+            driver.manage().timeouts().implicitlyWait(value.toMillis(), TimeUnit.MILLISECONDS);
             implicitWaitSeconds = valueInSeconds;
         }
     }

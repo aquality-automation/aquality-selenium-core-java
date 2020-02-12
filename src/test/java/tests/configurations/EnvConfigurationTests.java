@@ -43,7 +43,7 @@ public class EnvConfigurationTests extends BaseProfileTest {
 
     @Test
     public void testShouldBePossibleToOverrideTimeoutWithEnvVariable() {
-        long conditionTimeout = new TimeoutConfiguration(settingsFile).getCondition();
+        long conditionTimeout = new TimeoutConfiguration(settingsFile).getCondition().getSeconds();
         assertEquals(conditionTimeout, Long.parseLong(NEW_INT_VALUE), "Condition timeout should be overridden with env variable");
     }
 

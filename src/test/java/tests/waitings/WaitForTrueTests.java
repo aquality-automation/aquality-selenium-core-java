@@ -77,7 +77,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), ignoredExceptions);
             return true;
-        }, timeoutConfiguration.getCondition());
+        }, timeoutConfiguration.getCondition().getSeconds());
     }
 
     @Test
@@ -86,7 +86,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), "Condition should be true", ignoredExceptions);
             return true;
-        }, timeoutConfiguration.getCondition());
+        }, timeoutConfiguration.getCondition().getSeconds());
     }
 
     @Test
@@ -159,10 +159,10 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         };
 
         return new Object[][]{
-                {onlyAction, timeoutConfiguration.getCondition()},
-                {actionWithMessage, timeoutConfiguration.getCondition()},
-                {actionWithExceptions, timeoutConfiguration.getCondition()},
-                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition()},
+                {onlyAction, timeoutConfiguration.getCondition().getSeconds()},
+                {actionWithMessage, timeoutConfiguration.getCondition().getSeconds()},
+                {actionWithExceptions, timeoutConfiguration.getCondition().getSeconds()},
+                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds()},
                 {actionWithCustomTimeouts, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndException, waitForTimeoutCondition},

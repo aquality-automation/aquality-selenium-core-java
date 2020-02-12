@@ -13,7 +13,6 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BooleanSupplier;
 
@@ -67,7 +66,7 @@ public class ConditionalWait implements IConditionalWait {
     @Override
     public <T> T waitFor(ExpectedCondition<T> condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
         IApplication app = applicationProvider.get();
-        app.setImplicitWaitTimeout(0, TimeUnit.SECONDS);
+        app.setImplicitWaitTimeout(Duration.ZERO);
         Long timeout = resolveConditionTimeout(timeoutInSeconds);
         Long pollingInterval = resolvePollingInterval(pollingIntervalInMilliseconds);
         String exMessage = resolveMessage(message);
@@ -78,7 +77,7 @@ public class ConditionalWait implements IConditionalWait {
         try {
             return wait.until(condition);
         } finally {
-            app.setImplicitWaitTimeout(timeoutConfiguration.getImplicit(), TimeUnit.SECONDS);
+            app.setImplicitWaitTimeout(timeoutConfiguration.getImplicit());
         }
     }
 
@@ -99,11 +98,11 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     private Long resolveConditionTimeout(Long timeout) {
-        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getCondition());
+        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getCondition().getSeconds());
     }
 
     private Long resolvePollingInterval(Long timeout) {
-        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getPollingInterval());
+        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getPollingInterval().getSeconds());
     }
 
     private String resolveMessage(String message) {
