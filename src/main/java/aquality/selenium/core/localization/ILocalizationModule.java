@@ -5,14 +5,14 @@ package aquality.selenium.core.localization;
  */
 public interface ILocalizationModule {
     /**
-     * @return class which implements ILocalizationManager
+     * @return class which implements {@link ILocalizationManager}
      */
     default Class<? extends ILocalizationManager> getLocalizationManagerImplementation() {
         return LocalizationManager.class;
     }
 
     /**
-     * @return class which implements ILocalizedLogger
+     * @return class which implements {@link ILocalizedLogger}
      */
     default Class<? extends ILocalizedLogger> getLocalizedLoggerImplementation() {
         return LocalizedLogger.class;

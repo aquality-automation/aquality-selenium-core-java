@@ -8,14 +8,14 @@ import aquality.selenium.core.elements.interfaces.IElementFinder;
  */
 public interface IElementsModule {
     /**
-     * @return class which implements IElementFinder
+     * @return class which implements {@link IElementFinder}
      */
     default Class<? extends IElementFinder> getElementFinderImplementation() {
         return ElementFinder.class;
     }
 
     /**
-     * @return class which implements IElementFactory
+     * @return class which implements {@link IElementFactory}
      */
     default Class<? extends IElementFactory> getElementFactoryImplementation() {
         return ElementFactory.class;

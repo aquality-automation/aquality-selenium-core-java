@@ -21,7 +21,7 @@ import com.google.inject.Singleton;
  * Describes all dependencies which is registered for the project.
  */
 public class AqualityModule<T extends IApplication> extends AbstractModule
-        implements ILocalizationModule, IUtilitiesModule, IWaitingsModule, IElementsModule {
+        implements IConfigurationsModule, IElementsModule, ILocalizationModule, IUtilitiesModule, IWaitingsModule {
 
     private final Provider<T> applicationProvider;
 
@@ -37,10 +37,10 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(IApplication.class).toProvider(applicationProvider);
         bind(ISettingsFile.class).toInstance(getInstanceOfSettingsFile());
         bind(Logger.class).toInstance(Logger.getInstance());
-        bind(ILoggerConfiguration.class).to(LoggerConfiguration.class).in(Singleton.class);
-        bind(ITimeoutConfiguration.class).to(TimeoutConfiguration.class).in(Singleton.class);
-        bind(IRetryConfiguration.class).to(RetryConfiguration.class).in(Singleton.class);
-        bind(IElementCacheConfiguration.class).to(ElementCacheConfiguration.class).in(Singleton.class);
+        bind(ILoggerConfiguration.class).to(getLoggerConfigurationImplementation()).in(Singleton.class);
+        bind(ITimeoutConfiguration.class).to(getTimeoutConfigurationImplementation()).in(Singleton.class);
+        bind(IRetryConfiguration.class).to(getRetryConfigurationImplementation()).in(Singleton.class);
+        bind(IElementCacheConfiguration.class).to(getElementCacheConfigurationImplementation()).in(Singleton.class);
         bind(IElementActionRetrier.class).to(getElementActionRetrierImplementation()).in(Singleton.class);
         bind(ILocalizationManager.class).to(getLocalizationManagerImplementation()).in(Singleton.class);
         bind(ILocalizedLogger.class).to(getLocalizedLoggerImplementation()).in(Singleton.class);
