@@ -2,6 +2,7 @@ package tests.waitings;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
@@ -41,6 +42,7 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         timer.get().start();
         try {
             failedAction.call();
+            Assert.fail("TimeoutException should be thrown but not");
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
             double interval = timeout + pollingInterval / 1000 + accuracy;
@@ -79,6 +81,7 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         try {
             timer.get().start();
             throwAction.call();
+            Assert.fail("IllegalArgumentException should be thrown but not");
         } catch (IllegalArgumentException e) {
             double duration = timer.get().stop();
             double accuracyPollingInterval = pollingInterval / 1000 + accuracy;
