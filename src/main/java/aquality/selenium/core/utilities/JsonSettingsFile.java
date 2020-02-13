@@ -10,6 +10,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.Map.Entry;
 
 public class JsonSettingsFile implements ISettingsFile {
 
@@ -27,13 +28,13 @@ public class JsonSettingsFile implements ISettingsFile {
 
     @Override
     public Object getValue(String jsonPath) {
-        return getEnvValueOrDefault(jsonPath);
+        return getEnvValueOrDefault(jsonPath, true);
     }
 
-    private Object getEnvValueOrDefault(String jsonPath) {
+    private Object getEnvValueOrDefault(String jsonPath, boolean throwIfEmpty) {
         String envVar = getEnvValue(jsonPath);
         if (envVar == null) {
-            JsonNode node = getJsonNode(jsonPath);
+            JsonNode node = getJsonNode(jsonPath, throwIfEmpty);
             if (node.isBoolean()) {
                 return node.asBoolean();
             } else if (node.isLong()) {
@@ -73,19 +74,29 @@ public class JsonSettingsFile implements ISettingsFile {
 
     @Override
     public Map<String, Object> getMap(String jsonPath) {
-        Iterator<Map.Entry<String, JsonNode>> iterator = getJsonNode(jsonPath).fields();
+        Iterator<Entry<String, JsonNode>> iterator = getJsonNode(jsonPath).fields();
         final Map<String, Object> result = new HashMap<>();
         iterator.forEachRemaining(entry -> result.put(entry.getKey(), getValue(jsonPath + "/" + entry.getKey())));
         return result;
     }
 
     private JsonNode getJsonNode(String jsonPath) {
+        return getJsonNode(jsonPath, true);
+    }
+
+    private JsonNode getJsonNode(String jsonPath, boolean throwIfEmpty) {
+        JsonNode nodeAtPath;
+        String errorMessage = String.format("Json field by json-path %1$s was not found in the file %2$s", jsonPath, content);
         try {
             JsonNode node = mapper.readTree(content);
-            return node.at(jsonPath);
+            nodeAtPath = node.at(jsonPath);
         } catch (IOException e) {
-            throw new UncheckedIOException(String.format("Json field by json-path %1$s was not found in the file %2$s", jsonPath, content), e);
+            throw new UncheckedIOException(errorMessage, e);
         }
+        if (throwIfEmpty && nodeAtPath.isMissingNode()) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+        return nodeAtPath;
     }
 
     private String getFileContent(String filename) {
@@ -98,7 +109,7 @@ public class JsonSettingsFile implements ISettingsFile {
 
     @Override
     public boolean isValuePresent(String path) {
-        String value = getValue(path).toString().trim();
+        String value = getEnvValueOrDefault(path, false).toString().trim();
         return !value.isEmpty();
     }
 }

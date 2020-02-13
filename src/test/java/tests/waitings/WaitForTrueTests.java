@@ -1,6 +1,7 @@
 package tests.waitings;
 
 import org.openqa.selenium.StaleElementReferenceException;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -21,16 +22,17 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "falseWaitForTrueAction")
-    public void testTimeoutExceptionShouldBeThrownIfConditionIsMetAndTimeoutIsOver(Callable waitForTrueAction, Duration timeout) throws Exception {
+    public void testTimeoutExceptionShouldBeThrownIfConditionIsMetAndTimeoutIsOver(Callable waitForTrueAction, Duration timeout, Duration pollingInterval) throws Exception {
         timer.get().start();
         try {
             waitForTrueAction.call();
+            Assert.fail("TimeoutException should be thrown but not");
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
-            long interval = 2 * timeout.getSeconds() + accuracy;
-            assertTrue(duration >= timeout.getSeconds() && duration < interval,
-                    String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (2*timeout + accuracy)) when condition is not satisfied.",
-                            duration, timeout, interval));
+            double accuracyPollingInterval = timeout.getSeconds() + pollingInterval.getSeconds() + accuracy;
+            assertTrue(duration >= timeout.getSeconds() && duration < accuracyPollingInterval,
+                    String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (timeout + pollingInterval + accuracy)) when condition is not satisfied.",
+                            duration, timeout, accuracyPollingInterval));
         }
     }
 
@@ -40,13 +42,13 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "successWaitForAction")
-    public void testTimeoutExceptionShouldNotBeThrownIfConditionIsMetAndTimeoutIsNotOver(Callable waitForTrueAction, Duration timeout) throws Exception {
+    public void testTimeoutExceptionShouldNotBeThrownIfConditionIsMetAndTimeoutIsNotOver(Callable waitForTrueAction, Duration timeout, Duration pollingInterval) throws Exception {
         timer.get().start();
         waitForTrueAction.call();
         double duration = timer.get().stop();
-        assertTrue(duration < timeout.getSeconds(),
-                String.format("Duration '%s' should be less than timeout '%s' when condition is satisfied.",
-                        duration, timeout));
+        double accuracyPollingInterval = pollingInterval.getSeconds() + accuracy;
+        assertTrue(duration < accuracyPollingInterval,
+                String.format("Duration '%s' should be less than accuracy polling interval '%s'", duration, accuracyPollingInterval));
     }
 
     @DataProvider(name = "throwExceptionAction", parallel = true)
@@ -57,14 +59,19 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         return getDataProvider(throwEx);
     }
 
-    @Test(dataProvider = "throwExceptionAction", expectedExceptions = StaleElementReferenceException.class)
-    public void testCustomExceptionShouldBeThrown(Callable waitForTrueAction, Duration timeout) throws Exception {
-        timer.get().start();
-        waitForTrueAction.call();
-        double duration = timer.get().stop();
-        assertTrue(duration < timeout.getSeconds(),
-                String.format("Duration '%s' should be less than timeout '%s' when condition is satisfied.",
-                        duration, timeout));
+    @Test(dataProvider = "throwExceptionAction")
+    public void testCustomExceptionShouldBeThrown(Callable waitForTrueAction, Duration timeout, Duration pollingInterval) throws Exception {
+
+        try {
+            timer.get().start();
+            waitForTrueAction.call();
+            Assert.fail("StaleElementReferenceException should be thrown but not");
+        } catch (StaleElementReferenceException e) {
+            double duration = timer.get().stop();
+            double accuracyPollingInterval = pollingInterval.getSeconds() + accuracy;
+            assertTrue(duration < accuracyPollingInterval,
+                    String.format("Duration '%s' should be less than accuracy polling interval '%s'", duration, accuracyPollingInterval));
+        }
     }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
@@ -78,7 +85,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), ignoredExceptions);
             return true;
-        }, timeoutConfiguration.getCondition());
+        }, timeoutConfiguration.getPollingInterval());
     }
 
     @Test
@@ -87,7 +94,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), "Condition should be true", ignoredExceptions);
             return true;
-        }, timeoutConfiguration.getCondition());
+        }, timeoutConfiguration.getPollingInterval());
     }
 
     @Test
@@ -96,7 +103,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), waitForTimeoutCondition, waitForTimeoutPolling, ignoredExceptions);
             return true;
-        }, waitForTimeoutCondition);
+        }, waitForTimeoutPolling);
     }
 
     @Test
@@ -105,16 +112,17 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), waitForTimeoutCondition, waitForTimeoutPolling, "Condition should be true", ignoredExceptions);
             return true;
-        }, waitForTimeoutCondition);
+        }, waitForTimeoutPolling);
     }
 
-    private void checkExceptionIsIgnored(Callable waitForTrueAction, Duration timeout) throws Exception {
+    private void checkExceptionIsIgnored(Callable waitForTrueAction, Duration pollingInterval) throws Exception {
         timer.get().start();
         waitForTrueAction.call();
         double duration = timer.get().stop();
-        assertTrue(duration < timeout.getSeconds(),
-                String.format("Duration '%s' should be less than timeout '%s' when condition is satisfied.",
-                        duration, timeout));
+        double doubleAccuracyPollingInterval = 2 * pollingInterval.getSeconds() + accuracy;
+        assertTrue(duration < doubleAccuracyPollingInterval,
+                String.format("Duration '%s' should be less than double accuracy polling interval '%s'",
+                        duration, doubleAccuracyPollingInterval));
     }
 
     private Object[][] getDataProvider(BooleanSupplier action) {
@@ -135,7 +143,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         };
 
         Callable actionWithMessageAndExceptions = () -> {
-            conditionalWait.waitFor(action, "Condition should be true", Collections.emptyList());
+            conditionalWait.waitForTrue(action, "Condition should be true", Collections.emptyList());
             return true;
         };
 
@@ -160,14 +168,14 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         };
 
         return new Object[][]{
-                {onlyAction, timeoutConfiguration.getCondition()},
-                {actionWithMessage, timeoutConfiguration.getCondition()},
-                {actionWithExceptions, timeoutConfiguration.getCondition()},
-                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition()},
-                {actionWithCustomTimeouts, waitForTimeoutCondition},
-                {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition},
-                {actionWithCustomTimeoutsAndException, waitForTimeoutCondition},
-                {actionWithAllParameters, waitForTimeoutCondition},
+                {onlyAction, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval()},
+                {actionWithMessage, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval()},
+                {actionWithExceptions, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval()},
+                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition(), timeoutConfiguration.getPollingInterval()},
+                {actionWithCustomTimeouts, waitForTimeoutCondition, waitForTimeoutPolling},
+                {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition, waitForTimeoutPolling},
+                {actionWithCustomTimeoutsAndException, waitForTimeoutCondition, waitForTimeoutPolling},
+                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling},
         };
     }
 }

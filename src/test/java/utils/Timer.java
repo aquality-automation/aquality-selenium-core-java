@@ -4,9 +4,7 @@ public class Timer {
     private double startTime;
 
     public void start() {
-        if (startTime == 0) {
-            startTime = getCurrentTimeInSeconds();
-        }
+        startTime = getCurrentTimeInSeconds();
     }
 
     public double stop() {
