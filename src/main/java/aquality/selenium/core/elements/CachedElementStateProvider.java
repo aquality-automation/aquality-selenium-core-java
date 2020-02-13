@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +53,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
     }
 
     protected boolean waitForCondition(BooleanSupplier condition, String conditionName, Long timeout) {
-        boolean result = conditionalWait.waitFor(condition, timeout, null);
+        boolean result = conditionalWait.waitFor(condition, timeout == null ? null : Duration.ofSeconds(timeout));
         if (!result) {
             String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout);
             localizedLogger.warn("loc.element.not.in.state", locator, conditionName.toUpperCase(), timeoutString);
@@ -69,7 +70,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
     public void waitForClickable(Long timeout) {
         String errorMessage = String.format("Element %1$s has not become clickable after timeout.", locator);
         try {
-            conditionalWait.waitForTrue(this::isClickable, timeout, null, errorMessage);
+            conditionalWait.waitForTrue(this::isClickable, timeout == null ? null : Duration.ofSeconds(timeout), null, errorMessage);
         } catch (TimeoutException e) {
             localizedLogger.error("loc.element.not.in.state", elementClickable().getStateName(), ". ".concat(e.getMessage()));
             throw new org.openqa.selenium.TimeoutException(e.getMessage(), e);

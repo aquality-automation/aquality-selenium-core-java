@@ -7,6 +7,8 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import java.time.Duration;
+
 public class CustomElement implements ICustomElement {
 
     private final By locator;
@@ -20,7 +22,7 @@ public class CustomElement implements ICustomElement {
     }
 
     @Override
-    public RemoteWebElement getElement(Long timeout) {
+    public RemoteWebElement getElement(Duration timeout) {
         return null;
     }
 

@@ -4,6 +4,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
@@ -19,13 +20,13 @@ public class WaitForTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "falseWaitForAction")
-    public void testFalseShouldBeReturnedIfConditionIsNotMetAndTimeoutIsOver(BooleanSupplier waitAction, long timeout) {
+    public void testFalseShouldBeReturnedIfConditionIsNotMetAndTimeoutIsOver(BooleanSupplier waitAction, Duration timeout) {
         Date startTime = new Date();
         boolean result = waitAction.getAsBoolean();
         long duration = (new Date().getTime() - startTime.getTime()) / 1000;
-        long interval = 2 * timeout + accuracy;
+        long interval = 2 * timeout.getSeconds() + accuracy;
         assertFalse(result, "waitFor should return false when condition is not satisfied.");
-        assertTrue(duration >= timeout && duration < interval,
+        assertTrue(duration >= timeout.getSeconds() && duration < interval,
                 String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (2*timeout + accuracy)) when condition is not satisfied. ",
                         duration, timeout, interval));
     }
@@ -36,7 +37,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "trueWaitForAction")
-    public void testTrueShouldBeReturnedIfConditionIsMetAndTimeoutIsNotOver(BooleanSupplier waitAction, long timeout) {
+    public void testTrueShouldBeReturnedIfConditionIsMetAndTimeoutIsNotOver(BooleanSupplier waitAction, Duration timeout) {
         checkWaitForMethodForPassedCondition(waitAction, timeout);
     }
 
@@ -44,14 +45,14 @@ public class WaitForTests extends BaseConditionalWaitTest {
     public void testShouldIgnoreExceptionForWaitingWithoutCustomParameters() {
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         BooleanSupplier actionWithExceptions = () -> conditionalWait.waitFor(throwNewException(atomicBoolean), ignoredExceptions);
-        checkWaitForMethodForPassedCondition(actionWithExceptions, timeoutConfiguration.getCondition().getSeconds());
+        checkWaitForMethodForPassedCondition(actionWithExceptions, timeoutConfiguration.getCondition());
     }
 
     @Test
     public void testShouldIgnoreExceptionForWaitingWithDefaultTimeout() {
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         BooleanSupplier actionWithMessageAndExceptions = () -> conditionalWait.waitFor(throwNewException(atomicBoolean), "Condition should be true", ignoredExceptions);
-        checkWaitForMethodForPassedCondition(actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds());
+        checkWaitForMethodForPassedCondition(actionWithMessageAndExceptions, timeoutConfiguration.getCondition());
     }
 
     @Test
@@ -68,13 +69,13 @@ public class WaitForTests extends BaseConditionalWaitTest {
         checkWaitForMethodForPassedCondition(actionWithAllParameters, waitForTimeoutCondition);
     }
 
-    private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, long timeout) {
-        long accuracyTimeout = timeout + accuracy;
+    private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, Duration timeout) {
+        long accuracyTimeout = timeout.getSeconds() + accuracy;
         timer.get().start();
         boolean result = waitAction.getAsBoolean();
         double duration = timer.get().stop();
         assertTrue(result, "waitFor should return true when condition is satisfied.");
-        assertTrue(duration <= timeout,
+        assertTrue(duration <= timeout.getSeconds(),
                 String.format("Duration '%s' should be less than accuracyTimeout '%s'",
                         duration, accuracyTimeout));
     }
@@ -88,7 +89,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "throwExceptionAction", expectedExceptions = StaleElementReferenceException.class)
-    public void testShouldThrowException(BooleanSupplier waitAction, long timeout) {
+    public void testShouldThrowException(BooleanSupplier waitAction, Duration timeout) {
         waitAction.getAsBoolean();
     }
 
@@ -107,10 +108,10 @@ public class WaitForTests extends BaseConditionalWaitTest {
         BooleanSupplier actionWithCustomTimeoutsAndExceptions = () -> conditionalWait.waitFor(action, waitForTimeoutCondition, waitForTimeoutPolling, Collections.emptyList());
         BooleanSupplier actionWithAllParameters = () -> conditionalWait.waitFor(action, waitForTimeoutCondition, waitForTimeoutPolling, "Condition should be true", Collections.emptyList());
         return new Object[][]{
-                {onlyAction, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithMessage, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithExceptions, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds()},
+                {onlyAction, timeoutConfiguration.getCondition()},
+                {actionWithMessage, timeoutConfiguration.getCondition()},
+                {actionWithExceptions, timeoutConfiguration.getCondition()},
+                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition()},
                 {actionWithCustomTimeouts, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndExceptions, waitForTimeoutCondition},

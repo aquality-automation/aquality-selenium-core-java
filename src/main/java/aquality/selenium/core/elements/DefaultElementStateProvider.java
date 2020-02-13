@@ -4,6 +4,8 @@ import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 
+import java.time.Duration;
+
 public class DefaultElementStateProvider extends ElementStateProvider {
 
     private final By locator;
@@ -52,7 +54,7 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForNotDisplayed(Long timeout) {
-        return conditionalWait.waitFor(() -> !isDisplayed(), timeout, null);
+        return conditionalWait.waitFor(() -> !isDisplayed(), timeout == null ? null : Duration.ofSeconds(timeout));
     }
 
     @Override
@@ -67,7 +69,7 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForNotExist(Long timeout) {
-        return conditionalWait.waitFor(() -> !isExist(), timeout, null);
+        return conditionalWait.waitFor(() -> !isExist(), timeout == null ? null : Duration.ofSeconds(timeout));
     }
 
     @Override

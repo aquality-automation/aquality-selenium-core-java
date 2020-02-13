@@ -3,6 +3,8 @@ package aquality.selenium.core.elements.interfaces;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import java.time.Duration;
+
 public interface IElement extends IParent {
 
     /**
@@ -20,7 +22,7 @@ public interface IElement extends IParent {
      * @param timeout Timeout for waiting
      * @return WebElement
      */
-    RemoteWebElement getElement(Long timeout);
+    RemoteWebElement getElement(Duration timeout);
 
     /**
      * Gets element name.

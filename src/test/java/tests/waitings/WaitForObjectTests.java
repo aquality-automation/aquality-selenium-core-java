@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -37,14 +38,14 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "failWaitForAction")
-    public void testShouldThrowTimeoutExceptionIfConditionIsNotMetAndTimeoutIsOver(Callable failedAction, long timeout) throws Exception {
+    public void testShouldThrowTimeoutExceptionIfConditionIsNotMetAndTimeoutIsOver(Callable failedAction, Duration timeout) throws Exception {
         timer.get().start();
         try {
             failedAction.call();
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
-            long interval = 2 * timeout + accuracy;
-            assertTrue(duration >= timeout && duration < interval,
+            long interval = 2 * timeout.getSeconds() + accuracy;
+            assertTrue(duration >= timeout.getSeconds() && duration < interval,
                     String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (2*timeout + accuracy)) when condition is not satisfied. ",
                             duration, timeout, interval));
         }
@@ -56,11 +57,11 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "successWaitForAction")
-    public void testShouldReturnAnObjectIfConditionIsMetAndTimeoutIsNotOver(Callable<String> successAction, long timeout) throws Exception {
+    public void testShouldReturnAnObjectIfConditionIsMetAndTimeoutIsNotOver(Callable<String> successAction, Duration timeout) throws Exception {
         timer.get().start();
         String result = successAction.call();
         double duration = timer.get().stop();
-        assertTrue(duration <= timeout,
+        assertTrue(duration <= timeout.getSeconds(),
                 String.format("Duration '%s' should be less than accuracyTimeout '%s'",
                         duration, timeout));
         assertEquals(result, RESULT_STRING, "Method should return correct object");
@@ -74,13 +75,13 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "throwWaitForAction")
-    public void testShouldThrowException(Callable<String> throwAction, long timeout) throws Exception {
+    public void testShouldThrowException(Callable<String> throwAction, Duration timeout) throws Exception {
         try {
             timer.get().start();
             throwAction.call();
         } catch (IllegalArgumentException e) {
             double duration = timer.get().stop();
-            assertTrue(duration <= timeout,
+            assertTrue(duration <= timeout.getSeconds(),
                     String.format("Duration '%s' should be less than accuracyTimeout '%s'",
                             duration, timeout));
             assertEquals(e.getMessage(), "I am exception", "It should be custom exception");
@@ -91,14 +92,14 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     public void testShouldIgnoreExceptionForWaitingWithoutCustomParameters() {
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         BooleanSupplier actionWithExceptions = () -> conditionalWait.waitFor((driver) -> throwNewException(atomicBoolean).getAsBoolean(), ignoredExceptions);
-        checkWaitForMethodForPassedCondition(actionWithExceptions, timeoutConfiguration.getCondition().getSeconds());
+        checkWaitForMethodForPassedCondition(actionWithExceptions, timeoutConfiguration.getCondition());
     }
 
     @Test
     public void testShouldIgnoreExceptionForWaitingWithDefaultTimeout() {
         AtomicBoolean atomicBoolean = new AtomicBoolean(true);
         BooleanSupplier actionWithMessageAndExceptions = () -> conditionalWait.waitFor((driver) -> throwNewException(atomicBoolean).getAsBoolean(), "Condition should be true", ignoredExceptions);
-        checkWaitForMethodForPassedCondition(actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds());
+        checkWaitForMethodForPassedCondition(actionWithMessageAndExceptions, timeoutConfiguration.getCondition());
     }
 
     @Test
@@ -115,8 +116,8 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         checkWaitForMethodForPassedCondition(actionWithAllParameters, waitForTimeoutCondition);
     }
 
-    private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, long timeout) {
-        long accuracyTimeout = timeout + accuracy;
+    private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, Duration timeout) {
+        long accuracyTimeout = timeout.getSeconds() + accuracy;
         timer.get().start();
         boolean result = waitAction.getAsBoolean();
         double duration = timer.get().stop();
@@ -136,10 +137,10 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         Callable actionWithCustomTimeoutsAndExceptions = () -> conditionalWait.waitFor(action, waitForTimeoutCondition, waitForTimeoutPolling, Collections.emptyList());
         Callable actionWithAllParameters = () -> conditionalWait.waitFor(action, waitForTimeoutCondition, waitForTimeoutPolling, "Condition should be true", Collections.emptyList());
         return new Object[][]{
-                {onlyAction, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithMessage, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithExceptions, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds()},
+                {onlyAction, timeoutConfiguration.getCondition()},
+                {actionWithMessage, timeoutConfiguration.getCondition()},
+                {actionWithExceptions, timeoutConfiguration.getCondition()},
+                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition()},
                 {actionWithCustomTimeouts, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndExceptions, waitForTimeoutCondition},

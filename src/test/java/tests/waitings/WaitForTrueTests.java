@@ -4,6 +4,7 @@ import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeoutException;
@@ -20,14 +21,14 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "falseWaitForTrueAction")
-    public void testTimeoutExceptionShouldBeThrownIfConditionIsMetAndTimeoutIsOver(Callable waitForTrueAction, long timeout) throws Exception {
+    public void testTimeoutExceptionShouldBeThrownIfConditionIsMetAndTimeoutIsOver(Callable waitForTrueAction, Duration timeout) throws Exception {
         timer.get().start();
         try {
             waitForTrueAction.call();
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
-            long interval = 2 * timeout + accuracy;
-            assertTrue(duration >= timeout && duration < interval,
+            long interval = 2 * timeout.getSeconds() + accuracy;
+            assertTrue(duration >= timeout.getSeconds() && duration < interval,
                     String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (2*timeout + accuracy)) when condition is not satisfied.",
                             duration, timeout, interval));
         }
@@ -39,11 +40,11 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "successWaitForAction")
-    public void testTimeoutExceptionShouldNotBeThrownIfConditionIsMetAndTimeoutIsNotOver(Callable waitForTrueAction, long timeout) throws Exception {
+    public void testTimeoutExceptionShouldNotBeThrownIfConditionIsMetAndTimeoutIsNotOver(Callable waitForTrueAction, Duration timeout) throws Exception {
         timer.get().start();
         waitForTrueAction.call();
         double duration = timer.get().stop();
-        assertTrue(duration < timeout,
+        assertTrue(duration < timeout.getSeconds(),
                 String.format("Duration '%s' should be less than timeout '%s' when condition is satisfied.",
                         duration, timeout));
     }
@@ -57,11 +58,11 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "throwExceptionAction", expectedExceptions = StaleElementReferenceException.class)
-    public void testCustomExceptionShouldBeThrown(Callable waitForTrueAction, long timeout) throws Exception {
+    public void testCustomExceptionShouldBeThrown(Callable waitForTrueAction, Duration timeout) throws Exception {
         timer.get().start();
         waitForTrueAction.call();
         double duration = timer.get().stop();
-        assertTrue(duration < timeout,
+        assertTrue(duration < timeout.getSeconds(),
                 String.format("Duration '%s' should be less than timeout '%s' when condition is satisfied.",
                         duration, timeout));
     }
@@ -77,7 +78,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), ignoredExceptions);
             return true;
-        }, timeoutConfiguration.getCondition().getSeconds());
+        }, timeoutConfiguration.getCondition());
     }
 
     @Test
@@ -86,7 +87,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         checkExceptionIsIgnored(() -> {
             conditionalWait.waitForTrue(throwNewException(atomicBoolean), "Condition should be true", ignoredExceptions);
             return true;
-        }, timeoutConfiguration.getCondition().getSeconds());
+        }, timeoutConfiguration.getCondition());
     }
 
     @Test
@@ -107,11 +108,11 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         }, waitForTimeoutCondition);
     }
 
-    private void checkExceptionIsIgnored(Callable waitForTrueAction, long timeout) throws Exception {
+    private void checkExceptionIsIgnored(Callable waitForTrueAction, Duration timeout) throws Exception {
         timer.get().start();
         waitForTrueAction.call();
         double duration = timer.get().stop();
-        assertTrue(duration < timeout,
+        assertTrue(duration < timeout.getSeconds(),
                 String.format("Duration '%s' should be less than timeout '%s' when condition is satisfied.",
                         duration, timeout));
     }
@@ -159,10 +160,10 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         };
 
         return new Object[][]{
-                {onlyAction, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithMessage, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithExceptions, timeoutConfiguration.getCondition().getSeconds()},
-                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition().getSeconds()},
+                {onlyAction, timeoutConfiguration.getCondition()},
+                {actionWithMessage, timeoutConfiguration.getCondition()},
+                {actionWithExceptions, timeoutConfiguration.getCondition()},
+                {actionWithMessageAndExceptions, timeoutConfiguration.getCondition()},
                 {actionWithCustomTimeouts, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition},
                 {actionWithCustomTimeoutsAndException, waitForTimeoutCondition},
