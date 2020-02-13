@@ -26,7 +26,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
             waitForTrueAction.call();
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
-            long interval = 2 * timeout + accuracy;
+            double interval = 2 * timeout + accuracy;
             assertTrue(duration >= timeout && duration < interval,
                     String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (2*timeout + accuracy)) when condition is not satisfied.",
                             duration, timeout, interval));

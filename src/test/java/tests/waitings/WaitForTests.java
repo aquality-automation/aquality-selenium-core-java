@@ -23,7 +23,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
         Date startTime = new Date();
         boolean result = waitAction.getAsBoolean();
         long duration = (new Date().getTime() - startTime.getTime()) / 1000;
-        long interval = 2 * timeout + accuracy;
+        double interval = 2 * timeout + accuracy;
         assertFalse(result, "waitFor should return false when condition is not satisfied.");
         assertTrue(duration >= timeout && duration < interval,
                 String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (2*timeout + accuracy)) when condition is not satisfied. ",
@@ -69,7 +69,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
     }
 
     private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, long timeout) {
-        long accuracyTimeout = timeout + accuracy;
+        double accuracyTimeout = timeout + accuracy;
         timer.get().start();
         boolean result = waitAction.getAsBoolean();
         double duration = timer.get().stop();

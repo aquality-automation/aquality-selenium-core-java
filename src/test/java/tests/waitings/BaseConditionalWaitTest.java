@@ -17,7 +17,7 @@ import java.util.function.BooleanSupplier;
 class BaseConditionalWaitTest {
     static final long waitForTimeoutCondition = 10;
     static final long waitForTimeoutPolling = 150;
-    static final long accuracy = 3;
+    static final double accuracy = 0.5;
     static final Collection<Class<? extends Throwable>> ignoredExceptions = Collections.singleton(IllegalStateException.class);
     ThreadLocal<Timer> timer = ThreadLocal.withInitial(Timer::new);
     protected Provider<IApplication> application = AqualityServices.getServiceProvider().getProvider(IApplication.class);
