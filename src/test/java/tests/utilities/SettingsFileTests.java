@@ -2,22 +2,23 @@ package tests.utilities;
 
 import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.utilities.ISettingsFile;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.application.CustomAqualityServices;
 import tests.application.TestModule;
 import tests.configurations.BaseProfileTest;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Consumer;
 
 import static org.testng.Assert.*;
 
 public class SettingsFileTests extends BaseProfileTest {
     private static final String TIMEOUT_POLLING_INTERVAL_PATH = "/timeouts/timeoutPollingInterval";
+    private static final String NULLVALUE_PATH = "/nullValue";
     private static final String TIMEOUT_POLLING_INTERVAL_KEY = "timeouts.timeoutPollingInterval";
     private static final String LANGUAGE_ENV_KEY = "logger.language";
     private static final String ARGUMENTS_ENV_KEY = "arguments.start";
@@ -101,6 +102,28 @@ public class SettingsFileTests extends BaseProfileTest {
         String wrongPath = "/blabla";
         boolean isWrongPathPresent = jsonSettingsFile.isValuePresent(wrongPath);
         assertFalse(isWrongPathPresent, String.format("%s value should not be present in settings file '%s'", wrongPath, FILE_NAME));
+    }
+
+    @Test
+    public void testShouldBePossibleToCheckThatNullValueIsPresent() {
+        boolean isNullValuePresent = jsonSettingsFile.isValuePresent(NULLVALUE_PATH);
+        assertTrue(isNullValuePresent, String.format("%s value should be present in settings file '%s'", NULLVALUE_PATH, FILE_NAME));
+    }
+
+    @DataProvider
+    public Object[] actionsToGetValue() {
+        List<Consumer<String>> actionsList = new ArrayList<>();
+        actionsList.add(path -> jsonSettingsFile.getValue(path));
+        actionsList.add(path -> jsonSettingsFile.getMap(path));
+        actionsList.add(path -> jsonSettingsFile.getList(path));
+        return actionsList.toArray();
+    }
+
+    @Test(dataProvider = "actionsToGetValue")
+    public void testShouldThrowExceptionWhenValueNotFound(Consumer<String> action) {
+        String wrongPath = "/blabla";
+        Assert.assertFalse(jsonSettingsFile.isValuePresent(wrongPath), String.format("%s value should not be present in settings file '%s'", wrongPath, FILE_NAME));
+        Assert.assertThrows(IllegalArgumentException.class, () -> action.accept(wrongPath));
     }
 
     @AfterMethod
