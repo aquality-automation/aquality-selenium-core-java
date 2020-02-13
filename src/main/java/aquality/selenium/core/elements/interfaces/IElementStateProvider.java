@@ -1,5 +1,6 @@
 package aquality.selenium.core.elements.interfaces;
 
+import java.time.Duration;
 
 /**
  * Provides ability to define of element's state (whether it is displayed, exist or not)
@@ -20,7 +21,7 @@ public interface IElementStateProvider {
      * @param timeout Timeout for waiting
      * @throws org.openqa.selenium.TimeoutException when timeout exceeded and element is not clickable.
      */
-    void waitForClickable(Long timeout);
+    void waitForClickable(Duration timeout);
 
     /**
      * Waits for is element clickable on the form.
@@ -45,7 +46,7 @@ public interface IElementStateProvider {
      * @param timeout Timeout for waiting
      * @return true if element displayed after waiting, false otherwise
      */
-    boolean waitForDisplayed(Long timeout);
+    boolean waitForDisplayed(Duration timeout);
 
     /**
      * Waits for is element displayed on the form.
@@ -63,7 +64,7 @@ public interface IElementStateProvider {
      * @param timeout Timeout for waiting
      * @return true if element displayed after waiting, false otherwise
      */
-    boolean waitForNotDisplayed(Long timeout);
+    boolean waitForNotDisplayed(Duration timeout);
 
 
     /**
@@ -89,7 +90,7 @@ public interface IElementStateProvider {
      * @param timeout Timeout for waiting
      * @return true if element exist after waiting, false otherwise
      */
-    boolean waitForExist(Long timeout);
+    boolean waitForExist(Duration timeout);
 
 
     /**
@@ -105,9 +106,10 @@ public interface IElementStateProvider {
     /**
      * Waits until element does not exist in DOM (without visibility check).
      *
+     * @param timeout Timeout for waiting
      * @return true if element does not exist after waiting, false otherwise
      */
-    boolean waitForNotExist(Long timeout);
+    boolean waitForNotExist(Duration timeout);
 
     /**
      * Waits until element does not exist in DOM (without visibility check).
@@ -134,7 +136,7 @@ public interface IElementStateProvider {
      * @return true if enabled
      * @throws org.openqa.selenium.NoSuchElementException when timeout exceeded and element not found.
      */
-    boolean waitForEnabled(Long timeout);
+    boolean waitForEnabled(Duration timeout);
 
 
     /**
@@ -151,10 +153,11 @@ public interface IElementStateProvider {
     /**
      * Waits until element does not enabled in DOM
      *
+     * @param timeout Timeout for waiting
      * @return true if element does not enabled after waiting, false otherwise
      * @throws org.openqa.selenium.NoSuchElementException when timeout exceeded and element not found.
      */
-    boolean waitForNotEnabled(Long timeout);
+    boolean waitForNotEnabled(Duration timeout);
 
     /**
      * Waits until element does not enabled in DOM

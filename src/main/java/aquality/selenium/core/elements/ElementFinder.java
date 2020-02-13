@@ -25,13 +25,13 @@ public class ElementFinder implements IElementFinder {
     }
 
     @Override
-    public List<WebElement> findElements(By locator, DesiredState desiredState, Long timeoutInSeconds) {
+    public List<WebElement> findElements(By locator, DesiredState desiredState, Duration timeout) {
         AtomicBoolean wasAnyElementFound = new AtomicBoolean(false);
         List<WebElement> resultElements = new ArrayList<>();
         try {
             conditionalWait.waitFor(driver ->
                             tryToFindElements(locator, desiredState, wasAnyElementFound, resultElements, driver),
-                    timeoutInSeconds == null ? null : Duration.ofSeconds(timeoutInSeconds));
+                    timeout);
         } catch (TimeoutException e) {
             handleTimeoutException(e, locator, desiredState, wasAnyElementFound.get());
         }

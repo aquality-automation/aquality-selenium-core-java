@@ -28,14 +28,14 @@ public class RelativeElementFinder extends ElementFinder {
     }
 
     @Override
-    public List<WebElement> findElements(By locator, DesiredState desiredState, Long timeoutInSeconds) {
+    public List<WebElement> findElements(By locator, DesiredState desiredState, Duration timeout) {
         AtomicBoolean wasAnyElementFound = new AtomicBoolean(false);
         List<WebElement> resultElements = new ArrayList<>();
         try {
             conditionalWait.waitForTrue(() ->
                             tryToFindElements(locator, desiredState, wasAnyElementFound, resultElements,
                                     searchContextSupplier.get()),
-                    timeoutInSeconds == null ? null : Duration.ofSeconds(timeoutInSeconds));
+                    timeout);
         } catch (TimeoutException e) {
             handleTimeoutException(new org.openqa.selenium.TimeoutException(e.getMessage(), e), locator, desiredState,
                     wasAnyElementFound.get());

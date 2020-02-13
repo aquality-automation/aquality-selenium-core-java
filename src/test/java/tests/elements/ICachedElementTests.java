@@ -3,12 +3,13 @@ package tests.elements;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import org.testng.annotations.DataProvider;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
 public interface ICachedElementTests {
-    long ZERO_TIMEOUT = 0L;
+    Duration ZERO_TIMEOUT = Duration.ZERO;
 
     @DataProvider
     default Object[] stateFunctionsFalseWhenElementStale() {

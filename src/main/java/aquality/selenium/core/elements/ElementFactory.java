@@ -16,6 +16,7 @@ import org.openqa.selenium.support.pagefactory.ByChained;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.concurrent.TimeoutException;
 public class ElementFactory implements IElementFactory {
 
     private static final int XPATH_SUBSTRING_BEGIN_INDEX = 10;
-    private static final long ZERO_TIMEOUT = 0L;
+    private static final Duration ZERO_TIMEOUT = Duration.ZERO;
 
     private final IConditionalWait conditionalWait;
     private final IElementFinder elementFinder;

@@ -20,70 +20,70 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean isClickable() {
-        return waitForIsClickable(getZeroTImeout(), true);
+        return waitForIsClickable(Duration.ZERO, true);
     }
 
     @Override
-    public void waitForClickable(Long timeout) {
+    public void waitForClickable(Duration timeout) {
         waitForIsClickable(timeout, false);
     }
 
-    private boolean waitForIsClickable(Long timeout, boolean catchTimeoutException) {
+    private boolean waitForIsClickable(Duration timeout, boolean catchTimeoutException) {
         DesiredState desiredState = elementClickable();
         desiredState = catchTimeoutException ? desiredState.withCatchingTimeoutException() : desiredState;
         return isElementInDesiredCondition(desiredState, timeout);
     }
 
-    private boolean isElementInDesiredCondition(DesiredState elementStateCondition, Long timeout) {
+    private boolean isElementInDesiredCondition(DesiredState elementStateCondition, Duration timeout) {
         return !elementFinder.findElements(locator, elementStateCondition, timeout).isEmpty();
     }
 
     @Override
     public boolean isDisplayed() {
-        return waitForDisplayed(getZeroTImeout());
+        return waitForDisplayed(Duration.ZERO);
     }
 
     @Override
-    public boolean waitForDisplayed(Long timeout) {
+    public boolean waitForDisplayed(Duration timeout) {
         return isAnyElementFound(timeout, ElementState.DISPLAYED);
     }
 
-    private boolean isAnyElementFound(Long timeout, ElementState state) {
+    private boolean isAnyElementFound(Duration timeout, ElementState state) {
         return !elementFinder.findElements(locator, state, timeout).isEmpty();
     }
 
     @Override
-    public boolean waitForNotDisplayed(Long timeout) {
-        return conditionalWait.waitFor(() -> !isDisplayed(), timeout == null ? null : Duration.ofSeconds(timeout));
+    public boolean waitForNotDisplayed(Duration timeout) {
+        return conditionalWait.waitFor(() -> !isDisplayed(), timeout);
     }
 
     @Override
     public boolean isExist() {
-        return waitForExist(getZeroTImeout());
+        return waitForExist(Duration.ZERO);
     }
 
     @Override
-    public boolean waitForExist(Long timeout) {
+    public boolean waitForExist(Duration timeout) {
         return isAnyElementFound(timeout, ElementState.EXISTS_IN_ANY_STATE);
     }
 
     @Override
-    public boolean waitForNotExist(Long timeout) {
-        return conditionalWait.waitFor(() -> !isExist(), timeout == null ? null : Duration.ofSeconds(timeout));
+    public boolean waitForNotExist(Duration timeout) {
+        return conditionalWait.waitFor(() -> !isExist(), timeout);
     }
 
     @Override
     public boolean isEnabled() {
-        return waitForEnabled(getZeroTImeout());
+        return waitForEnabled(Duration.ZERO);
     }
 
     @Override
-    public boolean waitForEnabled(Long timeout) {
+    public boolean waitForEnabled(Duration timeout) {
         return isElementInDesiredCondition(elementEnabled(), timeout);
     }
 
     @Override
-    public boolean waitForNotEnabled(Long timeout) {
+    public boolean waitForNotEnabled(Duration timeout) {
         return isElementInDesiredCondition(elementNotEnabled(), timeout);
     }
 }

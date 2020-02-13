@@ -4,11 +4,6 @@ import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import org.openqa.selenium.WebElement;
 
 public abstract class ElementStateProvider implements IElementStateProvider {
-    private static final long ZERO_TIMEOUT = 0L;
-
-    protected Long getZeroTImeout() {
-        return ZERO_TIMEOUT;
-    }
 
     protected boolean isElementEnabled(WebElement element) {
         return element.isEnabled();

@@ -13,6 +13,8 @@ import tests.ITestWithApplication;
 import tests.application.windowsApp.AqualityServices;
 import tests.application.windowsApp.CalculatorWindow;
 
+import java.time.Duration;
+
 public interface IElementFinderTests extends ITestWithApplication {
     IElementFinder getElementFinder();
 
@@ -29,12 +31,12 @@ public interface IElementFinderTests extends ITestWithApplication {
         return ElementState.values();
     }
 
-    default Long getCustomTimeout() {
-        return 10L;
+    default Duration getCustomTimeout() {
+        return Duration.ofSeconds(10L);
     }
 
-    default Long getSmallTimeout() {
-        return 1L;
+    default Duration getSmallTimeout() {
+        return Duration.ofSeconds(1L);
     }
 
     default By getAbsentLocator() {
