@@ -2,6 +2,7 @@ package aquality.selenium.core.waitings;
 
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
+import aquality.selenium.core.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -59,6 +60,7 @@ public class ConditionalWait implements IConditionalWait {
             try {
                 Thread.sleep(pollingInterval);
             } catch (InterruptedException e) {
+                Logger.getInstance().info(String.format("Thread.sleep with %s pollingInterval is failed", pollingInterval));
                 Thread.currentThread().interrupt();
             }
         }
