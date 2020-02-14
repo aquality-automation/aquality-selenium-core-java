@@ -1,4 +1,4 @@
-package tests.application.browser;
+package tests.applications.browser;
 
 import com.google.inject.Injector;
 import io.github.bonigarcia.wdm.WebDriverManager;

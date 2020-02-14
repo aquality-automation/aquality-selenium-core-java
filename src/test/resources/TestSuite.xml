@@ -3,8 +3,8 @@
 <suite name="Demo Test Suite" verbose="1">
     <test name="Integration tests" parallel="methods" thread-count="10">
         <classes>
-            <class name="tests.application.AqualityServicesTests"/>
-            <class name="tests.application.browser.BrowserTests"/>
+            <class name="tests.applications.AqualityServicesTests"/>
+            <class name="tests.applications.browser.BrowserTests"/>
             <class name="tests.utilities.CustomSettingsFileTests"/>
             <class name="tests.configurations.ConfigurationTests"/>
             <class name="tests.localization.LocalizationManagerTests"/>
@@ -16,6 +16,7 @@
             <class name="tests.elements.DefaultElementStateProviderTests"/>
             <class name="tests.elements.CachedElementStateProviderTests"/>
             <class name="tests.elements.CachedWebElementTests"/>
+            <class name="tests.elements.WebElementTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">
@@ -24,7 +25,7 @@
     </test>
     <test name="Non-threadsafe tests" parallel="none">
         <classes>
-            <class name="tests.application.windowsApp.ApplicationTests"/>
+            <class name="tests.applications.windowsApp.ApplicationTests"/>
             <class name="tests.elements.ElementFinderTests"/>
             <class name="tests.elements.RelativeElementFinderTests"/>
             <class name="tests.elements.CachedWindowsElementTests"/>
@@ -33,6 +34,7 @@
             <class name="tests.configurations.EnvConfigurationTests"/>
             <class name="tests.configurations.ProfileConfigurationTests"/>
             <class name="tests.elements.factory.ElementFactoryTests"/>
+            <class name="tests.elements.WindowsElementTests"/>
         </classes>
     </test>
 </suite>

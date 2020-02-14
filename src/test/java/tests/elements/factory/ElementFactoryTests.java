@@ -16,8 +16,8 @@ import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.Test;
 import tests.ITestWithApplication;
-import tests.application.windowsApp.AqualityServices;
-import tests.application.windowsApp.CalculatorWindow;
+import tests.applications.windowsApp.AqualityServices;
+import tests.applications.windowsApp.CalculatorWindow;
 
 public class ElementFactoryTests implements ITestWithApplication {
     private static final String CONDITION_TIMEOUT_KEY = "timeouts.timeoutCondition";
@@ -127,7 +127,7 @@ public class ElementFactoryTests implements ITestWithApplication {
 
     @Test
     public void shouldThrowInvalidArgumentExceptionInFindElementsWhenLocatorIsNotSupported() {
-        Assert.assertThrows(InvalidArgumentException.class, () -> customFactory().findElements(CalculatorWindow.getEqualsButton(), ICustomElement.class, ElementsCount.MORE_THEN_ZERO));
+        Assert.assertThrows(InvalidArgumentException.class, () -> customFactory().findElements(CalculatorWindow.getEqualsButtonLoc(), ICustomElement.class, ElementsCount.MORE_THEN_ZERO));
     }
 
     @Test
@@ -148,40 +148,40 @@ public class ElementFactoryTests implements ITestWithApplication {
     @Test
     public void shouldBePossibleToFindChildElementViaCustomFactory() {
         IElement parent = getParentElement();
-        Assert.assertNotNull(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButton(), ICustomElement.class));
+        Assert.assertNotNull(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), ICustomElement.class));
     }
 
     @Test
     public void shouldBePossibleToFindChildElementWithSpecificName() {
         IElement parent = getParentElement();
         String name = "123";
-        Assert.assertEquals(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButton(), name, ICustomElement.class).getName(), name);
+        Assert.assertEquals(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), name, ICustomElement.class).getName(), name);
     }
 
     @Test
     public void shouldBePossibleToFindChildElementWithSpecificNameUsingSupplier() {
         IElement parent = getParentElement();
         String name = "123";
-        Assert.assertEquals(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButton(), name, CustomElement::new).getName(), name);
+        Assert.assertEquals(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), name, CustomElement::new).getName(), name);
     }
 
     @Test
     public void shouldBePossibleToFindChildElementViaCustomFactoryUsingSupplier() {
         IElement parent = getParentElement();
-        Assert.assertNotNull(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButton(), CustomElement::new));
+        Assert.assertNotNull(customFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), CustomElement::new));
     }
 
     @Test
     public void shouldBePossibleToFindChildElementViaDefaultFactoryUsingImplementation() {
         IElement parent = defaultFactory().getCustomElement(CustomElement.class, CalculatorWindow.getWindowLocator(), "window");
-        Assert.assertNotNull(defaultFactory().findChildElement(parent, CalculatorWindow.getEqualsButton(), CustomElement.class));
+        Assert.assertNotNull(defaultFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), CustomElement.class));
     }
 
     @Test
     public void shouldBePossibleToFindChildElementWithCustomState() {
         IElement parent = getParentElement();
         Assert.assertEquals(
-                defaultFactory().findChildElement(parent, CalculatorWindow.getEqualsButton(), CustomElement.class,
+                defaultFactory().findChildElement(parent, CalculatorWindow.getEqualsButtonLoc(), CustomElement.class,
                         ElementState.EXISTS_IN_ANY_STATE).getState(),
                 ElementState.EXISTS_IN_ANY_STATE);
     }
@@ -189,8 +189,8 @@ public class ElementFactoryTests implements ITestWithApplication {
     @Test
     public void shouldSetCorrectParametersWhenGettingElement() {
         String name = "1some2";
-        CustomElement element = defaultFactory().getCustomElement(CustomElement::new, CalculatorWindow.getEqualsButton(), name, ElementState.EXISTS_IN_ANY_STATE);
-        Assert.assertEquals(element.getLocator(), CalculatorWindow.getEqualsButton());
+        CustomElement element = defaultFactory().getCustomElement(CustomElement::new, CalculatorWindow.getEqualsButtonLoc(), name, ElementState.EXISTS_IN_ANY_STATE);
+        Assert.assertEquals(element.getLocator(), CalculatorWindow.getEqualsButtonLoc());
         Assert.assertEquals(element.getName(), name);
         Assert.assertEquals(element.getState(), ElementState.EXISTS_IN_ANY_STATE);
     }

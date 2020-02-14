@@ -15,7 +15,7 @@ import static org.testng.Assert.assertTrue;
 
 public class WaitForTrueTests extends BaseConditionalWaitTest {
 
-    @DataProvider(name = "falseWaitForTrueAction", parallel = true)
+    @DataProvider(name = "falseWaitForTrueAction")
     public Object[][] falseWaitForAction() {
         return getDataProvider(() -> false);
     }
@@ -35,7 +35,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
         }
     }
 
-    @DataProvider(name = "successWaitForAction", parallel = true)
+    @DataProvider(name = "successWaitForAction")
     public Object[][] successWaitForAction() {
         return getDataProvider(() -> true);
     }
@@ -50,7 +50,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
                 String.format("Duration '%s' should be less than accuracy polling interval '%s'", duration, accuracyPollingInterval));
     }
 
-    @DataProvider(name = "throwExceptionAction", parallel = true)
+    @DataProvider(name = "throwExceptionAction")
     public Object[][] throwExceptionAction() {
         BooleanSupplier throwEx = () -> {
             throw new StaleElementReferenceException("");
@@ -174,7 +174,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
                 {actionWithCustomTimeouts, waitForTimeoutCondition, waitForTimeoutPolling},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition, waitForTimeoutPolling},
                 {actionWithCustomTimeoutsAndException, waitForTimeoutCondition, waitForTimeoutPolling},
-                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling},
+                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling}
         };
     }
 }

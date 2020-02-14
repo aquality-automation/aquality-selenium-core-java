@@ -5,9 +5,9 @@ import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.ITestWithApplication;
-import tests.application.windowsApp.AqualityServices;
-import tests.application.windowsApp.CachedButton;
-import tests.application.windowsApp.CalculatorWindow;
+import tests.applications.windowsApp.AqualityServices;
+import tests.applications.windowsApp.CachedButton;
+import tests.applications.windowsApp.CalculatorWindow;
 
 import java.util.function.Predicate;
 
@@ -25,17 +25,17 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
 
     @Test
     public void testShouldWorkWithCalculatorWithCachedElement() {
-        new CachedButton(CalculatorWindow.getOneButton()).click();
-        new CachedButton(CalculatorWindow.getPlusButton()).click();
-        new CachedButton(CalculatorWindow.getOneButton()).click();
-        new CachedButton(CalculatorWindow.getEqualsButton()).click();
-        String result = new CachedButton(CalculatorWindow.getResultsLabel()).getElement().getText();
+        new CachedButton(CalculatorWindow.getOneButtonLoc()).click();
+        new CachedButton(CalculatorWindow.getPlusButtonLoc()).click();
+        new CachedButton(CalculatorWindow.getOneButtonLoc()).click();
+        new CachedButton(CalculatorWindow.getEqualsButtonLoc()).click();
+        String result = new CachedButton(CalculatorWindow.getResultsLabelLoc()).getElement().getText();
         Assert.assertTrue(result.contains("2"));
     }
 
     @Test
     public void testShouldReturnSameElementAfterInteraction() {
-        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButton());
+        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
         String initialElement = oneButton.getElement().getId();
         oneButton.click();
         String resultElement = oneButton.getElement().getId();
@@ -44,7 +44,7 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
 
     @Test
     public void testShouldReturnSameElementAfterGetState() {
-        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButton());
+        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
         String initialElement = oneButton.getElement().getId();
         oneButton.state().waitForClickable();
         String resultElement = oneButton.getElement().getId();
@@ -53,7 +53,7 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
 
     @Test
     public void testShouldReturnNewElementWhenWindowIsReopened() {
-        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButton());
+        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
         String initialElement = oneButton.getElement().getId();
         getApplication().getDriver().quit();
         oneButton.state().waitForClickable();
@@ -72,7 +72,7 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
     }
 
     private void assertStateConditionAfterQuit(Predicate<IElementStateProvider> stateCondition, boolean expectedValue, boolean shouldAppRestart){
-        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButton());
+        CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
         oneButton.getElement();
         getApplication().getDriver().quit();
         Assert.assertEquals(stateCondition.test(oneButton.state()), expectedValue,

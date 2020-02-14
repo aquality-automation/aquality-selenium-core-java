@@ -1,10 +1,11 @@
-package tests.application.browser;
+package tests.applications.windowsApp;
 
 import aquality.selenium.core.applications.IApplication;
 import com.google.inject.Injector;
-import tests.application.IApplicationTests;
+import tests.applications.IApplicationTests;
 
-public class BrowserTests implements IApplicationTests {
+public class ApplicationTests implements IApplicationTests {
+
     @Override
     public IApplication getApplication() {
         return AqualityServices.getApplication();

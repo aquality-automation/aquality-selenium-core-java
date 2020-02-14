@@ -1,4 +1,4 @@
-package tests.application;
+package tests.applications;
 
 import aquality.selenium.core.applications.IApplication;
 import com.google.inject.Injector;

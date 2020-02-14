@@ -1,4 +1,4 @@
-package tests.application;
+package tests.applications;
 
 import aquality.selenium.core.elements.CachedElementStateProvider;
 import aquality.selenium.core.elements.ElementCacheHandler;
