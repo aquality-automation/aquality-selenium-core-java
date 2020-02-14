@@ -12,6 +12,7 @@ import tests.applications.windowsApp.AqualityServices;
 import tests.applications.windowsApp.CalculatorWindow;
 import tests.elements.factory.CustomElement;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -56,7 +57,7 @@ public class WindowsElementTests implements ITestWithApplication {
 
     @Test
     public void testShouldBePossibleToGetElementWithCustomTimeout() {
-        RemoteWebElement element = CalculatorWindow.getOneButton().getElement(1L);
+        RemoteWebElement element = CalculatorWindow.getOneButton().getElement(Duration.ofSeconds(1L));
         Assert.assertNotNull(element, "RemoteWebElement should not be null");
     }
 

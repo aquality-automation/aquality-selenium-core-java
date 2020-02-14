@@ -14,6 +14,7 @@ import theinternet.DynamicControlsForm;
 import theinternet.InputsForm;
 import theinternet.TheInternetPage;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -60,7 +61,7 @@ public class WebElementTests implements ITestWithApplication {
     @Test
     public void testShouldBePossibleToGetElementWithCustomTimeout() {
         getApplication().getDriver().navigate().to(TheInternetPage.DYNAMIC_CONTROLS.getAddress());
-        RemoteWebElement element = DynamicControlsForm.getEnableButton().getElement(1L);
+        RemoteWebElement element = DynamicControlsForm.getEnableButton().getElement(Duration.ofSeconds(1L));
         Assert.assertNotNull(element, "RemoteWebElement should not be null");
     }
 
