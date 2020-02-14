@@ -105,7 +105,7 @@ public class WebElementTests implements ITestWithApplication {
         }
     }
 
-    @DataProvider(name = "getChildElementFunctions", parallel = true)
+    @DataProvider(name = "getChildElementFunctions")
     public Object[] getChildElementFunctions() {
         String name = "Child checkbox";
         By childLoc = DynamicControlsForm.getCheckboxLocator();

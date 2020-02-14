@@ -32,7 +32,7 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         }
     }
 
-    @DataProvider(name = "failWaitForAction", parallel = true)
+    @DataProvider(name = "failWaitForAction")
     public Object[][] failWaitForAction() {
         return getDataProvider((app) -> false);
     }
@@ -53,7 +53,7 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         }
     }
 
-    @DataProvider(name = "successWaitForAction", parallel = true)
+    @DataProvider(name = "successWaitForAction")
     public Object[][] successWaitForAction() {
         return getDataProvider((app) -> RESULT_STRING);
     }
@@ -70,7 +70,7 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         assertEquals(result, RESULT_STRING, "Method should return correct object");
     }
 
-    @DataProvider(name = "throwWaitForAction", parallel = true)
+    @DataProvider(name = "throwWaitForAction")
     public Object[][] throwWaitForAction() {
         return getDataProvider((app) -> {
             throw new IllegalArgumentException("I am exception");
