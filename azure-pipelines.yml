@@ -7,6 +7,7 @@ pool:
   vmImage: 'windows-latest'
 
 steps:
+  - script: taskkill /f /im chromedriver.exe
   - task: SonarCloudPrepare@1
     inputs:
       SonarCloud: 'SonarCloud'
