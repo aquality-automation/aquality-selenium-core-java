@@ -25,6 +25,7 @@ public class ElementActionRetrierTests {
     private static final int RETRIES_COUNT = RETRY_CONFIGURATION.getNumber();
     private static final long POLLING_INTERVAL = RETRY_CONFIGURATION.getPollingInterval();
     private static final ElementActionRetrier ELEMENT_ACTION_RETRIER = new ElementActionRetrier(RETRY_CONFIGURATION);
+    private static final long ACCURACY = 100;
 
     @DataProvider
     private Object[][] handledExceptions() {
@@ -82,8 +83,10 @@ public class ElementActionRetrierTests {
         Date startTime = new Date();
         retryFunction.run();
         long duration = new Date().getTime() - startTime.getTime();
+        long doubledAccuracyPollingInterval = 2 * POLLING_INTERVAL + ACCURACY;
         assertTrue(duration >= POLLING_INTERVAL, String.format("duration '%s' should be more than polling interval '%s'", duration, POLLING_INTERVAL));
-        assertTrue(duration <= 2 * POLLING_INTERVAL, String.format("duration '%s' should be less than doubled polling interval '%s'", duration, POLLING_INTERVAL));
+        assertTrue(duration <= doubledAccuracyPollingInterval,
+                String.format("duration '%s' should be less than doubled polling interval '%s'", duration, doubledAccuracyPollingInterval));
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
