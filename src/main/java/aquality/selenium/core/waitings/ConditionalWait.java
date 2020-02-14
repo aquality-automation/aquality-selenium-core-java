@@ -2,7 +2,6 @@ package aquality.selenium.core.waitings;
 
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.ITimeoutConfiguration;
-import aquality.selenium.core.logging.Logger;
 import com.google.common.base.Strings;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
