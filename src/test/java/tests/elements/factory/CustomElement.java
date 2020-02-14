@@ -12,8 +12,6 @@ import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import tests.applications.windowsApp.AqualityServices;
 
-import java.time.Duration;
-
 public class CustomElement extends Element implements ICustomElement {
 
     public CustomElement(By locator, String name, ElementState state) {
@@ -28,6 +26,7 @@ public class CustomElement extends Element implements ICustomElement {
     @Override
     protected IElementFactory getElementFactory() {
         return AqualityServices.get(IElementFactory.class);
+    }
 
     @Override
     protected IElementFinder getElementFinder() {
