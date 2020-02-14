@@ -17,7 +17,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class WaitForObjectTests extends BaseConditionalWaitTest {
-
+    private static final double SELENIUM_ACCURACY = 0.1;
     private static final String RESULT_STRING = "result";
 
     @BeforeMethod
@@ -46,9 +46,10 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
             double interval = timeout + pollingInterval / 1000 + accuracy;
-            assertTrue(duration >= timeout && duration < interval,
+            double accuracyTimeout = timeout - SELENIUM_ACCURACY;
+            assertTrue(duration >= accuracyTimeout && duration < interval,
                     String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (timeout + pollingInterval + accuracy)) when condition is not satisfied.",
-                            duration, timeout, interval));
+                            duration, accuracyTimeout, interval));
         }
     }
 
