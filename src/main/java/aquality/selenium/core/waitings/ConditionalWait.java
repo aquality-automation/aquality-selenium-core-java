@@ -60,7 +60,6 @@ public class ConditionalWait implements IConditionalWait {
             try {
                 Thread.sleep(pollingInterval);
             } catch (InterruptedException e) {
-                Logger.getInstance().info(String.format("Thread.sleep with %s pollingInterval is failed", pollingInterval));
                 Thread.currentThread().interrupt();
             }
         }

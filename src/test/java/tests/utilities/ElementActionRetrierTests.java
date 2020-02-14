@@ -138,17 +138,21 @@ public class ElementActionRetrierTests {
     }
 
     @Test(dataProvider = "handledExceptions", timeOut = 10000)
-    public void testRetrierShouldNotThrowExceptionOnInterruption(RuntimeException handledException) throws InterruptedException {
+    public void testRetrierShouldNotThrowExceptionOnInterruption(RuntimeException handledException) {
         AtomicBoolean isRetrierPaused = new AtomicBoolean(false);
         Thread thread = new Thread(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> {
             isRetrierPaused.set(true);
             throw handledException;
         }));
         thread.start();
-        while (!isRetrierPaused.get()) {
-            Thread.sleep(POLLING_INTERVAL / 10);
+        try {
+            while (!isRetrierPaused.get()) {
+                Thread.sleep(POLLING_INTERVAL / 10);
+            }
+            Thread.sleep(POLLING_INTERVAL / 3);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
-        Thread.sleep(POLLING_INTERVAL / 3);
         thread.interrupt();
     }
 }
