@@ -28,7 +28,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
         assertFalse(result, "waitFor should return false when condition is not satisfied.");
         assertTrue(duration >= timeout.getSeconds() && duration < accuracyPollingInterval,
                 String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (timeout + pollingInterval + accuracy)) when condition is not satisfied.",
-                        duration, timeout, accuracyPollingInterval));
+                        duration, timeout.getSeconds(), accuracyPollingInterval));
     }
 
     @DataProvider(name = "trueWaitForAction")

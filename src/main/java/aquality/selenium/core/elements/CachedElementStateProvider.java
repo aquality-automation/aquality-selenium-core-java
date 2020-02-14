@@ -55,7 +55,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
     protected boolean waitForCondition(BooleanSupplier condition, String conditionName, Duration timeout) {
         boolean result = conditionalWait.waitFor(condition, timeout);
         if (!result) {
-            String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout);
+            String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout.getSeconds());
             localizedLogger.warn("loc.element.not.in.state", locator, conditionName.toUpperCase(), timeoutString);
         }
         return result;

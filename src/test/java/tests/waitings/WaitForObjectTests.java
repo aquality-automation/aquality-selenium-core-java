@@ -49,7 +49,7 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
             double interval = timeout.getSeconds() + pollingInterval.getSeconds() + accuracy;
             assertTrue(duration >= timeout.getSeconds() && duration < interval,
                     String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (timeout + pollingInterval + accuracy)) when condition is not satisfied.",
-                            duration, timeout, interval));
+                            duration, timeout.getSeconds(), interval));
         }
     }
 
