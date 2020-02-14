@@ -51,7 +51,7 @@ public class ConditionalWait implements IConditionalWait {
 
             double currentTime = getCurrentTime();
             if ((currentTime - startTime) > timeoutInSeconds) {
-                String exceptionMessage = String.format("Timed out after %1$s seconds during wait for condition '%2$s'", timeout.getSeconds(), exMessage);
+                String exceptionMessage = String.format("Timed out after %1$s seconds during wait for condition '%2$s'", timeoutInSeconds, exMessage);
                 throw new TimeoutException(exceptionMessage);
             }
 
