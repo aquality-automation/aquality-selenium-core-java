@@ -1,4 +1,4 @@
-package tests.application;
+package tests.applications;
 
 interface ICustomDependency {
 }

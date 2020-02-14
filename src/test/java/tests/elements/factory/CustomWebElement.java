@@ -10,13 +10,11 @@ import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import tests.applications.windowsApp.AqualityServices;
+import tests.applications.browser.AqualityServices;
 
-import java.time.Duration;
+public class CustomWebElement extends Element {
 
-public class CustomElement extends Element implements ICustomElement {
-
-    public CustomElement(By locator, String name, ElementState state) {
+    public CustomWebElement(By locator, String name, ElementState state) {
         super(locator, name, state);
     }
 
@@ -28,6 +26,7 @@ public class CustomElement extends Element implements ICustomElement {
     @Override
     protected IElementFactory getElementFactory() {
         return AqualityServices.get(IElementFactory.class);
+    }
 
     @Override
     protected IElementFinder getElementFinder() {
@@ -56,10 +55,6 @@ public class CustomElement extends Element implements ICustomElement {
 
     @Override
     protected String getElementType() {
-        return "Custom";
-    }
-
-    public ElementState getState() {
-        return getElementState();
+        return "Custom Web";
     }
 }

@@ -7,8 +7,8 @@ import aquality.selenium.core.logging.Logger;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import tests.application.CustomAqualityServices;
-import tests.application.browser.AqualityServices;
+import tests.applications.CustomAqualityServices;
+import tests.applications.browser.AqualityServices;
 
 import java.util.MissingFormatArgumentException;
 

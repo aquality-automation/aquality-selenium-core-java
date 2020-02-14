@@ -175,7 +175,7 @@ public class WaitForTrueTests extends BaseConditionalWaitTest {
                 {actionWithCustomTimeouts, waitForTimeoutCondition, waitForTimeoutPolling},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition, waitForTimeoutPolling},
                 {actionWithCustomTimeoutsAndException, waitForTimeoutCondition, waitForTimeoutPolling},
-                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling},
+                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling}
         };
     }
 }

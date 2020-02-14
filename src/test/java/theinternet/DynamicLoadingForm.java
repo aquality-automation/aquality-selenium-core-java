@@ -4,7 +4,7 @@ import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import org.openqa.selenium.By;
-import tests.application.browser.CachedLabel;
+import tests.applications.browser.CachedLabel;
 
 import java.time.Duration;
 import java.util.function.Function;

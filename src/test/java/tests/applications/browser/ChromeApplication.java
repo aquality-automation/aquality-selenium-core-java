@@ -1,4 +1,4 @@
-package tests.application.browser;
+package tests.applications.browser;
 
 import aquality.selenium.core.applications.IApplication;
 import org.openqa.selenium.chrome.ChromeDriver;

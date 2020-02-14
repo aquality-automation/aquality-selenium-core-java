@@ -1,8 +1,8 @@
-package tests.application;
+package tests.applications;
 
 import aquality.selenium.core.applications.AqualityModule;
 import com.google.inject.Provider;
-import tests.application.browser.ChromeApplication;
+import tests.applications.browser.ChromeApplication;
 
 public class TestModule extends AqualityModule<ChromeApplication> {
     public TestModule(Provider<ChromeApplication> applicationProvider) {

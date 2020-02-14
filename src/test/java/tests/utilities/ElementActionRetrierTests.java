@@ -6,9 +6,10 @@ import aquality.selenium.core.utilities.ElementActionRetrier;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import tests.application.browser.AqualityServices;
+import tests.applications.browser.AqualityServices;
 
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,6 +25,7 @@ public class ElementActionRetrierTests {
     private static final int RETRIES_COUNT = RETRY_CONFIGURATION.getNumber();
     private static final long POLLING_INTERVAL = RETRY_CONFIGURATION.getPollingInterval().toMillis();
     private static final ElementActionRetrier ELEMENT_ACTION_RETRIER = new ElementActionRetrier(RETRY_CONFIGURATION);
+    private static final long ACCURACY = 100;
 
     @DataProvider
     private Object[][] handledExceptions() {
@@ -35,7 +37,7 @@ public class ElementActionRetrierTests {
 
     @Test
     public void testRetrierShouldWorkOnceIfMethodSucceeded() {
-        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> LOGGER.info("")));
+        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> ""));
     }
 
     @Test
@@ -81,8 +83,10 @@ public class ElementActionRetrierTests {
         Date startTime = new Date();
         retryFunction.run();
         long duration = new Date().getTime() - startTime.getTime();
+        long doubledAccuracyPollingInterval = 2 * POLLING_INTERVAL + ACCURACY;
         assertTrue(duration >= POLLING_INTERVAL, String.format("duration '%s' should be more than polling interval '%s'", duration, POLLING_INTERVAL));
-        assertTrue(duration <= 2 * POLLING_INTERVAL, String.format("duration '%s' should be less than doubled polling interval '%s'", duration, POLLING_INTERVAL));
+        assertTrue(duration <= doubledAccuracyPollingInterval,
+                String.format("duration '%s' should be less than doubled polling interval '%s'", duration, doubledAccuracyPollingInterval));
     }
 
     @Test(expectedExceptions = InvalidArgumentException.class)
@@ -138,17 +142,22 @@ public class ElementActionRetrierTests {
     }
 
     @Test(dataProvider = "handledExceptions", timeOut = 10000)
-    public void testRetrierShouldNotThrowExceptionOnInterruption(RuntimeException handledException) throws InterruptedException {
+    public void testRetrierShouldNotThrowExceptionOnInterruption(RuntimeException handledException) {
         AtomicBoolean isRetrierPaused = new AtomicBoolean(false);
         Thread thread = new Thread(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> {
             isRetrierPaused.set(true);
             throw handledException;
         }));
         thread.start();
-        while (!isRetrierPaused.get()) {
-            Thread.sleep(POLLING_INTERVAL / 10);
+        try {
+            while (!isRetrierPaused.get()) {
+                Thread.sleep(POLLING_INTERVAL / 10);
+            }
+            Thread.sleep(POLLING_INTERVAL / 3);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            Assert.fail("Retrier should handle InterruptedException");
         }
-        Thread.sleep(POLLING_INTERVAL / 3);
         thread.interrupt();
     }
 }

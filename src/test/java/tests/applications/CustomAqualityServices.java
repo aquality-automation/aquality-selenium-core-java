@@ -1,9 +1,9 @@
-package tests.application;
+package tests.applications;
 
 import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.applications.AqualityServices;
 import com.google.inject.Injector;
-import tests.application.browser.ChromeApplication;
+import tests.applications.browser.ChromeApplication;
 
 public class CustomAqualityServices extends AqualityServices<ChromeApplication> {
     private static final ThreadLocal<CustomAqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(CustomAqualityServices::new);
@@ -21,7 +21,7 @@ public class CustomAqualityServices extends AqualityServices<ChromeApplication> 
     }
 
     public static ChromeApplication getApplication() {
-        return getInstance().getApp(injector -> tests.application.browser.AqualityServices.getApplication());
+        return getInstance().getApp(injector -> tests.applications.browser.AqualityServices.getApplication());
     }
 
     public static Injector getServiceProvider() {

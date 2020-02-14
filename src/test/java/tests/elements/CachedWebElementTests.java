@@ -4,9 +4,9 @@ import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import tests.application.browser.AqualityServices;
-import tests.application.browser.CachedLabel;
-import tests.application.browser.ITheInternetPageTest;
+import tests.applications.browser.AqualityServices;
+import tests.applications.browser.CachedLabel;
+import tests.applications.browser.ITheInternetPageTest;
 import theinternet.DynamicControlsForm;
 import theinternet.DynamicLoadingForm;
 import theinternet.TheInternetPage;
@@ -67,7 +67,7 @@ public class CachedWebElementTests implements ITheInternetPageTest, ICachedEleme
     @Test
     public void testShouldRefreshElementWhenItIsStale() {
         openDynamicControls();
-        CachedLabel example = DynamicControlsForm.getContentLabel();
+        CachedLabel example = DynamicControlsForm.getContentCachedLabel();
         String exampleToString = example.getElement().getId();
         getBrowser().getDriver().navigate().refresh();
         Assert.assertTrue(example.cache().isRefreshNeeded(), "refresh should be needed when refreshed the page");

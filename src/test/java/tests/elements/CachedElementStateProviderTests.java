@@ -8,7 +8,7 @@ import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import tests.application.browser.AqualityServices;
+import tests.applications.browser.AqualityServices;
 
 public class CachedElementStateProviderTests implements IWebElementStateProviderTests {
     

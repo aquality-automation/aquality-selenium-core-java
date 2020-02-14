@@ -2,7 +2,8 @@ package theinternet;
 
 public enum TheInternetPage {
     DYNAMIC_CONTROLS,
-    DYNAMIC_LOADING("dynamic_loading/1");
+    DYNAMIC_LOADING("dynamic_loading/1"),
+    INPUTS("inputs");
 
     private static final String BASE_URL = "http://the-internet.herokuapp.com/";
 

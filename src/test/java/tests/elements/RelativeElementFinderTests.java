@@ -6,8 +6,8 @@ import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-import tests.application.windowsApp.AqualityServices;
-import tests.application.windowsApp.CalculatorWindow;
+import tests.applications.windowsApp.AqualityServices;
+import tests.applications.windowsApp.CalculatorWindow;
 
 public class RelativeElementFinderTests implements IElementFinderTests {
 
@@ -21,6 +21,6 @@ public class RelativeElementFinderTests implements IElementFinderTests {
 
     @Test
     public void shouldFindChildElements() {
-        Assert.assertNotNull(getElementFinder().findElement(CalculatorWindow.getOneButton()));
+        Assert.assertNotNull(getElementFinder().findElement(CalculatorWindow.getOneButtonLoc()));
     }
 }

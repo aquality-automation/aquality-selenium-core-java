@@ -5,7 +5,7 @@ import aquality.selenium.core.configurations.LoggerConfiguration;
 import aquality.selenium.core.utilities.ISettingsFile;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import tests.application.CustomAqualityServices;
+import tests.applications.CustomAqualityServices;
 
 import static org.testng.Assert.assertEquals;
 

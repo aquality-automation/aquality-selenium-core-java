@@ -1,4 +1,4 @@
-package tests.application;
+package tests.applications;
 
 import aquality.selenium.core.applications.AqualityModule;
 import aquality.selenium.core.logging.Logger;
