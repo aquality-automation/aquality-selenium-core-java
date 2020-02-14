@@ -14,7 +14,7 @@ import static org.testng.Assert.assertTrue;
 
 public class WaitForTests extends BaseConditionalWaitTest {
 
-    @DataProvider(name = "falseWaitForAction", parallel = true)
+    @DataProvider(name = "falseWaitForAction")
     public Object[][] falseWaitForAction() {
         return getDataProvider(() -> false);
     }
@@ -31,7 +31,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
                         duration, timeout, accuracyPollingInterval));
     }
 
-    @DataProvider(name = "trueWaitForAction", parallel = true)
+    @DataProvider(name = "trueWaitForAction")
     public Object[][] trueWaitForAction() {
         return getDataProvider(() -> true);
     }
@@ -84,7 +84,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
                         duration, checkedTimeout));
     }
 
-    @DataProvider(name = "throwExceptionAction", parallel = true)
+    @DataProvider(name = "throwExceptionAction")
     public Object[][] throwExceptionAction() {
         BooleanSupplier throwEx = () -> {
             throw new StaleElementReferenceException("");
