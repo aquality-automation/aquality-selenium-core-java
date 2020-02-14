@@ -14,5 +14,6 @@
   },
   "arguments": {
     "start": ["first","second"]
-  }
+  },
+  "nullValue": null
 }
