@@ -118,7 +118,7 @@ public class WaitForTests extends BaseConditionalWaitTest {
                 {actionWithCustomTimeouts, waitForTimeoutCondition, waitForTimeoutPolling},
                 {actionWithCustomTimeoutsAndMessage, waitForTimeoutCondition, waitForTimeoutPolling},
                 {actionWithCustomTimeoutsAndExceptions, waitForTimeoutCondition, waitForTimeoutPolling},
-                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling},
+                {actionWithAllParameters, waitForTimeoutCondition, waitForTimeoutPolling}
         };
     }
 }
