@@ -6,6 +6,7 @@ import aquality.selenium.core.utilities.ElementActionRetrier;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.applications.browser.AqualityServices;
@@ -152,6 +153,7 @@ public class ElementActionRetrierTests {
             Thread.sleep(POLLING_INTERVAL / 3);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            Assert.fail("Retrier should handle InterruptedException");
         }
         thread.interrupt();
     }
