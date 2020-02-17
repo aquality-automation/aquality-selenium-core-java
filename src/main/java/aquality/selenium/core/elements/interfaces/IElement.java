@@ -29,7 +29,7 @@ public interface IElement extends IParent {
 
     /**
      * Gets current element by specified {@link #getLocator()}
-     * Default timeout is provided in {@link aquality.selenium.core.configurations.ITimeoutConfiguration}/>
+     * Default timeout is provided in {@link aquality.selenium.core.configurations.ITimeoutConfiguration}
      * {@link org.openqa.selenium.NoSuchElementException} throws if element not found
      *
      * @return instance of {@link RemoteWebElement} if found.

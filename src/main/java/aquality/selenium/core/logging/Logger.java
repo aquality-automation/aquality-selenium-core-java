@@ -27,6 +27,7 @@ public final class Logger {
      * Adds appender
      *
      * @param appender Appender to be added
+     * @return logger instance
      */
     public Logger addAppender(Appender appender) {
         log4J.get().addAppender(appender);
