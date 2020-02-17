@@ -8,14 +8,15 @@ import org.testng.annotations.AfterMethod;
 import tests.applications.browser.AqualityServices;
 import utils.Timer;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BooleanSupplier;
 
-class BaseConditionalWaitTest {
-    static final long waitForTimeoutCondition = 10;
-    static final long waitForTimeoutPolling = 150;
+abstract class BaseConditionalWaitTest {
+    static final Duration waitForTimeoutCondition = Duration.ofSeconds(10);
+    static final Duration waitForTimeoutPolling = Duration.ofMillis(150);
     static final double accuracy = 2;
     static final Collection<Class<? extends Throwable>> ignoredExceptions = Collections.singleton(IllegalStateException.class);
     ThreadLocal<Timer> timer = ThreadLocal.withInitial(Timer::new);

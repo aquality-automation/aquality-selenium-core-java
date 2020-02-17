@@ -23,7 +23,7 @@ public class ElementActionRetrierTests {
     private static final IRetryConfiguration RETRY_CONFIGURATION = AqualityServices.getServiceProvider().getInstance(IRetryConfiguration.class);
     private static final Logger LOGGER = AqualityServices.getServiceProvider().getInstance(Logger.class);
     private static final int RETRIES_COUNT = RETRY_CONFIGURATION.getNumber();
-    private static final long POLLING_INTERVAL = RETRY_CONFIGURATION.getPollingInterval();
+    private static final long POLLING_INTERVAL = RETRY_CONFIGURATION.getPollingInterval().toMillis();
     private static final ElementActionRetrier ELEMENT_ACTION_RETRIER = new ElementActionRetrier(RETRY_CONFIGURATION);
     private static final long ACCURACY = 100;
 

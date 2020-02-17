@@ -12,6 +12,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import java.time.Duration;
 import java.util.function.Supplier;
 
 public abstract class Element implements IElement {
@@ -73,7 +74,7 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public RemoteWebElement getElement(Long timeout) {
+    public RemoteWebElement getElement(Duration timeout) {
         try {
             return getElementCacheConfiguration().isEnabled()
                     ? getCache().getElement(timeout)

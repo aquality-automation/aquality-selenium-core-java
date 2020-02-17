@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.Collections;
 import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -38,15 +39,15 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "failWaitForAction")
-    public void testShouldThrowTimeoutExceptionIfConditionIsNotMetAndTimeoutIsOver(Callable failedAction, long timeout, double pollingInterval) throws Exception {
+    public void testShouldThrowTimeoutExceptionIfConditionIsNotMetAndTimeoutIsOver(Callable failedAction, Duration timeout, Duration pollingInterval) throws Exception {
         timer.get().start();
         try {
             failedAction.call();
             Assert.fail("TimeoutException should be thrown but not");
         } catch (TimeoutException e) {
             double duration = timer.get().stop();
-            double interval = timeout + pollingInterval / 1000 + accuracy;
-            double accuracyTimeout = timeout - SELENIUM_ACCURACY;
+            double interval = timeout.getSeconds() + pollingInterval.getSeconds() + accuracy;
+            double accuracyTimeout = timeout.getSeconds() - SELENIUM_ACCURACY;
             assertTrue(duration >= accuracyTimeout && duration < interval,
                     String.format("Duration '%s' should be between '%s' and '%s' (timeout  and (timeout + pollingInterval + accuracy)) when condition is not satisfied.",
                             duration, accuracyTimeout, interval));
@@ -59,11 +60,11 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "successWaitForAction")
-    public void testShouldReturnAnObjectIfConditionIsMetAndTimeoutIsNotOver(Callable<String> successAction, long timeout, double pollingInterval) throws Exception {
+    public void testShouldReturnAnObjectIfConditionIsMetAndTimeoutIsNotOver(Callable<String> successAction, Duration timeout, Duration pollingInterval) throws Exception {
         timer.get().start();
         String result = successAction.call();
         double duration = timer.get().stop();
-        double accuracyPollingInterval = pollingInterval / 1000 + accuracy;
+        double accuracyPollingInterval = pollingInterval.getSeconds() + accuracy;
         assertTrue(duration < accuracyPollingInterval,
                 String.format("Duration '%s' should be less than accuracy polling interval '%s'",
                         duration, accuracyPollingInterval));
@@ -78,14 +79,14 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
     }
 
     @Test(dataProvider = "throwWaitForAction")
-    public void testShouldThrowException(Callable<String> throwAction, long timeout, double pollingInterval) throws Exception {
+    public void testShouldThrowException(Callable<String> throwAction, Duration timeout, Duration pollingInterval) throws Exception {
         try {
             timer.get().start();
             throwAction.call();
             Assert.fail("IllegalArgumentException should be thrown but not");
         } catch (IllegalArgumentException e) {
             double duration = timer.get().stop();
-            double accuracyPollingInterval = pollingInterval / 1000 + accuracy;
+            double accuracyPollingInterval = pollingInterval.getSeconds() + accuracy;
             assertTrue(duration < accuracyPollingInterval,
                     String.format("Duration '%s' should be less than accuracy polling interval '%s'",
                             duration, accuracyPollingInterval));
@@ -121,11 +122,11 @@ public class WaitForObjectTests extends BaseConditionalWaitTest {
         checkWaitForMethodForPassedCondition(actionWithAllParameters, waitForTimeoutPolling);
     }
 
-    private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, double pollingInterval) {
+    private void checkWaitForMethodForPassedCondition(BooleanSupplier waitAction, Duration pollingInterval) {
         timer.get().start();
         boolean result = waitAction.getAsBoolean();
         double duration = timer.get().stop();
-        double doubleAccuracyPollingInterval = 2 * pollingInterval / 1000 + accuracy;
+        double doubleAccuracyPollingInterval = 2 * pollingInterval.getSeconds() + accuracy;
         assertTrue(result, "waitFor should return true when condition is satisfied.");
         assertTrue(duration < doubleAccuracyPollingInterval,
                 String.format("Duration '%s' should be less than double accuracy polling interval '%s'",

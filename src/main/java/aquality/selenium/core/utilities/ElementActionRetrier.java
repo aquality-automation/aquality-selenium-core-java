@@ -35,7 +35,7 @@ public class ElementActionRetrier implements IElementActionRetrier {
             } catch (Exception exception) {
                 if (isExceptionHandled(exception) && retryAttemptsLeft != 0) {
                     try {
-                        Thread.sleep(retryConfiguration.getPollingInterval());
+                        Thread.sleep(retryConfiguration.getPollingInterval().toMillis());
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }

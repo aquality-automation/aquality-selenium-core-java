@@ -5,15 +5,16 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class ChromeApplication implements IApplication {
-    private long implicitWaitSeconds;
+    private Duration implicitWait;
     private final RemoteWebDriver driver;
 
-    public ChromeApplication(long implicitWaitSeconds) {
+    ChromeApplication(long implicitWaitSeconds) {
         driver = new ChromeDriver(new ChromeOptions().setHeadless(true));
-        setImplicitWaitTimeout(implicitWaitSeconds, TimeUnit.SECONDS);
+        setImplicitWaitTimeout(Duration.ofSeconds(implicitWaitSeconds));
     }
 
     @Override
@@ -27,11 +28,10 @@ public class ChromeApplication implements IApplication {
     }
 
     @Override
-    public void setImplicitWaitTimeout(long value, TimeUnit timeUnit) {
-        long valueInSeconds = TimeUnit.SECONDS.convert(value, timeUnit);
-        if (implicitWaitSeconds != valueInSeconds){
-            driver.manage().timeouts().implicitlyWait(value, timeUnit);
-            implicitWaitSeconds = valueInSeconds;
+    public void setImplicitWaitTimeout(Duration value) {
+        if (implicitWait != value){
+            driver.manage().timeouts().implicitlyWait(value.getSeconds(), TimeUnit.SECONDS);
+            implicitWait = value;
         }
     }
 }

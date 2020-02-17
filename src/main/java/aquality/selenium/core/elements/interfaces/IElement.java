@@ -3,9 +3,8 @@ package aquality.selenium.core.elements.interfaces;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-/**
- * Describes behavior of any UI element.
- */
+import java.time.Duration;
+
 public interface IElement extends IParent {
     /**
      * Gets unique locator of element.
@@ -46,7 +45,7 @@ public interface IElement extends IParent {
      * @param timeout Timeout for waiting
      * @return instance of {@link RemoteWebElement} if found.
      */
-    RemoteWebElement getElement(Long timeout);
+    RemoteWebElement getElement(Duration timeout);
 
     /**
      * Gets the item text (inner text).

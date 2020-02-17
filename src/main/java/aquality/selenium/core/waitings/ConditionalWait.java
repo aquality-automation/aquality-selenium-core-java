@@ -13,7 +13,6 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BooleanSupplier;
 
@@ -29,9 +28,9 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public boolean waitFor(BooleanSupplier condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
+    public boolean waitFor(BooleanSupplier condition, Duration timeout, Duration pollingInterval, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
         try {
-            waitForTrue(condition, timeoutInSeconds, pollingIntervalInMilliseconds, message, exceptionsToIgnore);
+            waitForTrue(condition, timeout, pollingInterval, message, exceptionsToIgnore);
             return true;
         } catch (TimeoutException e) {
             return false;
@@ -39,10 +38,10 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public void waitForTrue(BooleanSupplier condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) throws TimeoutException {
+    public void waitForTrue(BooleanSupplier condition, Duration timeout, Duration pollingInterval, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) throws TimeoutException {
         BooleanSupplier supplier = Optional.ofNullable(condition).orElseThrow(() -> new IllegalArgumentException("Condition cannot be null"));
-        Long timeout = resolveConditionTimeout(timeoutInSeconds);
-        Long pollingInterval = resolvePollingInterval(pollingIntervalInMilliseconds);
+        long timeoutInSeconds = resolveConditionTimeoutInSeconds(timeout);
+        long pollingIntervalInMilliseconds = resolvePollingInterval(pollingInterval).toMillis();
         String exMessage = resolveMessage(message);
         double startTime = getCurrentTime();
         while (true) {
@@ -51,13 +50,13 @@ public class ConditionalWait implements IConditionalWait {
             }
 
             double currentTime = getCurrentTime();
-            if ((currentTime - startTime) > timeout) {
-                String exceptionMessage = String.format("Timed out after %1$s seconds during wait for condition '%2$s'", timeout, exMessage);
+            if ((currentTime - startTime) > timeoutInSeconds) {
+                String exceptionMessage = String.format("Timed out after %1$s seconds during wait for condition '%2$s'", timeoutInSeconds, exMessage);
                 throw new TimeoutException(exceptionMessage);
             }
 
             try {
-                Thread.sleep(pollingInterval);
+                Thread.sleep(pollingIntervalInMilliseconds);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -65,20 +64,20 @@ public class ConditionalWait implements IConditionalWait {
     }
 
     @Override
-    public <T> T waitFor(ExpectedCondition<T> condition, Long timeoutInSeconds, Long pollingIntervalInMilliseconds, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
+    public <T> T waitFor(ExpectedCondition<T> condition, Duration timeout, Duration pollingInterval, String message, Collection<Class<? extends Throwable>> exceptionsToIgnore) {
         IApplication app = applicationProvider.get();
-        app.setImplicitWaitTimeout(0, TimeUnit.SECONDS);
-        Long timeout = resolveConditionTimeout(timeoutInSeconds);
-        Long pollingInterval = resolvePollingInterval(pollingIntervalInMilliseconds);
+        app.setImplicitWaitTimeout(Duration.ZERO);
+        long timeoutInSeconds = resolveConditionTimeoutInSeconds(timeout);
+        Duration actualPollingInterval = resolvePollingInterval(pollingInterval);
         String exMessage = resolveMessage(message);
-        WebDriverWait wait = new WebDriverWait(app.getDriver(), timeout);
-        wait.pollingEvery(Duration.ofMillis(pollingInterval));
+        WebDriverWait wait = new WebDriverWait(app.getDriver(), timeoutInSeconds);
+        wait.pollingEvery(actualPollingInterval);
         wait.withMessage(exMessage);
         wait.ignoreAll(exceptionsToIgnore == null ? Collections.singleton(StaleElementReferenceException.class) : exceptionsToIgnore);
         try {
             return wait.until(condition);
         } finally {
-            app.setImplicitWaitTimeout(timeoutConfiguration.getImplicit(), TimeUnit.SECONDS);
+            app.setImplicitWaitTimeout(timeoutConfiguration.getImplicit());
         }
     }
 
@@ -98,12 +97,12 @@ public class ConditionalWait implements IConditionalWait {
         }
     }
 
-    private Long resolveConditionTimeout(Long timeout) {
-        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getCondition());
+    private long resolveConditionTimeoutInSeconds(Duration timeout) {
+        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getCondition()).getSeconds();
     }
 
-    private Long resolvePollingInterval(Long timeout) {
-        return Optional.ofNullable(timeout).orElse(timeoutConfiguration.getPollingInterval());
+    private Duration resolvePollingInterval(Duration pollingInterval) {
+        return Optional.ofNullable(pollingInterval).orElse(timeoutConfiguration.getPollingInterval());
     }
 
     private String resolveMessage(String message) {

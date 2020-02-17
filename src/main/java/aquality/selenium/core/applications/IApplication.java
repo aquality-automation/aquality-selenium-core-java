@@ -2,7 +2,7 @@ package aquality.selenium.core.applications;
 
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 /**
  * Interface of any application controlled by Selenium WebDriver API
@@ -22,7 +22,6 @@ public interface IApplication {
     /**
      * Sets implicit wait timeout to Selenium WebDriver.
      * @param value timeout value to set.
-     * @param timeUnit timeUnit of timeout value.
      */
-    void setImplicitWaitTimeout(long value, TimeUnit timeUnit);
+    void setImplicitWaitTimeout(Duration value);
 }

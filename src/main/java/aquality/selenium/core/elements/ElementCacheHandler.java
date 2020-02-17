@@ -5,6 +5,8 @@ import aquality.selenium.core.elements.interfaces.IElementFinder;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import java.time.Duration;
+
 /**
  * Implementation of {@link IElementCacheHandler}.
  */
@@ -44,7 +46,7 @@ public class ElementCacheHandler implements IElementCacheHandler {
     }
 
     @Override
-    public RemoteWebElement getElement(Long timeout, ElementState customState) {
+    public RemoteWebElement getElement(Duration timeout, ElementState customState) {
         ElementState requiredState = customState == null ? state : customState;
         if (isRefreshNeeded(requiredState)) {
             remoteElement = (RemoteWebElement) finder.findElement(locator, requiredState, timeout);

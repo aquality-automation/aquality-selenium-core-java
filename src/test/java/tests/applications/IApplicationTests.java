@@ -6,7 +6,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.ITestWithApplication;
 
-import java.util.concurrent.TimeUnit;
+import java.time.Duration;
 
 public interface IApplicationTests extends ITestWithApplication {
     Injector getServiceProvider();
@@ -32,7 +32,7 @@ public interface IApplicationTests extends ITestWithApplication {
 
     default void checkImplicitWaitSetting(int valueInSeconds) {
         try {
-            getApplication().setImplicitWaitTimeout(1, TimeUnit.SECONDS);
+            getApplication().setImplicitWaitTimeout(Duration.ofSeconds(1));
         } catch (Throwable e){
             Assert.fail("An error occured when tried to set implicit wait", e);
         }

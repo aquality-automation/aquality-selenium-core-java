@@ -1,5 +1,7 @@
 package aquality.selenium.core.configurations;
 
+import java.time.Duration;
+
 /**
  * Provides timeouts configuration.
  */
@@ -10,26 +12,26 @@ public interface ITimeoutConfiguration {
      *
      * @return ImplicitWait timeout.
      */
-    long getImplicit();
+    Duration getImplicit();
 
     /**
      * Gets default ConditionalWait timeout.
      *
      * @return ConditionalWait timeout.
      */
-    long getCondition();
+    Duration getCondition();
 
     /**
      * Gets ConditionalWait polling interval.
      *
      * @return polling interval.
      */
-    long getPollingInterval();
+    Duration getPollingInterval();
 
     /**
      * Gets Command timeout.
      *
      * @return Command timeout.
      */
-    long getCommand();
+    Duration getCommand();
 }

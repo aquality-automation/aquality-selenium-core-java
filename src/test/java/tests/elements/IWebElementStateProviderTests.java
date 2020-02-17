@@ -12,6 +12,7 @@ import theinternet.DynamicControlsForm;
 import theinternet.DynamicLoadingForm;
 import theinternet.TheInternetPage;
 
+import java.time.Duration;
 import java.util.function.Predicate;
 
 import static utils.TimeUtil.calculateDuration;
@@ -19,7 +20,7 @@ import static utils.TimeUtil.getCurrentTime;
 
 public interface IWebElementStateProviderTests extends ITheInternetPageTest {
     double OPERATION_TIME = 5;
-    long CUSTOM_WAIT_TIME = 2L;
+    Duration CUSTOM_WAIT_TIME = Duration.ofSeconds(2L);
     By ABSENT_ELEMENT_LOCATOR = By.xpath("//div[@class='not exist element']");
 
     default DynamicControlsForm getDynamicControlsForm() {
@@ -32,34 +33,34 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     IElementStateProvider state(By locator);
 
-    default long getConditionTimeout() {
+    default Duration getConditionTimeout() {
         return AqualityServices.get(ITimeoutConfiguration.class).getCondition();
     }
 
-    default void checkWaitingTimeForInputState(Long waitTime, Predicate<IElementStateProvider> notExpectedCondition) {
+    default void checkWaitingTimeForInputState(Duration waitTime, Predicate<IElementStateProvider> notExpectedCondition) {
         long startTime = getCurrentTime();
         boolean isConditionSatisfied = notExpectedCondition.test(getDynamicControlsForm().inputState());
         double duration = calculateDuration(startTime);
 
         Assert.assertFalse(isConditionSatisfied);
-        Assert.assertTrue(duration >= waitTime && duration <= (waitTime + OPERATION_TIME));
+        Assert.assertTrue(duration >= waitTime.getSeconds() && duration <= (waitTime.getSeconds() + OPERATION_TIME));
     }
 
     @Test
     default void testElementShouldWaitForEnabledWithCustomTimeout() {
-        long waitTime = CUSTOM_WAIT_TIME;
+        Duration waitTime = CUSTOM_WAIT_TIME;
         checkWaitingTimeForInputState(waitTime, state -> state.waitForEnabled(waitTime));
     }
 
     @Test
     default void testElementShouldWaitForEnabledWithDefaultTimeout() {
-        long waitTime = getConditionTimeout();
+        Duration waitTime = getConditionTimeout();
         checkWaitingTimeForInputState(waitTime, IElementStateProvider::waitForEnabled);
     }
 
     @Test
     default void testElementShouldWaitForNotEnabledWithCustomTimeout() {
-        long waitTime = CUSTOM_WAIT_TIME;
+        Duration waitTime = CUSTOM_WAIT_TIME;
         getDynamicControlsForm().clickEnable();
         getDynamicControlsForm().inputState().waitForEnabled();
 
@@ -78,7 +79,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test
     default void testElementShouldWaitForNotEnabledWithDefaultTimeout() {
-        long waitTime = getConditionTimeout();
+        Duration waitTime = getConditionTimeout();
 
         getDynamicControlsForm().clickEnable();
         getDynamicControlsForm().inputState().waitForEnabled();
@@ -120,7 +121,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test
     default void testShouldBePossibleToWaitElementNotExistsCustomTime() {
-        long waitTime = CUSTOM_WAIT_TIME;
+        Duration waitTime = CUSTOM_WAIT_TIME;
         getDynamicControlsForm().clickRemove();
 
         checkWaitingTimeForInputState(waitTime, inputState -> getDynamicControlsForm().checkboxState().waitForNotExist(waitTime));
@@ -128,7 +129,7 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
 
     @Test
     default void testShouldBePossibleToWaitElementNotExists() {
-        long waitTime = getConditionTimeout();
+        Duration waitTime = getConditionTimeout();
         getDynamicControlsForm().clickRemove();
 
         long startTime = getCurrentTime();
@@ -136,6 +137,6 @@ public interface IWebElementStateProviderTests extends ITheInternetPageTest {
         double duration = calculateDuration(startTime);
 
         Assert.assertTrue(isMissed);
-        Assert.assertTrue(duration < waitTime);
+        Assert.assertTrue(duration < waitTime.getSeconds());
     }
 }

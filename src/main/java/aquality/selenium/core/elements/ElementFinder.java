@@ -6,6 +6,7 @@ import aquality.selenium.core.waitings.IConditionalWait;
 import com.google.inject.Inject;
 import org.openqa.selenium.*;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -24,14 +25,13 @@ public class ElementFinder implements IElementFinder {
     }
 
     @Override
-    public List<WebElement> findElements(By locator, DesiredState desiredState, Long timeoutInSeconds) {
+    public List<WebElement> findElements(By locator, DesiredState desiredState, Duration timeout) {
         AtomicBoolean wasAnyElementFound = new AtomicBoolean(false);
         List<WebElement> resultElements = new ArrayList<>();
         try {
             conditionalWait.waitFor(driver ->
                             tryToFindElements(locator, desiredState, wasAnyElementFound, resultElements, driver),
-                    timeoutInSeconds,
-                    null);
+                    timeout);
         } catch (TimeoutException e) {
             handleTimeoutException(e, locator, desiredState, wasAnyElementFound.get());
         }

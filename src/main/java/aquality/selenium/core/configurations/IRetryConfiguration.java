@@ -1,5 +1,7 @@
 package aquality.selenium.core.configurations;
 
+import java.time.Duration;
+
 /**
  * Describes retry configuration.
  */
@@ -17,5 +19,5 @@ public interface IRetryConfiguration {
      *
      * @return Polling interval for retry.
      */
-    long getPollingInterval();
+    Duration getPollingInterval();
 }

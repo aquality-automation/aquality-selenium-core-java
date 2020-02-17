@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +43,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
 
     protected boolean tryInvokeFunction(Predicate<WebElement> predicate, List<Class<? extends Exception>> handledExceptions) {
         try {
-            return predicate.test(elementCacheHandler.getElement(getZeroTImeout(), ElementState.EXISTS_IN_ANY_STATE));
+            return predicate.test(elementCacheHandler.getElement(Duration.ZERO, ElementState.EXISTS_IN_ANY_STATE));
         } catch (Exception exception) {
             if (handledExceptions.contains(exception.getClass())) {
                 return false;
@@ -51,10 +52,10 @@ public class CachedElementStateProvider extends ElementStateProvider {
         }
     }
 
-    protected boolean waitForCondition(BooleanSupplier condition, String conditionName, Long timeout) {
-        boolean result = conditionalWait.waitFor(condition, timeout, null);
+    protected boolean waitForCondition(BooleanSupplier condition, String conditionName, Duration timeout) {
+        boolean result = conditionalWait.waitFor(condition, timeout);
         if (!result) {
-            String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout);
+            String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout.getSeconds());
             localizedLogger.warn("loc.element.not.in.state", locator, conditionName.toUpperCase(), timeoutString);
         }
         return result;
@@ -66,7 +67,7 @@ public class CachedElementStateProvider extends ElementStateProvider {
     }
 
     @Override
-    public void waitForClickable(Long timeout) {
+    public void waitForClickable(Duration timeout) {
         String errorMessage = String.format("Element %1$s has not become clickable after timeout.", locator);
         try {
             conditionalWait.waitForTrue(this::isClickable, timeout, null, errorMessage);
@@ -82,12 +83,12 @@ public class CachedElementStateProvider extends ElementStateProvider {
     }
 
     @Override
-    public boolean waitForDisplayed(Long timeout) {
+    public boolean waitForDisplayed(Duration timeout) {
         return waitForCondition(() -> tryInvokeFunction(WebElement::isDisplayed), ElementState.DISPLAYED.toString(), timeout);
     }
 
     @Override
-    public boolean waitForNotDisplayed(Long timeout) {
+    public boolean waitForNotDisplayed(Duration timeout) {
         return waitForCondition(() -> !isDisplayed(), "invisible or absent", timeout);
     }
 
@@ -97,12 +98,12 @@ public class CachedElementStateProvider extends ElementStateProvider {
     }
 
     @Override
-    public boolean waitForExist(Long timeout) {
+    public boolean waitForExist(Duration timeout) {
         return waitForCondition(() -> tryInvokeFunction(element -> true), ElementState.EXISTS_IN_ANY_STATE.toString(), timeout);
     }
 
     @Override
-    public boolean waitForNotExist(Long timeout) {
+    public boolean waitForNotExist(Duration timeout) {
         return waitForCondition(() -> !isExist(), "absent", timeout);
     }
 
@@ -112,12 +113,12 @@ public class CachedElementStateProvider extends ElementStateProvider {
     }
 
     @Override
-    public boolean waitForEnabled(Long timeout) {
+    public boolean waitForEnabled(Duration timeout) {
         return waitForCondition(this::isEnabled, elementEnabled().getStateName(), timeout);
     }
 
     @Override
-    public boolean waitForNotEnabled(Long timeout) {
+    public boolean waitForNotEnabled(Duration timeout) {
         return waitForCondition(() -> !isEnabled(), elementNotEnabled().getStateName(), timeout);
     }
 }

@@ -27,15 +27,15 @@ public class ConfigurationTests {
     public void testShouldBePossibleToGetRetryConfiguration() {
         RetryConfiguration retryConfiguration = new RetryConfiguration(settingsFile);
         assertEquals(retryConfiguration.getNumber(), 2, "Number of retry attempts timeout should be got");
-        assertEquals(retryConfiguration.getPollingInterval(), 300, "Polling interval of retrier should be got");
+        assertEquals(retryConfiguration.getPollingInterval().toMillis(), 300, "Polling interval of retrier should be got");
     }
 
     @Test
     public void testShouldBePossibleToGetTimeoutConfiguration() {
         TimeoutConfiguration timeoutConfiguration = new TimeoutConfiguration(settingsFile);
-        assertEquals(timeoutConfiguration.getCommand(), 60, "Command timeout should be got");
-        assertEquals(timeoutConfiguration.getCondition(), 30, "Condition timeout should be got");
-        assertEquals(timeoutConfiguration.getImplicit(), 0, "Implicit timeout should be got");
-        assertEquals(timeoutConfiguration.getPollingInterval(), 300, "Polling interval should be got");
+        assertEquals(timeoutConfiguration.getCommand().getSeconds(), 60, "Command timeout should be got");
+        assertEquals(timeoutConfiguration.getCondition().getSeconds(), 30, "Condition timeout should be got");
+        assertEquals(timeoutConfiguration.getImplicit().getSeconds(), 0, "Implicit timeout should be got");
+        assertEquals(timeoutConfiguration.getPollingInterval().toMillis(), 300, "Polling interval should be got");
     }
 }
