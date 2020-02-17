@@ -16,7 +16,7 @@ import java.util.function.Predicate;
  * - empty - to get all elements;
  * - desired {@link ElementState};
  * - with {@link DesiredState};
- * - with {@link Predicate<WebElement>}.
+ * - with {@link Predicate}.
  */
 public interface IElementFinder extends SearchContext {
 
