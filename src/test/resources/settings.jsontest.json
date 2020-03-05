@@ -15,5 +15,6 @@
   "arguments": {
     "start": ["first","second"]
   },
-  "nullValue": null
+  "nullValue": null,
+  "booleanValue": true
 }

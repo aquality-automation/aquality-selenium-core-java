@@ -12,6 +12,7 @@ import tests.applications.TestModule;
 import tests.configurations.BaseProfileTest;
 
 import java.util.*;
+import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 
 import static org.testng.Assert.*;
@@ -19,9 +20,11 @@ import static org.testng.Assert.*;
 public class SettingsFileTests extends BaseProfileTest {
     private static final String TIMEOUT_POLLING_INTERVAL_PATH = "/timeouts/timeoutPollingInterval";
     private static final String NULLVALUE_PATH = "/nullValue";
+    private static final String ABSENTVALUE_PATH = "/absentvalue";
     private static final String TIMEOUT_POLLING_INTERVAL_KEY = "timeouts.timeoutPollingInterval";
     private static final String LANGUAGE_ENV_KEY = "logger.language";
     private static final String ARGUMENTS_ENV_KEY = "arguments.start";
+    private static final String BOOLEANVALUE_ENV_KEY = "booleanValue";
     private static final String PROFILE = "jsontest";
     private static final String FILE_NAME = String.format("settings.%s.json", PROFILE);
     private ISettingsFile jsonSettingsFile;
@@ -34,6 +37,24 @@ public class SettingsFileTests extends BaseProfileTest {
         System.setProperty(PROFILE_KEY, PROFILE);
         CustomAqualityServices.initInjector(getTestModule());
         jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
+    }
+
+    @Test
+    public void testShouldBePossibleToOverrideBooleanValueViaEnvironmentVariable() {
+        BooleanSupplier getCurrentValue = () -> (Boolean) jsonSettingsFile.getValue("/".concat(BOOLEANVALUE_ENV_KEY));
+        boolean oldValue = getCurrentValue.getAsBoolean();
+        boolean targetValue = !oldValue;
+        System.setProperty(BOOLEANVALUE_ENV_KEY, String.valueOf(targetValue));
+        assertEquals(getCurrentValue.getAsBoolean(), targetValue, "value passed via env var is not used by SettingsFile");
+    }
+
+    @Test
+    public void testShouldBePossibleToSetValueWhichIsAbsentInJsonFile() {
+        Assert.assertFalse(jsonSettingsFile.isValuePresent(ABSENTVALUE_PATH), "value should be absent by default");
+        String targetValue = String.valueOf(true);
+        System.setProperty(ABSENTVALUE_PATH.substring(1), targetValue);
+        Assert.assertTrue(jsonSettingsFile.isValuePresent(ABSENTVALUE_PATH), "value should be present after set");
+        assertEquals(jsonSettingsFile.getValue(ABSENTVALUE_PATH), targetValue, "value passed via env var is not used by SettingsFile");
     }
 
     @Test

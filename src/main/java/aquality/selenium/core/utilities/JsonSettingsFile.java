@@ -33,16 +33,16 @@ public class JsonSettingsFile implements ISettingsFile {
 
     private Object getEnvValueOrDefault(String jsonPath, boolean throwIfEmpty) {
         String envVar = getEnvValue(jsonPath);
-        if (envVar == null) {
-            JsonNode node = getJsonNode(jsonPath, throwIfEmpty);
+        JsonNode node = getJsonNode(jsonPath, throwIfEmpty && envVar == null);
+        if (!node.isMissingNode()) {
             if (node.isBoolean()) {
-                return node.asBoolean();
+                return envVar == null ? node.asBoolean() : Boolean.parseBoolean(envVar);
             } else if (node.isLong()) {
-                return node.asLong();
+                return envVar == null ? node.asLong() : Long.parseLong(envVar);
             } else if (node.isInt()) {
-                return node.asInt();
+                return envVar == null ? node.asInt() : Integer.parseInt(envVar);
             } else {
-                return node.asText();
+                return envVar == null ? node.asText() : envVar;
             }
         }
 
@@ -109,7 +109,7 @@ public class JsonSettingsFile implements ISettingsFile {
 
     @Override
     public boolean isValuePresent(String path) {
-        String value = getEnvValueOrDefault(path, false).toString().trim();
-        return !value.isEmpty();
+        Object value = getEnvValueOrDefault(path, false);
+        return value != null && !value.toString().trim().isEmpty();
     }
 }
