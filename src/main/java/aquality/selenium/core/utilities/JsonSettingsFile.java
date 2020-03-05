@@ -33,20 +33,29 @@ public class JsonSettingsFile implements ISettingsFile {
 
     private Object getEnvValueOrDefault(String jsonPath, boolean throwIfEmpty) {
         String envVar = getEnvValue(jsonPath);
-        if (envVar == null) {
-            JsonNode node = getJsonNode(jsonPath, throwIfEmpty);
-            if (node.isBoolean()) {
-                return node.asBoolean();
-            } else if (node.isLong()) {
-                return node.asLong();
-            } else if (node.isInt()) {
-                return node.asInt();
-            } else {
-                return node.asText();
-            }
-        }
+        JsonNode node = getJsonNode(jsonPath, throwIfEmpty && envVar == null);
+        return !node.isMissingNode()
+                ? castEnvOrDefaulValue(node, envVar)
+                : envVar;
+    }
 
-        return envVar;
+    /**
+     * Casts envVar to type, defined from JsonNode.
+     *
+     * @param node   node from json file
+     * @param envVar value got from environment variable
+     * @return Value, casted to specific type.
+     */
+    private Object castEnvOrDefaulValue(JsonNode node, String envVar) {
+        if (node.isBoolean()) {
+            return envVar == null ? node.asBoolean() : Boolean.parseBoolean(envVar);
+        } else if (node.isLong()) {
+            return envVar == null ? node.asLong() : Long.parseLong(envVar);
+        } else if (node.isInt()) {
+            return envVar == null ? node.asInt() : Integer.parseInt(envVar);
+        } else {
+            return envVar == null ? node.asText() : envVar;
+        }
     }
 
     private String getEnvValue(String jsonPath) {
@@ -109,7 +118,7 @@ public class JsonSettingsFile implements ISettingsFile {
 
     @Override
     public boolean isValuePresent(String path) {
-        String value = getEnvValueOrDefault(path, false).toString().trim();
-        return !value.isEmpty();
+        Object value = getEnvValueOrDefault(path, false);
+        return value != null && !value.toString().trim().isEmpty();
     }
 }
