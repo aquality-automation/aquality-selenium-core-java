@@ -13,6 +13,13 @@ public interface IUtilitiesModule {
     }
 
     /**
+     * @return implementation of {@link IElementActionRetrier}.
+     */
+    default Class<? extends IElementActionRetrier> getElementActionRetrierImplementation() {
+        return ElementActionRetrier.class;
+    }
+
+    /**
      * Provides default {@link ISettingsFile} with settings.
      * Default value is settings.json.
      * You are able to override this path, by setting environment variable 'profile'.
