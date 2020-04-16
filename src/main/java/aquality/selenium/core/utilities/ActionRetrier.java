@@ -6,12 +6,12 @@ import com.google.inject.Inject;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class ElementActionRetrier implements IElementActionRetrier {
+public class ActionRetrier implements IActionRetrier {
 
     private IRetryConfiguration retryConfiguration;
 
     @Inject
-    public ElementActionRetrier(IRetryConfiguration retryConfiguration) {
+    public ActionRetrier(IRetryConfiguration retryConfiguration) {
         this.retryConfiguration = retryConfiguration;
     }
 

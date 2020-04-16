@@ -10,7 +10,7 @@ import java.util.function.Supplier;
 /**
  * Retries an action or function when {@link #getHandledExceptions()} occurs.
  */
-public interface IElementActionRetrier {
+public interface IActionRetrier {
 
     /**
      * Retries the action when the handled exception {@link #getHandledExceptions()} occurs.

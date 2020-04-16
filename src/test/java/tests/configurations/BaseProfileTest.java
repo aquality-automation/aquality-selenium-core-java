@@ -1,7 +1,9 @@
 package tests.configurations;
 
+import aquality.selenium.core.applications.AqualityModule;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import tests.applications.CustomAqualityServices;
 
 public class BaseProfileTest {
 
@@ -20,5 +22,7 @@ public class BaseProfileTest {
         } else {
             System.setProperty(PROFILE_KEY, previousProfile);
         }
+
+        CustomAqualityServices.initInjector(new AqualityModule<>(CustomAqualityServices::getApplication));
     }
 }

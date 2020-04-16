@@ -7,7 +7,7 @@ import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementFactory;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizedLogger;
-import aquality.selenium.core.utilities.IElementActionRetrier;
+import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import tests.applications.windowsApp.AqualityServices;
@@ -39,8 +39,8 @@ public class CustomElement extends Element implements ICustomElement {
     }
 
     @Override
-    protected IElementActionRetrier getElementActionRetrier() {
-        return AqualityServices.get(IElementActionRetrier.class);
+    protected IActionRetrier getActionRetrier() {
+        return AqualityServices.get(IActionRetrier.class);
     }
 
     @Override

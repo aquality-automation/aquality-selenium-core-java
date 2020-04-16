@@ -5,7 +5,7 @@ import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.elements.interfaces.*;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
-import aquality.selenium.core.utilities.IElementActionRetrier;
+import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -36,7 +36,7 @@ public abstract class Element implements IElement {
 
     protected abstract IElementCacheConfiguration getElementCacheConfiguration();
 
-    protected abstract IElementActionRetrier getElementActionRetrier();
+    protected abstract IActionRetrier getActionRetrier();
 
     protected abstract ILocalizedLogger getLocalizedLogger();
 
@@ -129,11 +129,11 @@ public abstract class Element implements IElement {
     }
 
     protected <T> T doWithRetry(Supplier<T> action) {
-        return getElementActionRetrier().doWithRetry(action);
+        return getActionRetrier().doWithRetry(action);
     }
 
     protected void doWithRetry(Runnable action) {
-        getElementActionRetrier().doWithRetry(action);
+        getActionRetrier().doWithRetry(action);
     }
 
     protected void logElementAction(String messageKey, Object... args) {
