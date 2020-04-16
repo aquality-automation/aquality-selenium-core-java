@@ -8,6 +8,7 @@ import aquality.selenium.core.elements.interfaces.IElementFactory;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IActionRetrier;
+import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import tests.applications.browser.AqualityServices;
@@ -39,8 +40,8 @@ public class CustomWebElement extends Element {
     }
 
     @Override
-    protected IActionRetrier getActionRetrier() {
-        return AqualityServices.get(IActionRetrier.class);
+    protected IElementActionRetrier getElementActionRetrier() {
+        return AqualityServices.get(IElementActionRetrier.class);
     }
 
     @Override

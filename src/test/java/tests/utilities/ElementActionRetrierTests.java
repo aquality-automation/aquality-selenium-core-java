@@ -2,7 +2,7 @@ package tests.utilities;
 
 import aquality.selenium.core.configurations.IRetryConfiguration;
 import aquality.selenium.core.logging.Logger;
-import aquality.selenium.core.utilities.ActionRetrier;
+import aquality.selenium.core.utilities.ElementActionRetrier;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -18,13 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
-public class ActionRetrierTests {
+public class ElementActionRetrierTests {
 
     private static final IRetryConfiguration RETRY_CONFIGURATION = AqualityServices.getServiceProvider().getInstance(IRetryConfiguration.class);
     private static final Logger LOGGER = AqualityServices.getServiceProvider().getInstance(Logger.class);
     private static final int RETRIES_COUNT = RETRY_CONFIGURATION.getNumber();
     private static final long POLLING_INTERVAL = RETRY_CONFIGURATION.getPollingInterval().toMillis();
-    private static final ActionRetrier ELEMENT_ACTION_RETRIER = new ActionRetrier(RETRY_CONFIGURATION);
+    private static final ElementActionRetrier ELEMENT_ACTION_RETRIER = new ElementActionRetrier(RETRY_CONFIGURATION);
     private static final long ACCURACY = 100;
 
     @DataProvider
