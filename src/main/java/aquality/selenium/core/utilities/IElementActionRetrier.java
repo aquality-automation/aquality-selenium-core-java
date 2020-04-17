@@ -4,12 +4,11 @@ import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.StaleElementReferenceException;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * It was renamed to IActionRetrier.
+ * Retries an action or function when {@link #getHandledExceptions()} occurs.
  */
 public interface IElementActionRetrier extends IActionRetrier {
 

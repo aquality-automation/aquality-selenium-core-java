@@ -5,9 +5,6 @@ import com.google.inject.Inject;
 
 import java.util.function.Supplier;
 
-/**
- * It was renamed to ActionRetrier.
- */
 public class ElementActionRetrier extends ActionRetrier implements IElementActionRetrier {
 
     @Inject

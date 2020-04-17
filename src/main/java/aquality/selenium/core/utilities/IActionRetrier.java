@@ -1,27 +1,24 @@
 package aquality.selenium.core.utilities;
 
-import org.openqa.selenium.InvalidElementStateException;
-import org.openqa.selenium.StaleElementReferenceException;
-
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Supplier;
 
 /**
- * Retries an action or function when {@link #getHandledExceptions()} occurs.
+ * Retries an action or function when handledExceptions occurs.
  */
 public interface IActionRetrier {
 
     /**
-     * Retries the action when the handled exception {@link #getHandledExceptions()} occurs.
+     * Retries the action when the handled exception occurs.
      * @param runnable Action to be applied.
+     * @param handledExceptions Exceptions to be handled.
      */
     void doWithRetry(Runnable runnable, Collection<Class<? extends Throwable>> handledExceptions);
 
     /**
-     * Retries the function when the handled exception {@link #getHandledExceptions()} occurs.
+     * Retries the function when the handled exception occurs.
      * @param function Function to be applied.
+     * @param handledExceptions Exceptions to be handled.
      * @param <T> Return type of function.
      * @return Result of the function.
      */
