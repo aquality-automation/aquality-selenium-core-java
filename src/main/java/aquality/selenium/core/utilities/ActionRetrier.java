@@ -34,7 +34,7 @@ public class ActionRetrier implements IActionRetrier {
                 result = Optional.of(function.get());
                 break;
             } catch (Exception exception) {
-                if (handledExceptions.contains(exception.getClass()) && retryAttemptsLeft != 0) {
+                if (isExceptionHandled(handledExceptions, exception) && retryAttemptsLeft != 0) {
                     try {
                         Thread.sleep(retryConfiguration.getPollingInterval().toMillis());
                     } catch (InterruptedException e) {
@@ -47,5 +47,9 @@ public class ActionRetrier implements IActionRetrier {
             }
         }
         return result.orElse(null);
+    }
+
+    protected boolean isExceptionHandled(Collection<Class<? extends Throwable>> handledExceptions, Exception exception) {
+        return handledExceptions.contains(exception.getClass());
     }
 }
