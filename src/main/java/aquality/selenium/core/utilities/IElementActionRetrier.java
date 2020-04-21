@@ -10,7 +10,8 @@ import java.util.function.Supplier;
 /**
  * Retries an action or function when {@link #getHandledExceptions()} occurs.
  */
-public interface IElementActionRetrier {
+public interface IElementActionRetrier extends IActionRetrier {
+
 
     /**
      * Retries the action when the handled exception {@link #getHandledExceptions()} occurs.
@@ -30,7 +31,7 @@ public interface IElementActionRetrier {
      * Exceptions to be ignored during action retrying.
      * @return By the default implementation, {@link StaleElementReferenceException} and {@link InvalidElementStateException} are handled.
      */
-    default List<Class<? extends Exception>> getHandledExceptions() {
+    default List<Class<? extends Throwable>> getHandledExceptions() {
         return Arrays.asList(StaleElementReferenceException.class, InvalidElementStateException.class);
     }
 }

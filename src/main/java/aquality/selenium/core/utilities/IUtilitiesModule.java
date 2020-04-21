@@ -6,6 +6,13 @@ package aquality.selenium.core.utilities;
 public interface IUtilitiesModule {
 
     /**
+     * @return implementation of {@link IActionRetrier}.
+     */
+    default Class<? extends IActionRetrier> getActionRetrierImplementation() {
+        return ActionRetrier.class;
+    }
+
+    /**
      * @return implementation of {@link IElementActionRetrier}.
      */
     default Class<? extends IElementActionRetrier> getElementActionRetrierImplementation() {

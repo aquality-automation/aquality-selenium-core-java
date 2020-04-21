@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium-core</artifactId>
-    <version>0.0.3</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>Aquality Selenium Core</name>
     <description>Library with core functions simplifying work with Selenium-controlled applications.</description>

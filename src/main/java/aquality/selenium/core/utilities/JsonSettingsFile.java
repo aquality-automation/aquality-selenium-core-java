@@ -53,6 +53,8 @@ public class JsonSettingsFile implements ISettingsFile {
             return envVar == null ? node.asLong() : Long.parseLong(envVar);
         } else if (node.isInt()) {
             return envVar == null ? node.asInt() : Integer.parseInt(envVar);
+        } else if (node.isDouble()) {
+            return envVar == null ? node.asDouble() : Double.parseDouble(envVar);
         } else {
             return envVar == null ? node.asText() : envVar;
         }

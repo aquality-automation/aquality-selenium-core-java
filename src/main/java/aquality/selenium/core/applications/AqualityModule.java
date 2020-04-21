@@ -8,6 +8,7 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizationModule;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
+import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.IUtilitiesModule;
@@ -42,6 +43,7 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(IRetryConfiguration.class).to(getRetryConfigurationImplementation()).in(Singleton.class);
         bind(IElementCacheConfiguration.class).to(getElementCacheConfigurationImplementation()).in(Singleton.class);
         bind(IElementActionRetrier.class).to(getElementActionRetrierImplementation()).in(Singleton.class);
+        bind(IActionRetrier.class).to(getActionRetrierImplementation()).in(Singleton.class);
         bind(ILocalizationManager.class).to(getLocalizationManagerImplementation()).in(Singleton.class);
         bind(ILocalizedLogger.class).to(getLocalizedLoggerImplementation()).in(Singleton.class);
         bind(IConditionalWait.class).to(getConditionalWaitImplementation());

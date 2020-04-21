@@ -10,6 +10,7 @@
             <class name="tests.localization.LocalizationManagerTests"/>
             <class name="tests.configurations.ConfigurationTests"/>
             <class name="tests.utilities.ElementActionRetrierTests"/>
+            <class name="tests.utilities.ActionRetrierTests"/>
             <class name="tests.waitings.WaitForTests"/>
             <class name="tests.waitings.WaitForObjectTests"/>
             <class name="tests.waitings.WaitForTrueTests"/>
@@ -32,6 +33,7 @@
             <class name="tests.logger.LoggerTests"/>
             <class name="tests.utilities.SettingsFileTests"/>
             <class name="tests.configurations.EnvConfigurationTests"/>
+            <class name="tests.configurations.CustomConfigurationTests"/>
             <class name="tests.configurations.ProfileConfigurationTests"/>
             <class name="tests.elements.factory.ElementFactoryTests"/>
             <class name="tests.elements.WindowsElementTests"/>
