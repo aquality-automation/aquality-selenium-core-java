@@ -18,8 +18,13 @@ public class ActionRetrierTests extends RetrierTest {
     private static final ActionRetrier ACTION_RETRIER = new ActionRetrier(RETRY_CONFIGURATION);
 
     @Test
+    public void testRetrierShouldWorkWhenSupplierReturnsNull() {
+        Assert.assertNull(ACTION_RETRIER.doWithRetry(() -> null, Collections.emptyList()));
+    }
+
+    @Test
     public void testRetrierShouldWorkOnceIfMethodSucceeded() {
-        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ACTION_RETRIER.doWithRetry(() -> "", Collections.emptyList()));
+        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ACTION_RETRIER.doWithRetry(() -> System.out.println(""), Collections.emptyList()));
     }
 
     @Test
