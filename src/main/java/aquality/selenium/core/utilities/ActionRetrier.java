@@ -4,7 +4,6 @@ import aquality.selenium.core.configurations.IRetryConfiguration;
 import com.google.inject.Inject;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ActionRetrier implements IActionRetrier {
