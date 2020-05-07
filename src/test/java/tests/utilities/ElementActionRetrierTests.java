@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -26,8 +27,13 @@ public class ElementActionRetrierTests extends RetrierTest{
     }
 
     @Test
+    public void testElementRetrierShouldWorkWhenSupplierReturnsNull() {
+        Assert.assertNull(ELEMENT_ACTION_RETRIER.doWithRetry(() -> null, Collections.emptyList()));
+    }
+
+    @Test
     public void testElementRetrierShouldWorkOnceIfMethodSucceeded() {
-        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> ""));
+        checkRetrierShouldWorkOnceIfMethodSucceeded(() -> ELEMENT_ACTION_RETRIER.doWithRetry(() -> System.out.println("")));
     }
 
     @Test

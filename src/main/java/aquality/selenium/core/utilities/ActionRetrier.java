@@ -4,7 +4,6 @@ import aquality.selenium.core.configurations.IRetryConfiguration;
 import com.google.inject.Inject;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ActionRetrier implements IActionRetrier {
@@ -28,10 +27,10 @@ public class ActionRetrier implements IActionRetrier {
     @Override
     public <T> T doWithRetry(Supplier<T> function, Collection<Class<? extends Throwable>> handledExceptions) {
         int retryAttemptsLeft = retryConfiguration.getNumber();
-        Optional<T> result = Optional.empty();
+        T result = null;
         while (retryAttemptsLeft >= 0) {
             try {
-                result = Optional.of(function.get());
+                result = function.get();
                 break;
             } catch (Exception exception) {
                 if (isExceptionHandled(handledExceptions, exception) && retryAttemptsLeft != 0) {
@@ -46,7 +45,7 @@ public class ActionRetrier implements IActionRetrier {
                 }
             }
         }
-        return result.orElse(null);
+        return result;
     }
 
     protected boolean isExceptionHandled(Collection<Class<? extends Throwable>> handledExceptions, Exception exception) {
