@@ -18,6 +18,7 @@ import java.util.function.Consumer;
 import static org.testng.Assert.*;
 
 public class SettingsFileTests extends BaseProfileTest {
+
     private static final String TIMEOUT_POLLING_INTERVAL_PATH = "/timeouts/timeoutPollingInterval";
     private static final String NULLVALUE_PATH = "/nullValue";
     private static final String ABSENTVALUE_PATH = "/absentvalue";
@@ -27,16 +28,23 @@ public class SettingsFileTests extends BaseProfileTest {
     private static final String BOOLEANVALUE_ENV_KEY = "booleanValue";
     private static final String PROFILE = "jsontest";
     private static final String FILE_NAME = String.format("settings.%s.json", PROFILE);
-    private ISettingsFile jsonSettingsFile;
-    private static final Map EXPECTED_LANGUAGES = new HashMap<String, String>() {{
+    private static final Map<String, String> EXPECTED_LANGUAGES = new HashMap<String, String>() {{
         put("language", "ru");
     }};
+
+    private ISettingsFile jsonSettingsFile;
 
     @BeforeMethod
     public void before() {
         System.setProperty(PROFILE_KEY, PROFILE);
         CustomAqualityServices.initInjector(getTestModule());
         jsonSettingsFile = CustomAqualityServices.getServiceProvider().getInstance(ISettingsFile.class);
+    }
+
+    @Test
+    public void testShouldBePossibleToGetMapWithJsonObject() {
+        Map<String, Object> capabilities = jsonSettingsFile.getMap("/".concat("capabilities"));
+        assertFalse(capabilities.get("loggingPrefs").toString().isEmpty());
     }
 
     @Test
@@ -83,7 +91,7 @@ public class SettingsFileTests extends BaseProfileTest {
     @Test
     public void testShouldBePossibleToGetListOfValues() {
         String argumentsPath = "/arguments/start";
-        List expectedArguments = Arrays.asList("first", "second");
+        List<String> expectedArguments = Arrays.asList("first", "second");
 
         List<String> arguments = jsonSettingsFile.getList(argumentsPath);
         assertNotNull(arguments);
@@ -101,12 +109,12 @@ public class SettingsFileTests extends BaseProfileTest {
     public void testShouldBePossibleToGetMap() {
         String loggerPath = "/logger";
 
-        Map languages = jsonSettingsFile.getMap(loggerPath);
+        Map<String, Object> languages = jsonSettingsFile.getMap(loggerPath);
         assertNotNull(languages);
         assertEquals(languages, EXPECTED_LANGUAGES, String.format("Map of values in settings file '%s' should be read correctly", FILE_NAME));
 
         String newLanguageValue = "newLangMap";
-        Map expectedLanguages = new HashMap<String, String>() {{
+        Map<String, String> expectedLanguages = new HashMap<String, String>() {{
             put("language", newLanguageValue);
         }};
         System.setProperty(LANGUAGE_ENV_KEY, newLanguageValue);
