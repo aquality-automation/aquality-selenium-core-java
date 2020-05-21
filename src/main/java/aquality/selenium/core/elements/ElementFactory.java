@@ -64,6 +64,19 @@ public class ElementFactory implements IElementFactory {
     }
 
     @Override
+    public <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name, Class<T> clazz, ElementsCount count, ElementState state) {
+        IElementSupplier<T> elementSupplier = getDefaultElementSupplier(clazz);
+        return findChildElements(parentElement, childLoc, name, elementSupplier, count, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name, IElementSupplier<T> supplier, ElementsCount count, ElementState state) {
+        String childName = name == null ? "Child element of ".concat(parentElement.getName()) : name;
+        By fullLocator = new ByChained(parentElement.getLocator(), childLoc);
+        return findElements(fullLocator, childName, supplier, count, state);
+    }
+
+    @Override
     public <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier,
                                                      ElementsCount count, ElementState state) {
         try {
