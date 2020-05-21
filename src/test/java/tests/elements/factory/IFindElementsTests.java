@@ -42,6 +42,14 @@ public interface IFindElementsTests {
     }
 
     @Test
+    default void testShouldBePossibleToWorkWithElementsFoundByDottedLocator(){
+        List<ICustomElement> elements = findElements(CalculatorWindow.getDottedXPathLocator(), ICustomElement.class);
+        Assert.assertFalse(elements.isEmpty());
+        Assert.assertEquals(elements.stream().map(IElement::getElement).toArray().length, elements.size(),
+                "elements count not match to expected");
+    }
+
+    @Test
     default void shouldBePossibleToFindCustomElementsViaCustomFactory() {
         Assert.assertTrue(findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class).size() > 1);
     }

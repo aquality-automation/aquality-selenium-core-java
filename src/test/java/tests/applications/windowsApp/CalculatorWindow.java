@@ -45,6 +45,10 @@ public class CalculatorWindow {
         return By.xpath("//*[@Name='=']");
     }
 
+    public static By getDottedXPathLocator() {
+        return By.xpath("//*[@Name='=']/parent::Window");
+    }
+
     public static By getResultsLabelLoc() {
         return MobileBy.AccessibilityId("48");
     }
