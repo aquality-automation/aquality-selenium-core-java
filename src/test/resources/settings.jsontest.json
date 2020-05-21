@@ -1,4 +1,11 @@
 {
+  "capabilities": {
+    "loggingPrefs": {
+      "driver": "INFO",
+      "server": "OFF",
+      "browser": "FINE"
+    }
+  },
   "timeouts": {
     "timeoutImplicit": 1000,
     "timeoutCondition": 1000,

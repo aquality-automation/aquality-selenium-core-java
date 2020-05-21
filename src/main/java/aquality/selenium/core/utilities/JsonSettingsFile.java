@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public class JsonSettingsFile implements ISettingsFile {
 
@@ -34,9 +36,9 @@ public class JsonSettingsFile implements ISettingsFile {
     private Object getEnvValueOrDefault(String jsonPath, boolean throwIfEmpty) {
         String envVar = getEnvValue(jsonPath);
         JsonNode node = getJsonNode(jsonPath, throwIfEmpty && envVar == null);
-        return !node.isMissingNode()
-                ? castEnvOrDefaulValue(node, envVar)
-                : envVar;
+        return node.isMissingNode()
+                ? envVar
+                : castEnvOrDefaultValue(node, envVar);
     }
 
     /**
@@ -46,7 +48,7 @@ public class JsonSettingsFile implements ISettingsFile {
      * @param envVar value got from environment variable
      * @return Value, casted to specific type.
      */
-    private Object castEnvOrDefaulValue(JsonNode node, String envVar) {
+    private Object castEnvOrDefaultValue(JsonNode node, String envVar) {
         if (node.isBoolean()) {
             return envVar == null ? node.asBoolean() : Boolean.parseBoolean(envVar);
         } else if (node.isLong()) {
@@ -55,6 +57,8 @@ public class JsonSettingsFile implements ISettingsFile {
             return envVar == null ? node.asInt() : Integer.parseInt(envVar);
         } else if (node.isDouble()) {
             return envVar == null ? node.asDouble() : Double.parseDouble(envVar);
+        } else if (node.isObject()) {
+            return envVar == null ? node.toString() : envVar;
         } else {
             return envVar == null ? node.asText() : envVar;
         }
@@ -66,29 +70,31 @@ public class JsonSettingsFile implements ISettingsFile {
         if (envVar != null) {
             Logger.getInstance().debug(String.format("***** Using variable passed from environment %1$s=%2$s", key, envVar));
         }
-
         return envVar;
     }
 
     @Override
     public List<String> getList(String jsonPath) {
-        List<String> list = new ArrayList<>();
+        List<String> list;
         String envVar = getEnvValue(jsonPath);
         if (envVar != null) {
-            Arrays.stream(envVar.split(",")).forEach(element -> list.add(element.trim()));
+            list = Arrays.stream(envVar.split(","))
+                    .map(String::trim)
+                    .collect(Collectors.toList());
         } else {
-            getJsonNode(jsonPath).elements().forEachRemaining(node -> list.add(node.asText()));
+            Spliterator<JsonNode> spliterator = Spliterators.spliteratorUnknownSize(getJsonNode(jsonPath).elements(), Spliterator.ORDERED);
+            list = StreamSupport.stream(spliterator, false)
+                    .map(JsonNode::asText)
+                    .collect(Collectors.toList());
         }
-
         return list;
     }
 
     @Override
     public Map<String, Object> getMap(String jsonPath) {
-        Iterator<Entry<String, JsonNode>> iterator = getJsonNode(jsonPath).fields();
-        final Map<String, Object> result = new HashMap<>();
-        iterator.forEachRemaining(entry -> result.put(entry.getKey(), getValue(jsonPath + "/" + entry.getKey())));
-        return result;
+        Spliterator<Entry<String, JsonNode>> spliterator = Spliterators.spliteratorUnknownSize(getJsonNode(jsonPath).fields(), Spliterator.ORDERED);
+        return StreamSupport.stream(spliterator, false)
+                .collect(Collectors.toMap(Entry::getKey, entry -> getValue(jsonPath + "/" + entry.getKey())));
     }
 
     private JsonNode getJsonNode(String jsonPath) {
