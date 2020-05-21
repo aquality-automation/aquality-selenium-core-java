@@ -13,10 +13,12 @@ import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
 import org.testng.annotations.AfterGroups;
 import org.testng.annotations.BeforeGroups;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import tests.applications.windowsApp.AqualityServices;
 import tests.applications.windowsApp.CalculatorWindow;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface IFindElementsTests {
@@ -26,12 +28,22 @@ public interface IFindElementsTests {
 
     <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementsCount count);
 
+    <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz, ElementState state);
+
+    <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementState state);
+
     <T extends IElement> List<T> findElements(By locator, Class<T> clazz);
 
     <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz);
 
     <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementsCount count,
                                               ElementState state);
+
+    <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementState state);
+
+    <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementState state);
+
+    <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier);
 
     <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count,
                                               ElementState state);
@@ -41,12 +53,20 @@ public interface IFindElementsTests {
                 AqualityServices.get(IElementFinder.class), AqualityServices.get(ILocalizationManager.class));
     }
 
-    @Test
-    default void testShouldBePossibleToWorkWithElementsFoundByDottedLocator(){
-        List<ICustomElement> elements = findElements(CalculatorWindow.getDottedXPathLocator(), ICustomElement.class);
+    @Test(dataProvider = "getSupportedLocators")
+    default void testShouldBePossibleToWorkWithElementsFoundBySpecificLocator(By locator) {
+        List<ICustomElement> elements = findElements(locator, "some elements", CustomElement::new, ElementState.EXISTS_IN_ANY_STATE);
         Assert.assertFalse(elements.isEmpty());
         Assert.assertEquals(elements.stream().map(IElement::getElement).toArray().length, elements.size(),
                 "elements count not match to expected");
+    }
+
+    @DataProvider
+    default Object[] getSupportedLocators() {
+        List<By> locators = new ArrayList<>();
+        locators.add(CalculatorWindow.getDottedXPathLocator());
+        locators.add(CalculatorWindow.getTagNameLocator());
+        return locators.toArray();
     }
 
     @Test
@@ -70,20 +90,27 @@ public interface IFindElementsTests {
     default void shouldBePossibleToFindCustomElementsViaSupplierWithCustomName() {
         String customName = "56789";
         Assert.assertTrue(findElements(
-                CalculatorWindow.getEqualsButtonByXPath(), customName, CustomElement::new, ElementsCount.MORE_THEN_ZERO,
-                ElementState.EXISTS_IN_ANY_STATE).get(0).getName().contains(customName));
+                CalculatorWindow.getEqualsButtonByXPath(), customName, CustomElement::new)
+                .get(0).getName().contains(customName));
+    }
+
+    @Test
+    default void shouldBePossibleToFindCustomElementsViaSupplierWithoutName() {
+        Assert.assertFalse(findElements(
+                CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementState.EXISTS_IN_ANY_STATE)
+                .get(0).getName().isEmpty());
     }
 
     @Test
     default void shouldBePossibleToFindCustomElementsViaSupplierWithCustomState() {
         Assert.assertEquals(findElements(
-                CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementsCount.MORE_THEN_ZERO,
-                ElementState.EXISTS_IN_ANY_STATE).get(0).getState(), ElementState.EXISTS_IN_ANY_STATE);
+                CalculatorWindow.getEqualsButtonByXPath(), "equals", CustomElement::new, ElementsCount.ANY, ElementState.EXISTS_IN_ANY_STATE)
+                .get(0).getState(), ElementState.EXISTS_IN_ANY_STATE);
     }
 
     @Test
     default void shouldBePossibleToFindCustomElementsViaCustomFactoryWithDefaultElementsCount() {
-        Assert.assertTrue(findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementsCount.ANY).size() > 1);
+        Assert.assertTrue(findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementState.EXISTS_IN_ANY_STATE).size() > 1);
     }
 
     @Test
@@ -107,7 +134,8 @@ public interface IFindElementsTests {
 
     @Test
     default void shouldThrowInvalidArgumentExceptionInFindElementsWhenLocatorIsNotSupported() {
-        Assert.assertThrows(InvalidArgumentException.class, () -> findElements(CalculatorWindow.getEqualsButtonLoc(), ICustomElement.class, ElementsCount.MORE_THEN_ZERO));
+        Assert.assertThrows(InvalidArgumentException.class,
+                () -> findElements(CalculatorWindow.getEqualsButtonLoc(), "equals", ICustomElement.class, ElementState.EXISTS_IN_ANY_STATE));
     }
 
     @BeforeGroups("timeout")

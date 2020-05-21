@@ -5,10 +5,7 @@ import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.core.elements.interfaces.IElement;
 import aquality.selenium.core.elements.interfaces.IElementFactory;
-import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.elements.interfaces.IElementSupplier;
-import aquality.selenium.core.localization.ILocalizationManager;
-import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -129,6 +126,16 @@ public class ElementFactoryTests implements ITestWithApplication, IFindElementsT
     }
 
     @Override
+    public <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz, ElementState state) {
+        return customFactory().findElements(locator, name, clazz, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementState state) {
+        return customFactory().findElements(locator, clazz, state);
+    }
+
+    @Override
     public <T extends IElement> List<T> findElements(By locator, Class<T> clazz) {
         return customFactory().findElements(locator, clazz);
     }
@@ -141,6 +148,21 @@ public class ElementFactoryTests implements ITestWithApplication, IFindElementsT
     @Override
     public <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementsCount count, ElementState state) {
         return customFactory().findElements(locator, name, supplier, count, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementState state) {
+        return customFactory().findElements(locator, name, supplier, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementState state) {
+        return customFactory().findElements(locator, supplier, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier) {
+        return customFactory().findElements(locator, name, supplier);
     }
 
     @Override

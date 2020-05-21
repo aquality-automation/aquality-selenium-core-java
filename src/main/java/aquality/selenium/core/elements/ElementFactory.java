@@ -9,6 +9,7 @@ import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import com.google.inject.Inject;
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByTagName;
 import org.openqa.selenium.By.ByXPath;
 import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.WebElement;
@@ -26,6 +27,8 @@ import java.util.concurrent.TimeoutException;
 public class ElementFactory implements IElementFactory {
 
     private static final int XPATH_SUBSTRING_BEGIN_INDEX = 10;
+    private static final int TAGNAME_SUBSTRING_BEGIN_INDEX = 12;
+    private static final String TAGNAME_XPATH_PREFIX = "//";
     private static final Duration ZERO_TIMEOUT = Duration.ZERO;
 
     private final IConditionalWait conditionalWait;
@@ -59,7 +62,7 @@ public class ElementFactory implements IElementFactory {
     @Override
     public <T extends IElement> T findChildElement(IElement parentElement, By childLoc, String name, IElementSupplier<T> supplier, ElementState state) {
         String childName = name == null ? "Child element of ".concat(parentElement.getName()) : name;
-        By fullLocator = new ByChained(parentElement.getLocator(), childLoc);
+        By fullLocator = generateAbsoluteChildLocator(parentElement.getLocator(), childLoc);
         return supplier.get(fullLocator, childName, state);
     }
 
@@ -72,7 +75,7 @@ public class ElementFactory implements IElementFactory {
     @Override
     public <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name, IElementSupplier<T> supplier, ElementsCount count, ElementState state) {
         String childName = name == null ? "Child element of ".concat(parentElement.getName()) : name;
-        By fullLocator = new ByChained(parentElement.getLocator(), childLoc);
+        By fullLocator = generateAbsoluteChildLocator(parentElement.getLocator(), childLoc);
         return findElements(fullLocator, childName, supplier, count, state);
     }
 
@@ -132,14 +135,61 @@ public class ElementFactory implements IElementFactory {
      * @return target element's locator
      */
     protected By generateXpathLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
-        Class supportedLocatorType = ByXPath.class;
-        if (multipleElementsLocator.getClass().equals(supportedLocatorType)) {
+        if (isLocatorSupportedForXPathGeneration(multipleElementsLocator)) {
             return By.xpath(
-                    String.format("(%1$s)[%2$s]", multipleElementsLocator.toString().substring(XPATH_SUBSTRING_BEGIN_INDEX), elementIndex));
+                    String.format("(%1$s)[%2$s]", extractXPathFromLocator(multipleElementsLocator), elementIndex));
         }
         throw new InvalidArgumentException(String.format(
-                "Cannot define unique baseLocator for element %1$s. Multiple elements' baseLocator %2$s is not %3$s, and is not supported yet",
-                webElement.toString(), multipleElementsLocator, supportedLocatorType));
+                "Cannot define unique baseLocator for element %1$s. Multiple elements' baseLocator type %2$s is not supported yet",
+                webElement.toString(), multipleElementsLocator.getClass()));
+    }
+
+    /**
+     * Extracts XPath from passed locator.
+     * Current implementation works only with ByXPath.class and ByTagName locator types,
+     * but you can implement your own for the specific WebDriver type.
+     *
+     * @param locator locator to get xpath from.
+     * @return extracted XPath.
+     */
+    protected String extractXPathFromLocator(By locator) {
+        Class supportedLocatorType = ByXPath.class;
+        if (locator.getClass().equals(supportedLocatorType)) {
+            return locator.toString().substring(XPATH_SUBSTRING_BEGIN_INDEX);
+        }
+        if (locator.getClass().equals(ByTagName.class)){
+            return TAGNAME_XPATH_PREFIX + locator.toString().substring(TAGNAME_SUBSTRING_BEGIN_INDEX);
+        }
+        throw new InvalidArgumentException(String.format(
+                "Cannot define xpath from locator %1$s. Locator type %2$s is not %3$s, and is not supported yet",
+                locator.toString(), locator.getClass(), supportedLocatorType));
+    }
+
+    /**
+     * Generates absolute child locator for target element.
+     *
+     * @param parentLoc parent locator
+     * @param childLoc child locator relative to parent
+     * @return absolute locator of the child
+     */
+    protected By generateAbsoluteChildLocator(By parentLoc, By childLoc) {
+        return isLocatorSupportedForXPathGeneration(parentLoc)
+                && isLocatorSupportedForXPathGeneration(childLoc)
+                && !extractXPathFromLocator(childLoc).startsWith(".")
+                ? By.xpath(extractXPathFromLocator(parentLoc).concat(extractXPathFromLocator(childLoc)))
+                : new ByChained(parentLoc, childLoc);
+    }
+
+    /**
+     * Defines is the locator can be transformed to xpath or not.
+     * Current implementation works only with ByXPath.class and ByTagName locator types,
+     * but you can implement your own for the specific WebDriver type.
+     *
+     * @param locator locator to transform
+     * @return true if the locator can be transformed to xpath, false otherwise.
+     */
+    protected boolean isLocatorSupportedForXPathGeneration(By locator) {
+        return locator.getClass().equals(ByXPath.class) || locator.getClass().equals(ByTagName.class);
     }
 
     /**

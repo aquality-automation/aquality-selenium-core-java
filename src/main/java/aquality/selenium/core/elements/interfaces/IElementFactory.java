@@ -428,6 +428,62 @@ public interface IElementFactory {
      * Find list of elements.
      *
      * @param locator  Elements selector.
+     * @param name     Child element name.
+     * @param supplier Required elements' supplier.
+     * @param state    Visibility state of target elements.
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier,
+                                                      ElementState state) {
+        return findElements(locator, name, supplier, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator  Elements selector.
+     * @param supplier Required elements' supplier.
+     * @param state    Visibility state of target elements.
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier,
+                                                      ElementState state) {
+        return findElements(locator, null, supplier, state);
+    }
+
+    /**
+     * Find list of displayed elements.
+     *
+     * @param locator  Elements selector.
+     * @param name     Child element name.
+     * @param supplier Required elements' supplier.
+     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementsCount count) {
+        return findElements(locator, name, supplier, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Find list of displayed elements.
+     *
+     * @param locator  Elements selector.
+     * @param name     Child element name.
+     * @param supplier Required elements' supplier.
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier) {
+        return findElements(locator, name, supplier, ElementsCount.ANY);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator  Elements selector.
      * @param supplier Required elements' supplier.
      * @param count    Expected number of elements that have to be found (zero, more then zero, any).
      * @param state    Visibility state of target elements.
@@ -456,6 +512,20 @@ public interface IElementFactory {
      * Find list of elements.
      *
      * @param locator Elements selector.
+     * @param name    Child element name.
+     * @param clazz   Class or interface of the element to be obtained.
+     * @param state   Visibility state of target elements.
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz, ElementState state) {
+        return findElements(locator, name, clazz, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
      * @param clazz   Class or interface of the element to be obtained.
      * @param count   Expected number of elements that have to be found (zero, more then zero, any).
      * @param state   Visibility state of target elements.
@@ -464,6 +534,19 @@ public interface IElementFactory {
      */
     default <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementsCount count, ElementState state) {
         return findElements(locator, null, clazz, count, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
+     * @param clazz   Class or interface of the element to be obtained.
+     * @param state   Visibility state of target elements.
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementState state) {
+        return findElements(locator, null, clazz, ElementsCount.ANY, state);
     }
 
     /**
