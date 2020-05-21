@@ -130,12 +130,12 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz, ElementsCount count, ElementState state) {
+    public <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz, ElementState state, ElementsCount count) {
         return getElementFactory().findChildElements(this, childLoc, name, clazz, count, state);
     }
 
     @Override
-    public <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier, ElementsCount count, ElementState state) {
+    public <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier, ElementState state, ElementsCount count) {
         return getElementFactory().findChildElements(this, childLoc, name, supplier, count, state);
     }
 
