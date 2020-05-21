@@ -17,6 +17,10 @@ public class CalculatorWindow {
         return new CustomElement(getWindowLocator(), "Window", ElementState.DISPLAYED);
     }
 
+    public static CustomElement getWindowByXPathLabel() {
+        return new CustomElement(By.xpath("//Window"), "Window", ElementState.DISPLAYED);
+    }
+
     public static By getOneButtonLoc() {
         return By.name("1");
     }

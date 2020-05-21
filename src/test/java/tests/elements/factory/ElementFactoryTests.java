@@ -6,43 +6,22 @@ import aquality.selenium.core.elements.ElementsCount;
 import aquality.selenium.core.elements.interfaces.IElement;
 import aquality.selenium.core.elements.interfaces.IElementFactory;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.elements.interfaces.IElementSupplier;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import org.openqa.selenium.InvalidArgumentException;
-import org.openqa.selenium.TimeoutException;
 import org.testng.Assert;
-import org.testng.annotations.AfterGroups;
-import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.Test;
 import tests.ITestWithApplication;
 import tests.applications.windowsApp.AqualityServices;
 import tests.applications.windowsApp.CalculatorWindow;
 
-public class ElementFactoryTests implements ITestWithApplication {
-    private static final String CONDITION_TIMEOUT_KEY = "timeouts.timeoutCondition";
-    private static final String NEW_TIMEOUT_VALUE = "5";
-    private static final int XPATH_SUBSTRING_BEGIN_INDEX = 10;
+import java.util.List;
 
-    private CustomElementFactory customFactory() {
-        return new CustomElementFactory(AqualityServices.get(IConditionalWait.class),
-                AqualityServices.get(IElementFinder.class), AqualityServices.get(ILocalizationManager.class));
-    }
+public class ElementFactoryTests implements ITestWithApplication, IFindElementsTests {
 
     private IElementFactory defaultFactory() {
         return AqualityServices.get(IElementFactory.class);
-    }
-
-    @BeforeGroups("timeout")
-    public void setupTimeout() {
-        System.setProperty(CONDITION_TIMEOUT_KEY, NEW_TIMEOUT_VALUE);
-        AqualityServices.resetInjector();
-    }
-
-    @AfterGroups("timeout")
-    public void resetTimeout() {
-        System.clearProperty(CONDITION_TIMEOUT_KEY);
-        AqualityServices.resetInjector();
     }
 
     private IElement getParentElement() {
@@ -65,69 +44,8 @@ public class ElementFactoryTests implements ITestWithApplication {
     }
 
     @Test
-    public void shouldBePossibleToFindCustomElementsViaCustomFactory() {
-        Assert.assertTrue(customFactory().findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class).size() > 1);
-    }
-
-    @Test
     public void shouldBePossibleToFindCustomElementsViaDefaultFactoryUsingImplementation() {
         Assert.assertTrue(defaultFactory().findElements(CalculatorWindow.getEqualsButtonByXPath(), CustomElement.class).size() > 1);
-    }
-
-    @Test
-    public void shouldBePossibleToFindCustomElementsViaCustomFactoryWithCustomElementsCount() {
-        Assert.assertTrue(customFactory().findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementsCount.MORE_THEN_ZERO).size() > 1);
-    }
-
-    @Test
-    public void shouldBePossibleToFindCustomElementsViaSupplierWithDefaultName() {
-        Assert.assertTrue(customFactory().findElements(
-                CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementsCount.MORE_THEN_ZERO,
-                ElementState.EXISTS_IN_ANY_STATE).size() > 1);
-    }
-
-    @Test
-    public void shouldBePossibleToFindCustomElementsViaSupplierWithCustomName() {
-        String customName = "56789";
-        Assert.assertTrue(customFactory().findElements(
-                CalculatorWindow.getEqualsButtonByXPath(), customName, CustomElement::new, ElementsCount.MORE_THEN_ZERO,
-                ElementState.EXISTS_IN_ANY_STATE).get(0).getName().contains(customName));
-    }
-
-    @Test
-    public void shouldBePossibleToFindCustomElementsViaSupplierWithCustomState() {
-        Assert.assertEquals(customFactory().findElements(
-                CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementsCount.MORE_THEN_ZERO,
-                ElementState.EXISTS_IN_ANY_STATE).get(0).getState(), ElementState.EXISTS_IN_ANY_STATE);
-    }
-
-    @Test
-    public void shouldBePossibleToFindCustomElementsViaCustomFactoryWithDefaultElementsCount() {
-        Assert.assertTrue(customFactory().findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementsCount.ANY).size() > 1);
-    }
-
-    @Test
-    public void shouldSetCorrectParametersWhenFindElements() {
-        String customName = "asd";
-        ICustomElement element = customFactory().findElements(CalculatorWindow.getEqualsButtonByXPath(), customName, ICustomElement.class).get(1);
-        Assert.assertNotEquals(element.getName(), customName);
-        Assert.assertTrue(element.getName().contains(customName));
-        Assert.assertTrue(element.getLocator().toString().contains(CalculatorWindow.getEqualsButtonByXPath().toString().substring(XPATH_SUBSTRING_BEGIN_INDEX)));
-    }
-
-    @Test
-    public void shouldBePossibleToFindCustomElementsViaCustomFactoryWithZeroElementsCount() {
-        Assert.assertTrue(customFactory().findElements(By.name("any"), ICustomElement.class, ElementsCount.ANY).isEmpty());
-    }
-
-    @Test(groups = "timeout")
-    public void shouldThrowTimeoutExceptionWhenCountIsNotExpected() {
-        Assert.assertThrows(TimeoutException.class, () -> customFactory().findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementsCount.ZERO));
-    }
-
-    @Test
-    public void shouldThrowInvalidArgumentExceptionInFindElementsWhenLocatorIsNotSupported() {
-        Assert.assertThrows(InvalidArgumentException.class, () -> customFactory().findElements(CalculatorWindow.getEqualsButtonLoc(), ICustomElement.class, ElementsCount.MORE_THEN_ZERO));
     }
 
     @Test
@@ -203,5 +121,30 @@ public class ElementFactoryTests implements ITestWithApplication {
     @Override
     public boolean isApplicationStarted() {
         return AqualityServices.isApplicationStarted();
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementsCount count) {
+        return customFactory().findElements(locator, clazz, count);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, Class<T> clazz) {
+        return customFactory().findElements(locator, clazz);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz) {
+        return customFactory().findElements(locator, name, clazz);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementsCount count, ElementState state) {
+        return customFactory().findElements(locator, name, supplier, count, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier, ElementsCount count, ElementState state) {
+        return customFactory().findElements(locator, supplier, count, state);
     }
 }
