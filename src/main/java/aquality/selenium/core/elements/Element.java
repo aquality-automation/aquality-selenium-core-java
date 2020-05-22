@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.function.Supplier;
 
 public abstract class Element implements IElement {
@@ -126,6 +127,16 @@ public abstract class Element implements IElement {
     @Override
     public <T extends IElement> T findChildElement(By childLoc, String name, IElementSupplier<T> supplier, ElementState state) {
         return getElementFactory().findChildElement(this, childLoc, name, supplier, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz, ElementState state, ElementsCount count) {
+        return getElementFactory().findChildElements(this, childLoc, name, clazz, count, state);
+    }
+
+    @Override
+    public <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier, ElementState state, ElementsCount count) {
+        return getElementFactory().findChildElements(this, childLoc, name, supplier, count, state);
     }
 
     protected <T> T doWithRetry(Supplier<T> action) {

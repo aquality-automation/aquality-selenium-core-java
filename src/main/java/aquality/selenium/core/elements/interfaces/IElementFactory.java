@@ -76,7 +76,7 @@ public interface IElementFactory {
                                             Class<T> clazz, ElementState state);
 
     /**
-     * Finds child element in any state by its locator relative to parent element.
+     * Finds displayed child element by its locator relative to parent element.
      *
      * @param childLoc      Locator of child element relative to its parent.
      * @param clazz         Class or interface of the element to be obtained.
@@ -87,7 +87,7 @@ public interface IElementFactory {
      */
     default <T extends IElement> T findChildElement(IElement parentElement, By childLoc, String name,
                                                     Class<T> clazz) {
-        return findChildElement(parentElement, childLoc, name, clazz, ElementState.EXISTS_IN_ANY_STATE);
+        return findChildElement(parentElement, childLoc, name, clazz, ElementState.DISPLAYED);
     }
 
     /**
@@ -178,6 +178,239 @@ public interface IElementFactory {
     }
 
     /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           Class<T> clazz) {
+        return findChildElements(parentElement, childLoc, clazz, ElementsCount.ANY);
+    }
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           Class<T> clazz, ElementsCount count) {
+        return findChildElements(parentElement, childLoc, clazz, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @param state         Visibility state of child elements.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           Class<T> clazz,
+                                                           ElementState state) {
+        return findChildElements(parentElement, childLoc, clazz, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @param state         Visibility state of child elements.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           Class<T> clazz, ElementsCount count,
+                                                           ElementState state) {
+        return findChildElements(parentElement, childLoc, null, clazz, count, state);
+    }
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param name          Child elements name.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                           Class<T> clazz) {
+        return findChildElements(parentElement, childLoc, name, clazz, ElementsCount.ANY);
+    }
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param name          Child elements name.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                           Class<T> clazz, ElementsCount count) {
+        return findChildElements(parentElement, childLoc, name, clazz, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param name          Child elements name.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @param state         Visibility state of child elements.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                           Class<T> clazz, ElementState state) {
+        return findChildElements(parentElement, childLoc, name, clazz, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param clazz         Class or interface of the elements to be obtained.
+     * @param name          Child elements name.
+     * @param parentElement Parent element for relative search of child elements.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @param state         Visibility state of target elements.
+     * @param <T>           Type of the target elements.
+     * @return List of child elements.
+     */
+    <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name, Class<T> clazz,
+                                                   ElementsCount count, ElementState state);
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param supplier      Required elements' supplier.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           IElementSupplier<T> supplier) {
+        return findChildElements(parentElement, childLoc, supplier, ElementsCount.ANY);
+    }
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param supplier      Required elements' supplier.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           IElementSupplier<T> supplier, ElementsCount count) {
+        return findChildElements(parentElement, childLoc, supplier, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param supplier      Required elements' supplier.
+     * @param state         Visibility state of child elements.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           IElementSupplier<T> supplier,
+                                                           ElementState state) {
+        return findChildElements(parentElement, childLoc, supplier, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param supplier      Required elements' supplier.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @param state         Visibility state of child elements.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc,
+                                                           IElementSupplier<T> supplier, ElementsCount count,
+                                                           ElementState state) {
+        return findChildElements(parentElement, childLoc, null, supplier, count, state);
+    }
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param name          Child elements name.
+     * @param supplier      Required elements' supplier.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                           IElementSupplier<T> supplier) {
+        return findChildElements(parentElement, childLoc, name, supplier, ElementsCount.ANY);
+    }
+
+    /**
+     * Finds displayed child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param name          Child elements name.
+     * @param supplier      Required elements' supplier.
+     * @param count         Expected number of elements that have to be found (zero, more then zero, any).
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                           IElementSupplier<T> supplier, ElementsCount count) {
+        return findChildElements(parentElement, childLoc, name, supplier, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param parentElement Parent element for relative search of child elements.
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param name          Child elements name.
+     * @param supplier      Required elements' supplier.
+     * @param state         Visibility state of child elements.
+     * @return List of child elements.
+     */
+    default <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                           IElementSupplier<T> supplier, ElementState state) {
+        return findChildElements(parentElement, childLoc, name, supplier, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Finds child elements by their locator relative to parent element.
+     *
+     * @param childLoc      Locator of child elements relative to its parent.
+     * @param supplier      Required elements' supplier.
+     * @param name          Child elements name.
+     * @param parentElement Parent element for relative search of child elements.
+     * @param state         Visibility state of child elements.
+     * @param <T>           Type of the target elements.
+     * @return List of child elements.
+     */
+    <T extends IElement> List<T> findChildElements(IElement parentElement, By childLoc, String name,
+                                                   IElementSupplier<T> supplier, ElementsCount count, ElementState state);
+
+    /**
      * Find list of elements.
      *
      * @param locator  Elements selector.
@@ -190,6 +423,62 @@ public interface IElementFactory {
      */
     <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementsCount count,
                                               ElementState state);
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator  Elements selector.
+     * @param name     Child element name.
+     * @param supplier Required elements' supplier.
+     * @param state    Visibility state of target elements.
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier,
+                                                      ElementState state) {
+        return findElements(locator, name, supplier, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator  Elements selector.
+     * @param supplier Required elements' supplier.
+     * @param state    Visibility state of target elements.
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, IElementSupplier<T> supplier,
+                                                      ElementState state) {
+        return findElements(locator, null, supplier, state);
+    }
+
+    /**
+     * Find list of displayed elements.
+     *
+     * @param locator  Elements selector.
+     * @param name     Child element name.
+     * @param supplier Required elements' supplier.
+     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier, ElementsCount count) {
+        return findElements(locator, name, supplier, count, ElementState.DISPLAYED);
+    }
+
+    /**
+     * Find list of displayed elements.
+     *
+     * @param locator  Elements selector.
+     * @param name     Child element name.
+     * @param supplier Required elements' supplier.
+     * @param <T>      Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, IElementSupplier<T> supplier) {
+        return findElements(locator, name, supplier, ElementsCount.ANY);
+    }
 
     /**
      * Find list of elements.
@@ -213,7 +502,7 @@ public interface IElementFactory {
      * @param name    Child element name.
      * @param clazz   Class or interface of the element to be obtained.
      * @param count   Expected number of elements that have to be found (zero, more then zero, any).
-     * @param state    Visibility state of target elements.
+     * @param state   Visibility state of target elements.
      * @param <T>     Type of the target element.
      * @return List of elements.
      */
@@ -223,14 +512,41 @@ public interface IElementFactory {
      * Find list of elements.
      *
      * @param locator Elements selector.
+     * @param name    Child element name.
+     * @param clazz   Class or interface of the element to be obtained.
+     * @param state   Visibility state of target elements.
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, String name, Class<T> clazz, ElementState state) {
+        return findElements(locator, name, clazz, ElementsCount.ANY, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
      * @param clazz   Class or interface of the element to be obtained.
      * @param count   Expected number of elements that have to be found (zero, more then zero, any).
-     * @param state    Visibility state of target elements.
+     * @param state   Visibility state of target elements.
      * @param <T>     Type of the target element.
      * @return List of elements.
      */
     default <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementsCount count, ElementState state) {
         return findElements(locator, null, clazz, count, state);
+    }
+
+    /**
+     * Find list of elements.
+     *
+     * @param locator Elements selector.
+     * @param clazz   Class or interface of the element to be obtained.
+     * @param state   Visibility state of target elements.
+     * @param <T>     Type of the target element.
+     * @return List of elements.
+     */
+    default <T extends IElement> List<T> findElements(By locator, Class<T> clazz, ElementState state) {
+        return findElements(locator, null, clazz, ElementsCount.ANY, state);
     }
 
     /**
