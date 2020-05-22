@@ -66,6 +66,7 @@ public interface IFindElementsTests {
         List<By> locators = new ArrayList<>();
         locators.add(CalculatorWindow.getDottedXPathLocator());
         locators.add(CalculatorWindow.getTagNameLocator());
+        locators.add(CalculatorWindow.getRelativeXPathLocator());
         return locators.toArray();
     }
 

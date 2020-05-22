@@ -173,11 +173,13 @@ public class ElementFactory implements IElementFactory {
      * @return absolute locator of the child
      */
     protected By generateAbsoluteChildLocator(By parentLoc, By childLoc) {
-        return isLocatorSupportedForXPathExtraction(parentLoc)
-                && isLocatorSupportedForXPathExtraction(childLoc)
-                && !extractXPathFromLocator(childLoc).startsWith(".")
-                ? By.xpath(extractXPathFromLocator(parentLoc).concat(extractXPathFromLocator(childLoc)))
-                : new ByChained(parentLoc, childLoc);
+        if (isLocatorSupportedForXPathExtraction(parentLoc) && isLocatorSupportedForXPathExtraction(childLoc)) {
+            String childLocString = extractXPathFromLocator(childLoc);
+            String parentLocString = extractXPathFromLocator(parentLoc);
+            return By.xpath(parentLocString.concat(
+                    childLocString.startsWith(".") ? childLocString.substring(1) : childLocString));
+        }
+        return new ByChained(parentLoc, childLoc);
     }
 
     /**
