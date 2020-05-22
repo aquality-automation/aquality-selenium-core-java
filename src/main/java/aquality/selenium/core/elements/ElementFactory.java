@@ -135,7 +135,7 @@ public class ElementFactory implements IElementFactory {
      * @return target element's locator
      */
     protected By generateXpathLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
-        if (isLocatorSupportedForXPathGeneration(multipleElementsLocator)) {
+        if (isLocatorSupportedForXPathExtraction(multipleElementsLocator)) {
             return By.xpath(
                     String.format("(%1$s)[%2$s]", extractXPathFromLocator(multipleElementsLocator), elementIndex));
         }
@@ -173,8 +173,8 @@ public class ElementFactory implements IElementFactory {
      * @return absolute locator of the child
      */
     protected By generateAbsoluteChildLocator(By parentLoc, By childLoc) {
-        return isLocatorSupportedForXPathGeneration(parentLoc)
-                && isLocatorSupportedForXPathGeneration(childLoc)
+        return isLocatorSupportedForXPathExtraction(parentLoc)
+                && isLocatorSupportedForXPathExtraction(childLoc)
                 && !extractXPathFromLocator(childLoc).startsWith(".")
                 ? By.xpath(extractXPathFromLocator(parentLoc).concat(extractXPathFromLocator(childLoc)))
                 : new ByChained(parentLoc, childLoc);
@@ -188,7 +188,7 @@ public class ElementFactory implements IElementFactory {
      * @param locator locator to transform
      * @return true if the locator can be transformed to xpath, false otherwise.
      */
-    protected boolean isLocatorSupportedForXPathGeneration(By locator) {
+    protected boolean isLocatorSupportedForXPathExtraction(By locator) {
         return locator.getClass().equals(ByXPath.class) || locator.getClass().equals(ByTagName.class);
     }
 
