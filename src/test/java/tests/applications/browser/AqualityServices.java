@@ -1,5 +1,6 @@
 package tests.applications.browser;
 
+import aquality.selenium.core.applications.AqualityModule;
 import com.google.inject.Injector;
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -8,6 +9,10 @@ public class AqualityServices  extends aquality.selenium.core.applications.Aqual
 
     private AqualityServices() {
         super(AqualityServices::getApplication, null);
+    }
+
+    private <T extends AqualityModule<ChromeApplication>>  AqualityServices(T module) {
+        super(AqualityServices::getApplication, () -> module);
     }
 
     private static AqualityServices getInstance() {
@@ -33,6 +38,13 @@ public class AqualityServices  extends aquality.selenium.core.applications.Aqual
 
     public static Injector getServiceProvider() {
         return getInstance().getInjector();
+    }
+
+    public static <T extends AqualityModule<ChromeApplication>> void initInjector(T module) {
+        if (INSTANCE_CONTAINER.get() != null){
+            INSTANCE_CONTAINER.remove();
+        }
+        INSTANCE_CONTAINER.set(new AqualityServices(module));
     }
 
     public static <T> T get(Class<T> type) {

@@ -6,15 +6,22 @@ import com.google.inject.Inject;
 public class LoggerConfiguration implements ILoggerConfiguration {
 
     private static final String DEFAULT_LANGUAGE = "en";
-    private final ISettingsFile settingsFile;
+    private final String language;
+    private final boolean doLogPageSource;
 
     @Inject
     public LoggerConfiguration(ISettingsFile settingsFile){
-        this.settingsFile = settingsFile;
+        language = settingsFile.getValueOrDefault("/logger/language", DEFAULT_LANGUAGE).toString();
+        doLogPageSource = (Boolean) settingsFile.getValueOrDefault("/logger/logPageSource", true);
     }
 
     @Override
     public String getLanguage() {
-        return settingsFile.getValueOrDefault("/logger/language", DEFAULT_LANGUAGE).toString();
+        return language;
+    }
+
+    @Override
+    public boolean logPageSource() {
+        return doLogPageSource;
     }
 }

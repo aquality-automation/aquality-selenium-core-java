@@ -46,7 +46,18 @@ public class LocalizationManagerTests {
     }
 
     private LocalizationManager getLocalizationManager(String language) {
-        return new LocalizationManager(() -> language, Logger.getInstance());
+        ILoggerConfiguration configuration = new ILoggerConfiguration() {
+            @Override
+            public String getLanguage() {
+                return language;
+            }
+
+            @Override
+            public boolean logPageSource() {
+                return true;
+            }
+        };
+        return new LocalizationManager(configuration, Logger.getInstance());
     }
 
     @Test

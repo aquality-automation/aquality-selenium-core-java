@@ -2,6 +2,7 @@ package aquality.selenium.core.elements;
 
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
+import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.elements.interfaces.*;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
@@ -53,6 +54,10 @@ public abstract class Element implements IElement {
         return elementCacheHandler;
     }
 
+    protected ILoggerConfiguration getLoggerConfiguration() {
+        return getLocalizedLogger().getConfiguration();
+    }
+
     protected Logger getLogger() {
         return Logger.getInstance();
     }
@@ -81,7 +86,9 @@ public abstract class Element implements IElement {
                     ? getCache().getElement(timeout)
                     : (RemoteWebElement) getElementFinder().findElement(locator, elementState, timeout);
         } catch (NoSuchElementException e) {
-            logPageSource(e);
+            if (getLoggerConfiguration().logPageSource()) {
+                logPageSource(e);
+            }
             throw e;
         }
     }
