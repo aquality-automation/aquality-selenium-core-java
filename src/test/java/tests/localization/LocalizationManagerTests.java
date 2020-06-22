@@ -22,6 +22,8 @@ public class LocalizationManagerTests {
     private Object[] keysWithParams() {
         return new String[]{
                 "loc.el.getattr",
+                "loc.el.attr.value",
+                "loc.text.value",
                 "loc.text.sending.keys",
                 "loc.no.elements.found.in.state",
                 "loc.no.elements.found.by.locator",

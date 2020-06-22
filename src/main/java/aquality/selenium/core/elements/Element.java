@@ -105,13 +105,17 @@ public abstract class Element implements IElement {
     @Override
     public String getText() {
         logElementAction("loc.get.text");
-        return doWithRetry(() -> getElement().getText());
+        String value = doWithRetry(() -> getElement().getText());
+        logElementAction("loc.text.value", value);
+        return value;
     }
 
     @Override
     public String getAttribute(String attr) {
         logElementAction("loc.el.getattr", attr);
-        return doWithRetry(() -> getElement().getAttribute(attr));
+        String value = doWithRetry(() -> getElement().getAttribute(attr));
+        logElementAction("loc.el.attr.value", attr, value);
+        return value;
     }
 
     @Override

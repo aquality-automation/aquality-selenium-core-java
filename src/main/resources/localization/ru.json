@@ -1,7 +1,9 @@
 {
   "loc.clicking": "Клик",
   "loc.el.getattr": "Получение аттрибута '%1$s'",
+  "loc.el.attr.value": "Значение аттрибута '%1$s'': [%2$s]",
   "loc.get.text": "Получение текста элемента",
+  "loc.text.value": "Текст элемента: [%1$s]",
   "loc.text.sending.keys": "Нажатие клавиши '%1$s'",
   "loc.no.elements.found.in.state": "Не удалось найти элементов по локатору '%1$s' в %2$s состоянии",
   "loc.no.elements.found.by.locator": "Не удалось найти элементов по локатору '%1$s'",
