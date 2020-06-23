@@ -17,6 +17,8 @@ import static org.testng.Assert.assertEquals;
 public class LocalizationManagerTests {
     private static final String[] SUPPORTED_LANGUAGES = new String[]{"be", "en", "ru"};
     private static final String CLICKING_MESSAGE_KEY = "loc.clicking";
+    private static final String CLICKING_VALUE_BE = "Націскаем";
+    private static final String CLICKING_VALUE_EN = "Clicking";
 
     @DataProvider
     private Object[] keysWithParams() {
@@ -76,13 +78,13 @@ public class LocalizationManagerTests {
 
     @Test
     public void testShouldBePossibleToUseForClicking() {
-        assertEquals(getLocalizationManager().getLocalizedMessage(CLICKING_MESSAGE_KEY), "Clicking",
+        assertEquals(getLocalizationManager().getLocalizedMessage(CLICKING_MESSAGE_KEY), CLICKING_VALUE_EN,
                 "Logger should be configured in English by default and return valid value");
     }
 
     @Test
     public void testShouldBePossibleToUseForClickingWithCustomLanguage() {
-        assertEquals(getLocalizationManager("be").getLocalizedMessage(CLICKING_MESSAGE_KEY), "Націскаем",
+        assertEquals(getLocalizationManager("be").getLocalizedMessage(CLICKING_MESSAGE_KEY), CLICKING_VALUE_BE,
                 "Logger should be configured in custom language when use custom profile, and return valid value");
     }
 
@@ -119,6 +121,23 @@ public class LocalizationManagerTests {
                             keyWithParams, language));
         }
     }
+        
+    @Test
+    public void testShouldReturnNonKeyValueForKeysPresentInCoreIfLanguageMissedInSiblingAssembly()
+    {
+        String localizedValue = getLocalizationManager("en").getLocalizedMessage(CLICKING_MESSAGE_KEY);
+
+        Assert.assertEquals(localizedValue, CLICKING_VALUE_EN, "Value should match to expected");
+    }
+
+    @Test
+    public void testShouldReturnNonKeyValueForKeysPresentInCoreIfKeyMissedInSiblingAssembly()
+    {
+        String localizedValue = getLocalizationManager("be").getLocalizedMessage(CLICKING_MESSAGE_KEY);
+
+        Assert.assertEquals(localizedValue, CLICKING_VALUE_BE, "Value should match to expected");
+    }
+
 
     @Test
     public void testShouldThrowWhenInvalidLanguageSupplied() {
