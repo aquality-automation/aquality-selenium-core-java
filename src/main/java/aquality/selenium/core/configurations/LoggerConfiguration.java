@@ -12,7 +12,8 @@ public class LoggerConfiguration implements ILoggerConfiguration {
     @Inject
     public LoggerConfiguration(ISettingsFile settingsFile){
         language = settingsFile.getValueOrDefault("/logger/language", DEFAULT_LANGUAGE).toString();
-        doLogPageSource = (Boolean) settingsFile.getValueOrDefault("/logger/logPageSource", true);
+        doLogPageSource = Boolean.parseBoolean(
+                settingsFile.getValueOrDefault("/logger/logPageSource", true).toString());
     }
 
     @Override
