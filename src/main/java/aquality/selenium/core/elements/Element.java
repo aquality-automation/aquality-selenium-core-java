@@ -4,6 +4,7 @@ import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
 import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.elements.interfaces.*;
+import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
@@ -42,6 +43,8 @@ public abstract class Element implements IElement {
 
     protected abstract ILocalizedLogger getLocalizedLogger();
 
+    protected abstract ILocalizationManager getLocalizationManager();
+
     protected abstract IConditionalWait getConditionalWait();
 
     protected abstract String getElementType();
@@ -62,6 +65,11 @@ public abstract class Element implements IElement {
         return Logger.getInstance();
     }
 
+    protected ILogElementState logElementState() {
+        return ((messageKey, stateKey) -> getLocalizedLogger().infoElementAction(getElementType(), getName(), messageKey,
+                        getLocalizationManager().getLocalizedMessage(stateKey)));
+    }
+
     @Override
     public By getLocator() {
         return locator;
@@ -75,8 +83,8 @@ public abstract class Element implements IElement {
     @Override
     public IElementStateProvider state() {
         return getElementCacheConfiguration().isEnabled()
-                ? new CachedElementStateProvider(locator, getConditionalWait(), getCache(), getLocalizedLogger())
-                : new DefaultElementStateProvider(locator, getConditionalWait(), getElementFinder());
+                ? new CachedElementStateProvider(locator, getConditionalWait(), getCache(), logElementState())
+                : new DefaultElementStateProvider(locator, getConditionalWait(), getElementFinder(), logElementState());
     }
 
     @Override

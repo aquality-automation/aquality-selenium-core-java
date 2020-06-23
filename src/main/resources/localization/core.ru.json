@@ -10,6 +10,14 @@
   "loc.elements.were.found.but.not.in.state": "Удалось найти элементы по локатору '%1$s', но они не в желаемом состоянии %2$s",
   "loc.elements.found.but.should.not": "Не должно быть найдено элементов по локатору '%1$s' в %2$s состоянии",
   "loc.search.of.elements.failed":  "Поиск элемента по локатору '%1$s' прошел неудачно",
-  "loc.element.not.in.state": "Элемент %1$s не стал %2$s после таймаута %3$s",
+  "loc.wait.for.state": "Ожидание, пока элемент станет %1$s",
+  "loc.wait.for.state.failed": "Элемент не стал %1$s после таймаута",
+  "loc.el.state.displayed": "видимым",
+  "loc.el.state.not.displayed": "невидимым или остуствующим",
+  "loc.el.state.exist": "присутствующим",
+  "loc.el.state.not.exist": "отсутствующим",
+  "loc.el.state.enabled": "доступным",
+  "loc.el.state.not.enabled": "недоступным",
+  "loc.el.state.clickable": "кликабельным",
   "loc.get.page.source.failed": "Произошла ошибка во время получения разметки страницы"
 }

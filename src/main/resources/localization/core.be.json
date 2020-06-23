@@ -10,6 +10,14 @@
   "loc.elements.were.found.but.not.in.state": "Знайшлі элементы па лакатару '%1$s', але яны не ў жаданым стане %2$s",
   "loc.elements.found.but.should.not": "Не павінна быць знойдзена элементаў па лакатару '%1$s' у %2$s стане",
   "loc.search.of.elements.failed": "Пошук элемента па лакатару '%1$s' прайшоў няўдала",
-  "loc.element.not.in.state": "Элемент %1$s не стаў %2$s пасля таймаўта %3$s",
-  "loc.get.page.source.failed": "Адбылася памылка ў час атрымання разметкі старонкі"
+  "loc.wait.for.state": "Чакаем, пакуль элемент будзе %1$s",
+  "loc.wait.for.state.failed": "Элемент не стаў %1$s па заканчэнні часу чакання",
+  "loc.el.state.displayed": "бачны",
+  "loc.el.state.not.displayed": "нябачны або адсутны",
+  "loc.el.state.exist": "прысутны",
+  "loc.el.state.not.exist": "адсутны",
+  "loc.el.state.enabled": "даступны",
+  "loc.el.state.not.enabled": "недаступны",
+  "loc.el.state.clickable": "даступны для націску",
+  "loc.get.page.source.failed": "Адбылася памылка падчас атрымання разметкі старонкі"
 }

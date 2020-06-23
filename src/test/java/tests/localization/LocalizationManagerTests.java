@@ -32,14 +32,22 @@ public class LocalizationManagerTests {
                 "loc.elements.were.found.but.not.in.state",
                 "loc.elements.found.but.should.not",
                 "loc.search.of.elements.failed",
-                "loc.element.not.in.state"};
+                "loc.wait.for.state",
+                "loc.wait.for.state.failed"};
     }
 
     @DataProvider
     private Object[] keysWithoutParams() {
         return new String[]{
                 CLICKING_MESSAGE_KEY,
-                "loc.get.text"};
+                "loc.get.text",
+                "loc.el.state.displayed",
+                "loc.el.state.not.displayed",
+                "loc.el.state.exist",
+                "loc.el.state.not.exist",
+                "loc.el.state.enabled",
+                "loc.el.state.not.enabled",
+                "loc.el.state.clickable"};
     }
 
 
@@ -90,7 +98,7 @@ public class LocalizationManagerTests {
 
     @Test(dataProvider = "keysWithParams")
     public void testShouldThrowFormatExceptionWhenKeysRequireParams(String keyWithParams) {
-        for (String language: SUPPORTED_LANGUAGES) {
+        for (String language : SUPPORTED_LANGUAGES) {
             Assert.assertThrows(MissingFormatArgumentException.class,
                     () -> getLocalizationManager(language).getLocalizedMessage(keyWithParams));
         }
@@ -98,7 +106,7 @@ public class LocalizationManagerTests {
 
     @Test(dataProvider = "keysWithoutParams")
     public void testShouldReturnNonKeyAndNonEmptyValuesForKeysWithoutParams(String keyWithoutParams) {
-        for (String language: SUPPORTED_LANGUAGES) {
+        for (String language : SUPPORTED_LANGUAGES) {
             String value = getLocalizationManager(language).getLocalizedMessage(keyWithoutParams);
             Assert.assertFalse(value.isEmpty(),
                     String.format("value of key %1$s in language %2$s should not be empty", keyWithoutParams, language));
@@ -109,8 +117,8 @@ public class LocalizationManagerTests {
 
     @Test(dataProvider = "keysWithParams")
     public void testShouldReturnNonKeyAndNonEmptyValuesForKeysWithParams(String keyWithParams) {
-        for (String language: SUPPORTED_LANGUAGES) {
-            Object[] params = new String[] { "a", "b", "c" };
+        for (String language : SUPPORTED_LANGUAGES) {
+            Object[] params = new String[]{"a", "b", "c"};
             String value = getLocalizationManager(language).getLocalizedMessage(keyWithParams, params);
             Assert.assertFalse(value.isEmpty(),
                     String.format("value of key %1$s in language %2$s should not be empty", keyWithParams, language));
@@ -121,18 +129,16 @@ public class LocalizationManagerTests {
                             keyWithParams, language));
         }
     }
-        
+
     @Test
-    public void testShouldReturnNonKeyValueForKeysPresentInCoreIfLanguageMissedInSiblingAssembly()
-    {
+    public void testShouldReturnNonKeyValueForKeysPresentInCoreIfLanguageMissedInSiblingAssembly() {
         String localizedValue = getLocalizationManager("en").getLocalizedMessage(CLICKING_MESSAGE_KEY);
 
         Assert.assertEquals(localizedValue, CLICKING_VALUE_EN, "Value should match to expected");
     }
 
     @Test
-    public void testShouldReturnNonKeyValueForKeysPresentInCoreIfKeyMissedInSiblingAssembly()
-    {
+    public void testShouldReturnNonKeyValueForKeysPresentInCoreIfKeyMissedInSiblingAssembly() {
         String localizedValue = getLocalizationManager("be").getLocalizedMessage(CLICKING_MESSAGE_KEY);
 
         Assert.assertEquals(localizedValue, CLICKING_VALUE_BE, "Value should match to expected");

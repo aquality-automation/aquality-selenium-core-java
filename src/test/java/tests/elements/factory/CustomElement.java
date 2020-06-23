@@ -6,6 +6,7 @@ import aquality.selenium.core.elements.Element;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementFactory;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.core.waitings.IConditionalWait;
@@ -46,6 +47,11 @@ public class CustomElement extends Element implements ICustomElement {
     @Override
     protected ILocalizedLogger getLocalizedLogger() {
         return AqualityServices.get(ILocalizedLogger.class);
+    }
+
+    @Override
+    protected ILocalizationManager getLocalizationManager() {
+        return AqualityServices.get(ILocalizationManager.class);
     }
 
     @Override
