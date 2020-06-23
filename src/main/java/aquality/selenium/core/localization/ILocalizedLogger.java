@@ -1,9 +1,17 @@
 package aquality.selenium.core.localization;
 
+import aquality.selenium.core.configurations.ILoggerConfiguration;
+
 /**
  * Log messages in current language.
  */
 public interface ILocalizedLogger {
+    /**
+     * Gets logger configuration.
+     * @return logger configuration.
+     */
+    ILoggerConfiguration getConfiguration();
+
     /**
      * Logs localized message for action with INFO level which is applied for element, for example, click, send keys etc.
      * @param elementType Type of the element.

@@ -3,6 +3,7 @@ package tests.applications.windowsApp;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
@@ -52,5 +53,10 @@ public class CachedButton implements ICachedElement {
     @Override
     public ILocalizedLogger getLocalizedLogger() {
         return AqualityServices.get(ILocalizedLogger.class);
+    }
+
+    @Override
+    public ILocalizationManager getLocalizationManager() {
+        return AqualityServices.get(ILocalizationManager.class);
     }
 }

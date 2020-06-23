@@ -1,10 +1,12 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementFinder;
+import aquality.selenium.core.elements.interfaces.ILogElementState;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 
 import java.time.Duration;
+import java.util.function.BooleanSupplier;
 
 public class DefaultElementStateProvider extends ElementStateProvider {
 
@@ -12,7 +14,9 @@ public class DefaultElementStateProvider extends ElementStateProvider {
     private final IConditionalWait conditionalWait;
     private final IElementFinder elementFinder;
 
-    public DefaultElementStateProvider(By locator, IConditionalWait conditionalWait, IElementFinder elementFinder) {
+    public DefaultElementStateProvider(By locator, IConditionalWait conditionalWait, IElementFinder elementFinder,
+                                       ILogElementState logger) {
+        super(logger);
         this.locator = locator;
         this.conditionalWait = conditionalWait;
         this.elementFinder = elementFinder;
@@ -25,7 +29,12 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public void waitForClickable(Duration timeout) {
-        waitForIsClickable(timeout, false);
+        try {
+            waitForIsClickable(timeout, false);
+        } catch (Exception e) {
+            logElementState("loc.wait.for.state.failed", elementClickable().getStateName());
+            throw e;
+        }
     }
 
     private boolean waitForIsClickable(Duration timeout, boolean catchTimeoutException) {
@@ -35,7 +44,10 @@ public class DefaultElementStateProvider extends ElementStateProvider {
     }
 
     private boolean isElementInDesiredCondition(DesiredState elementStateCondition, Duration timeout) {
-        return !elementFinder.findElements(locator, elementStateCondition, timeout).isEmpty();
+        return doAndLogWaitForState(
+                () -> !elementFinder.findElements(locator, elementStateCondition, timeout).isEmpty(),
+                elementStateCondition.getStateName(),
+                timeout);
     }
 
     @Override
@@ -45,7 +57,10 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForDisplayed(Duration timeout) {
-        return isAnyElementFound(timeout, ElementState.DISPLAYED);
+        return doAndLogWaitForState(
+                () -> isAnyElementFound(timeout, ElementState.DISPLAYED),
+                "displayed",
+                timeout);
     }
 
     private boolean isAnyElementFound(Duration timeout, ElementState state) {
@@ -54,7 +69,10 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForNotDisplayed(Duration timeout) {
-        return conditionalWait.waitFor(() -> !isDisplayed(), timeout);
+        return doAndLogWaitForState(
+                () -> conditionalWait.waitFor(() -> !isDisplayed(), timeout),
+                "not.displayed",
+                timeout);
     }
 
     @Override
@@ -64,12 +82,18 @@ public class DefaultElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForExist(Duration timeout) {
-        return isAnyElementFound(timeout, ElementState.EXISTS_IN_ANY_STATE);
+        return doAndLogWaitForState(
+                () -> isAnyElementFound(timeout, ElementState.EXISTS_IN_ANY_STATE),
+                "exist",
+                timeout);
     }
 
     @Override
     public boolean waitForNotExist(Duration timeout) {
-        return conditionalWait.waitFor(() -> !isExist(), timeout);
+        return doAndLogWaitForState(
+                () -> conditionalWait.waitFor(() -> !isExist(), timeout),
+                "not.exist",
+                timeout);
     }
 
     @Override
@@ -85,5 +109,22 @@ public class DefaultElementStateProvider extends ElementStateProvider {
     @Override
     public boolean waitForNotEnabled(Duration timeout) {
         return isElementInDesiredCondition(elementNotEnabled(), timeout);
+    }
+
+    private boolean doAndLogWaitForState(BooleanSupplier waitingAction, String conditionKeyPart, Duration timeout)
+    {
+        if (Duration.ZERO.equals(timeout))
+        {
+            return waitingAction.getAsBoolean();
+        }
+
+        logElementState("loc.wait.for.state", conditionKeyPart);
+        boolean result = waitingAction.getAsBoolean();
+        if (!result)
+        {
+            logElementState("loc.wait.for.state.failed", conditionKeyPart);
+        }
+
+        return result;
     }
 }

@@ -1,17 +1,25 @@
 package tests.logger;
 
+import aquality.selenium.core.applications.AqualityModule;
+import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.logging.Logger;
 import org.apache.log4j.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeGroups;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import tests.applications.browser.AqualityServices;
+import tests.elements.factory.CustomWebElement;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.time.Duration;
 import java.util.UUID;
 
 import static org.testng.Assert.*;
@@ -21,6 +29,8 @@ public class LoggerTests {
     private static final String TEST_MESSAGE = "test message";
     private static final String TEST_EXCEPTION_TEXT = "test exception";
     private static final String LOG_4_J_FIELD_NAME = "log4J";
+    private static final String LOG_PAGE_SOURCE_ENVIRONMENT_VARIABLE = "logger.logPageSource";
+    private static final String PAGE_SOURCE_MESSAGE = "Page source:";
     private Logger logger = Logger.getInstance();
     private org.apache.log4j.Logger log4j;
     private Appender appender;
@@ -38,6 +48,42 @@ public class LoggerTests {
         Field log4jField = Logger.class.getDeclaredField(LOG_4_J_FIELD_NAME);
         log4jField.setAccessible(true);
         log4j = ((ThreadLocal<org.apache.log4j.Logger>) log4jField.get(logger)).get();
+    }
+
+    @AfterMethod
+    private void cleanUpLogPageSourceAndBrowser()  {
+        System.clearProperty(LOG_PAGE_SOURCE_ENVIRONMENT_VARIABLE);
+        if (AqualityServices.isApplicationStarted()){
+            AqualityServices.getApplication().getDriver().quit();
+        }
+        if (log4j != null){
+            log4j.setLevel(Level.DEBUG);
+        }
+    }
+
+    @BeforeMethod
+    public void cleanUpInjector() {
+        AqualityServices.initInjector(new AqualityModule<>(AqualityServices::getApplication));
+    }
+
+    @Test
+    public void testShouldBePossibleLogPageSourceWhenIsEnabledAndElementAbsent() throws IOException {
+        System.setProperty(LOG_PAGE_SOURCE_ENVIRONMENT_VARIABLE, "true");
+        CustomWebElement label = new CustomWebElement(By.name("Absent element"), "Absent element",
+                ElementState.EXISTS_IN_ANY_STATE);
+        Assert.assertThrows(NoSuchElementException.class, () -> label.getElement(Duration.ZERO));
+        assertTrue(isFileContainsText(appenderFile, PAGE_SOURCE_MESSAGE),
+                String.format("Log '%s' should contain message '%s'.", appenderFile.getPath(), PAGE_SOURCE_MESSAGE));
+    }
+
+    @Test
+    public void testShouldBePossibleNotLogPageSourceWhenIsDisabledAndElementAbsent() throws IOException {
+        System.setProperty(LOG_PAGE_SOURCE_ENVIRONMENT_VARIABLE, "false");
+        CustomWebElement label = new CustomWebElement(By.name("Absent element"), "Absent element",
+                ElementState.EXISTS_IN_ANY_STATE);
+        Assert.assertThrows(NoSuchElementException.class, () -> label.getElement(Duration.ZERO));
+        assertFalse(isFileContainsText(appenderFile, PAGE_SOURCE_MESSAGE),
+                String.format("Log '%s' should not contain message '%s'.", appenderFile.getPath(), PAGE_SOURCE_MESSAGE));
     }
 
     @Test

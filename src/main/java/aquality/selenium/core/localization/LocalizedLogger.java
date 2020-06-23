@@ -1,5 +1,6 @@
 package aquality.selenium.core.localization;
 
+import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.logging.Logger;
 import com.google.inject.Inject;
 
@@ -7,15 +8,22 @@ public class LocalizedLogger implements ILocalizedLogger {
 
     private final ILocalizationManager localizationManager;
     private final Logger logger;
+    private final ILoggerConfiguration loggerConfiguration;
 
     @Inject
-    public LocalizedLogger(ILocalizationManager localizationManager, Logger logger) {
+    public LocalizedLogger(ILocalizationManager localizationManager, Logger logger, ILoggerConfiguration loggerConfiguration) {
         this.localizationManager = localizationManager;
         this.logger = logger;
+        this.loggerConfiguration = loggerConfiguration;
     }
 
     private String localizeMessage(String messageKey, Object... args) {
         return localizationManager.getLocalizedMessage(messageKey, args);
+    }
+
+    @Override
+    public ILoggerConfiguration getConfiguration() {
+        return loggerConfiguration;
     }
 
     @Override

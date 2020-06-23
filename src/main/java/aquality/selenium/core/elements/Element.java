@@ -2,7 +2,9 @@ package aquality.selenium.core.elements;
 
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.configurations.IElementCacheConfiguration;
+import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.elements.interfaces.*;
+import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
@@ -41,6 +43,8 @@ public abstract class Element implements IElement {
 
     protected abstract ILocalizedLogger getLocalizedLogger();
 
+    protected abstract ILocalizationManager getLocalizationManager();
+
     protected abstract IConditionalWait getConditionalWait();
 
     protected abstract String getElementType();
@@ -53,8 +57,17 @@ public abstract class Element implements IElement {
         return elementCacheHandler;
     }
 
+    protected ILoggerConfiguration getLoggerConfiguration() {
+        return getLocalizedLogger().getConfiguration();
+    }
+
     protected Logger getLogger() {
         return Logger.getInstance();
+    }
+
+    protected ILogElementState logElementState() {
+        return ((messageKey, stateKey) -> getLocalizedLogger().infoElementAction(getElementType(), getName(), messageKey,
+                        getLocalizationManager().getLocalizedMessage(stateKey)));
     }
 
     @Override
@@ -70,8 +83,8 @@ public abstract class Element implements IElement {
     @Override
     public IElementStateProvider state() {
         return getElementCacheConfiguration().isEnabled()
-                ? new CachedElementStateProvider(locator, getConditionalWait(), getCache(), getLocalizedLogger())
-                : new DefaultElementStateProvider(locator, getConditionalWait(), getElementFinder());
+                ? new CachedElementStateProvider(locator, getConditionalWait(), getCache(), logElementState())
+                : new DefaultElementStateProvider(locator, getConditionalWait(), getElementFinder(), logElementState());
     }
 
     @Override
@@ -81,7 +94,9 @@ public abstract class Element implements IElement {
                     ? getCache().getElement(timeout)
                     : (RemoteWebElement) getElementFinder().findElement(locator, elementState, timeout);
         } catch (NoSuchElementException e) {
-            logPageSource(e);
+            if (getLoggerConfiguration().logPageSource()) {
+                logPageSource(e);
+            }
             throw e;
         }
     }
@@ -98,13 +113,17 @@ public abstract class Element implements IElement {
     @Override
     public String getText() {
         logElementAction("loc.get.text");
-        return doWithRetry(() -> getElement().getText());
+        String value = doWithRetry(() -> getElement().getText());
+        logElementAction("loc.text.value", value);
+        return value;
     }
 
     @Override
     public String getAttribute(String attr) {
         logElementAction("loc.el.getattr", attr);
-        return doWithRetry(() -> getElement().getAttribute(attr));
+        String value = doWithRetry(() -> getElement().getAttribute(attr));
+        logElementAction("loc.el.attr.value", attr, value);
+        return value;
     }
 
     @Override

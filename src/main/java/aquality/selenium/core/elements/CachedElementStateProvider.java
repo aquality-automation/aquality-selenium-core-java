@@ -1,7 +1,7 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
-import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.elements.interfaces.ILogElementState;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -24,13 +24,13 @@ public class CachedElementStateProvider extends ElementStateProvider {
     private final By locator;
     private final IConditionalWait conditionalWait;
     private final IElementCacheHandler elementCacheHandler;
-    private final ILocalizedLogger localizedLogger;
 
-    public CachedElementStateProvider(By locator, IConditionalWait conditionalWait, IElementCacheHandler elementCacheHandler, ILocalizedLogger localizedLogger) {
+    public CachedElementStateProvider(By locator, IConditionalWait conditionalWait,
+                                      IElementCacheHandler elementCacheHandler, ILogElementState logger) {
+        super(logger);
         this.locator = locator;
         this.conditionalWait = conditionalWait;
         this.elementCacheHandler = elementCacheHandler;
-        this.localizedLogger = localizedLogger;
     }
 
     protected List<Class<? extends Exception>> getHandledExceptions() {
@@ -52,11 +52,11 @@ public class CachedElementStateProvider extends ElementStateProvider {
         }
     }
 
-    protected boolean waitForCondition(BooleanSupplier condition, String conditionName, Duration timeout) {
+    protected boolean waitForCondition(BooleanSupplier condition, String conditionKeyPart, Duration timeout) {
+        logElementState("loc.wait.for.state", conditionKeyPart);
         boolean result = conditionalWait.waitFor(condition, timeout);
         if (!result) {
-            String timeoutString = timeout == null ? "" : String.format("%1$s s.", timeout.getSeconds());
-            localizedLogger.warn("loc.element.not.in.state", locator, conditionName.toUpperCase(), timeoutString);
+            logElementState("loc.wait.for.state.failed", conditionKeyPart);
         }
         return result;
     }
@@ -69,10 +69,12 @@ public class CachedElementStateProvider extends ElementStateProvider {
     @Override
     public void waitForClickable(Duration timeout) {
         String errorMessage = String.format("Element %1$s has not become clickable after timeout.", locator);
+        String conditionKeyPart = elementClickable().getStateName();
         try {
+            logElementState("loc.wait.for.state", conditionKeyPart);
             conditionalWait.waitForTrue(this::isClickable, timeout, null, errorMessage);
         } catch (TimeoutException e) {
-            localizedLogger.error("loc.element.not.in.state", elementClickable().getStateName(), ". ".concat(e.getMessage()));
+            logElementState("loc.wait.for.state.failed", conditionKeyPart);
             throw new org.openqa.selenium.TimeoutException(e.getMessage(), e);
         }
     }
@@ -84,12 +86,12 @@ public class CachedElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForDisplayed(Duration timeout) {
-        return waitForCondition(() -> tryInvokeFunction(WebElement::isDisplayed), ElementState.DISPLAYED.toString(), timeout);
+        return waitForCondition(() -> tryInvokeFunction(WebElement::isDisplayed), "displayed", timeout);
     }
 
     @Override
     public boolean waitForNotDisplayed(Duration timeout) {
-        return waitForCondition(() -> !isDisplayed(), "invisible or absent", timeout);
+        return waitForCondition(() -> !isDisplayed(), "not.displayed", timeout);
     }
 
     @Override
@@ -99,12 +101,12 @@ public class CachedElementStateProvider extends ElementStateProvider {
 
     @Override
     public boolean waitForExist(Duration timeout) {
-        return waitForCondition(() -> tryInvokeFunction(element -> true), ElementState.EXISTS_IN_ANY_STATE.toString(), timeout);
+        return waitForCondition(() -> tryInvokeFunction(element -> true), "exist", timeout);
     }
 
     @Override
     public boolean waitForNotExist(Duration timeout) {
-        return waitForCondition(() -> !isExist(), "absent", timeout);
+        return waitForCondition(() -> !isExist(), "not.exist", timeout);
     }
 
     @Override

@@ -10,4 +10,10 @@ public interface ILoggerConfiguration {
      * @return language used for logging.
      */
     String getLanguage();
+
+    /**
+     * Perform page source logging in case of catastrophic failures or not.
+     * @return true if enabled, false otherwise.
+     */
+    boolean logPageSource();
 }
