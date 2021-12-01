@@ -1,7 +1,7 @@
 package tests.applications.windowsApp;
 
 import aquality.selenium.core.elements.ElementState;
-import io.appium.java_client.MobileBy;
+import io.appium.java_client.AppiumBy;
 import org.openqa.selenium.By;
 import tests.elements.factory.CustomElement;
 
@@ -10,7 +10,7 @@ public class CalculatorWindow {
     }
 
     public static By getWindowLocator() {
-        return By.tagName("Window");
+        return By.xpath("//Window");
     }
 
     public static CustomElement getWindowLabel() {
@@ -53,15 +53,15 @@ public class CalculatorWindow {
         return By.xpath("//*[@Name='=']/parent::Window");
     }
 
-    public static By getTagNameLocator() {
-        return By.tagName("Button");
+    public static By getTagXpathLocator() {
+        return By.xpath("//Button");
     }
 
     public static By getResultsLabelLoc() {
-        return MobileBy.AccessibilityId("48");
+        return AppiumBy.accessibilityId("48");
     }
 
     public static CustomElement getLeftValueTextBox() {
-        return new CustomElement(MobileBy.xpath("//*[@AutomationId='50']"), "Left value", ElementState.DISPLAYED);
+        return new CustomElement(AppiumBy.xpath("//*[@AutomationId='50']"), "Left value", ElementState.DISPLAYED);
     }
 }

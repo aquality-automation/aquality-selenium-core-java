@@ -2,8 +2,7 @@ package tests.applications.windowsApp;
 
 import aquality.selenium.core.applications.IApplication;
 import io.appium.java_client.windows.WindowsDriver;
-import io.appium.java_client.windows.WindowsElement;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import io.appium.java_client.windows.options.WindowsOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
@@ -12,12 +11,12 @@ import java.util.concurrent.TimeUnit;
 
 public class WindowsApplication implements IApplication {
     private long implicitWaitSeconds;
-    private final RemoteWebDriver driver;
+    private final WindowsDriver driver;
 
     WindowsApplication(long implicitWaitSeconds, String appPath, URL serviceUrl) {
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("app", appPath);
-        driver = new WindowsDriver<WindowsElement>(serviceUrl, capabilities);
+        WindowsOptions options = new WindowsOptions();
+        options.setApp(appPath);
+        driver = new WindowsDriver(serviceUrl, options);
         setImplicitWaitTimeout(Duration.ofSeconds(implicitWaitSeconds));
     }
 
