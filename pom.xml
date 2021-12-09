@@ -68,6 +68,14 @@
             <id>knysh</id>
             <name>Sergey Knysh</name>
         </developer>
+        <developer>
+            <id>d2kravchenko</id>
+            <name>Dmitry Kravchenko</name>
+        </developer>
+        <developer>
+            <id>aPavar</id>
+            <name>Andrey Pavar</name>
+        </developer>
     </developers>
 
     <dependencies>
