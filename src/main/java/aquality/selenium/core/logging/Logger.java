@@ -16,6 +16,10 @@ public final class Logger {
     private Logger() {
     }
 
+    public void removeLog4jLocalThread() {
+        log4J.remove();
+    }
+
     /**
      * Gets logger instance
      *
