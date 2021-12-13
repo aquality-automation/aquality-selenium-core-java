@@ -68,6 +68,10 @@
             <id>knysh</id>
             <name>Sergey Knysh</name>
         </developer>
+        <developer>
+            <id>runets</id>
+            <name>Kiril Runets</name>
+        </developer>
     </developers>
 
     <dependencies>
