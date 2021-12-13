@@ -1,14 +1,16 @@
 package aquality.selenium.core.logging;
 
-import org.apache.log4j.Appender;
+
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
 
 /**
  * This class is using for a creating extended log. It implements a Singleton pattern
  */
 public final class Logger {
 
-    private static ThreadLocal<org.apache.log4j.Logger> log4J = ThreadLocal.withInitial(()
-            -> org.apache.log4j.Logger.getLogger(String.valueOf(Thread.currentThread().getId())));
+    private static ThreadLocal<org.apache.logging.log4j.Logger> log4J = ThreadLocal.withInitial(()
+            -> org.apache.logging.log4j.LogManager.getLogger(String.valueOf(Thread.currentThread().getId())));
     private static ThreadLocal<Logger> instance = ThreadLocal.withInitial(Logger::new);
 
     private Logger() {
@@ -30,7 +32,10 @@ public final class Logger {
      * @return logger instance
      */
     public Logger addAppender(Appender appender) {
-        log4J.get().addAppender(appender);
+        appender.start();
+
+        LoggerContext.getContext().getRootLogger().addAppender(appender);
+        LoggerContext.getContext().updateLoggers();
         return getInstance();
     }
 
@@ -41,7 +46,9 @@ public final class Logger {
      * @return logger instance
      */
     public Logger removeAppender(Appender appender) {
-        log4J.get().removeAppender(appender);
+        appender.stop();
+        LoggerContext.getContext().getRootLogger().removeAppender(appender);
+        LoggerContext.getContext().updateLoggers();
         return getInstance();
     }
 
