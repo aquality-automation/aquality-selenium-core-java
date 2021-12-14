@@ -52,8 +52,7 @@ jobs:
   - script: |
         npm install -g appium@next
         appium driver install windows
-
-  - powershell: 'appium'
+        Start-Process powershell.exe -argument "appium"
 
   - task: ScreenResolutionUtility@1
     displayName: 'Set optimal screen resolution'
