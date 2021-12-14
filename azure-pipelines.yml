@@ -4,42 +4,6 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-jobs:
-- job: sonar
-  displayName: Analyse code with SonarQube
-
-  steps:
-  - task: SonarCloudPrepare@1
-    displayName: 'Prepare SonarCloud analysis'
-    inputs:
-      SonarCloud: 'SonarCloud'
-      organization: 'aqualityautomation'
-      scannerMode: 'CLI'
-      configMode: 'file'
-      extraProperties: |
-        sonar.coverage.exclusions=**/**
-
-  - task: Maven@3
-    displayName: 'Build project'
-    inputs:
-      mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean'
-
-  - task: SonarCloudAnalyze@1
-    displayName: 'Run SonarCloud code analysis'
-    continueOnError: true
-
-  - task: SonarCloudPublish@1
-    displayName: 'Publish SonarCloud quality gate results'
-    inputs:
-      pollingTimeoutSec: '300'
-
 - job: tests
   displayName: Run tests
 
@@ -54,7 +18,7 @@ jobs:
     inputs:
       script: |
           echo "Installing Appium"
-          npm install -g appiuыm@next
+          npm install -g appium@next
           appium --version
           echo "Appium installed"
 
