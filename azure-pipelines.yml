@@ -4,6 +4,7 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+jobs:
 - job: tests
   displayName: Run tests
 
