@@ -38,7 +38,6 @@ public final class Logger {
     public Logger addAppender(Appender appender) {
         appender.start();
         LoggerContext.getContext(false).getRootLogger().addAppender(appender);
-        LoggerContext.getContext().updateLoggers();
         return getInstance();
     }
 
@@ -51,7 +50,6 @@ public final class Logger {
     public Logger removeAppender(Appender appender) {
         appender.stop();
         LoggerContext.getContext(false).getRootLogger().removeAppender(appender);
-        LoggerContext.getContext().updateLoggers();
         return getInstance();
     }
 

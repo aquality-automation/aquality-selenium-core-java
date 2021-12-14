@@ -62,7 +62,6 @@ public class LoggerTests {
             AqualityServices.getApplication().getDriver().quit();
         }
         if (log4j != null) {
-
             Configurator.setRootLevel(Level.DEBUG);
         }
     }
