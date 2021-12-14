@@ -84,7 +84,7 @@ jobs:
     displayName: 'Start Appium server'
     inputs:
       script: |
-        appium
+        appium &
         echo "Appium server started"
 
   - task: ScreenResolutionUtility@1
