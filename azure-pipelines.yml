@@ -51,7 +51,7 @@ jobs:
 
   - script: |
         npm install -g appium@next
-        npm appium driver install windows
+        appium driver install windows
 
   - powershell: 'appium'
 
