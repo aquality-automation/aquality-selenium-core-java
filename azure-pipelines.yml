@@ -53,12 +53,7 @@ jobs:
         npm install -g appium@next
         npm appium driver install windows
 
-  - task: AzurePowerShell@5
-    inputs:
-      azureSubscription:
-      scriptType: inlineScript
-      inline: 'appium'
-      azurePowerShellVersion: latestVersion
+  - powershell: 'appium'
 
   - task: ScreenResolutionUtility@1
     displayName: 'Set optimal screen resolution'
