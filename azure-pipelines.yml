@@ -49,10 +49,44 @@ jobs:
     inputs:
       versionSpec: '16.x'
 
-  - script: |
-        npm install -g appium@next
-        appium driver install windows
-        Start-Process powershell.exe -argument "appium"
+  - task: CmdLine@2
+    displayName: 'Configure Appium'
+    inputs:
+      script: |
+          echo "Configuring Environment"
+          export PATH=$PATH:$JAVA_HOME/bin
+
+          echo "JAVA_HOME: ${JAVA_HOME}"
+          echo "PATH: ${PATH}"
+
+          echo "Installing Appium"
+          npm install -g appium@next
+          ln -fs /usr/local/lib/node_modules/appium/build/lib/main.js /usr/local/bin/appium
+          chmod +x /usr/local/bin/appium
+          export PATH=$PATH:/usr/local/bin/appium
+          appium --version
+          echo "Appium installed"
+
+          echo "Installing and Running Appium doctor"
+          npm install -g request@2.34.0
+          npm install -g appium-doctor@1.15.1
+          ln -fs /usr/local/lib/node_modules/appium-doctor/appium-doctor.js /usr/local/bin/appium-doctor
+          chmod +x /usr/local/bin/appium-doctor
+          export PATH=$PATH:/usr/local/bin/appium-doctor
+          appium-doctor
+          echo "Appium doctor installed and executed"
+
+          echo "Install Appium Windows Driver"
+          appium driver install windows
+          echo "Appium Windows Driver installed"
+
+  - task: CmdLine@2
+    displayName: 'Start Appium server'
+    inputs:
+      script: |
+        appium
+        echo "Appium server started"
+    condition: and(succeeded(), eq(variables['isRemote'], 'true'))
 
   - task: ScreenResolutionUtility@1
     displayName: 'Set optimal screen resolution'
