@@ -53,31 +53,20 @@ jobs:
     displayName: 'Configure Appium'
     inputs:
       script: |
-          echo "Configuring Environment"
-          export PATH=$PATH:$JAVA_HOME/bin
-
-          echo "JAVA_HOME: ${JAVA_HOME}"
-          echo "PATH: ${PATH}"
-
           echo "Installing Appium"
           npm install -g appium@next
-          ln -fs /usr/local/lib/node_modules/appium/build/lib/main.js /usr/local/bin/appium
-          chmod +x /usr/local/bin/appium
-          export PATH=$PATH:/usr/local/bin/appium
           appium --version
           echo "Appium installed"
 
           echo "Installing and Running Appium doctor"
           npm install -g request@2.34.0
           npm install -g appium-doctor@1.15.1
-          ln -fs /usr/local/lib/node_modules/appium-doctor/appium-doctor.js /usr/local/bin/appium-doctor
-          chmod +x /usr/local/bin/appium-doctor
-          export PATH=$PATH:/usr/local/bin/appium-doctor
           appium-doctor
           echo "Appium doctor installed and executed"
 
           echo "Install Appium Windows Driver"
           appium driver install windows
+          appium driver list
           echo "Appium Windows Driver installed"
 
   - task: CmdLine@2
