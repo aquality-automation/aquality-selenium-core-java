@@ -54,20 +54,28 @@ jobs:
     inputs:
       script: |
           echo "Installing Appium"
-          npm install -g appium@next
+          npm install -g appiuыm@next
           appium --version
           echo "Appium installed"
 
-          echo "Installing and Running Appium doctor"
-          npm install -g request@2.34.0
-          npm install -g appium-doctor@1.15.1
-          appium-doctor
-          echo "Appium doctor installed and executed"
+  - task: CmdLine@2
+    displayName: 'Installing and Running Appium doctor'
+    inputs:
+      script: |
+        echo "Installing and Running Appium doctor"
+        npm install -g request@2.34.0
+        npm install -g appium-doctor@1.15.1
+        appium-doctor
+        echo "Appium doctor installed and executed"
 
-          echo "Install Appium Windows Driver"
-          appium driver install windows
-          appium driver list
-          echo "Appium Windows Driver installed"
+  - task: CmdLine@2
+    displayName: 'Install Appium Windows Driver'
+    inputs:
+      script: |
+        echo "Install Appium Windows Driver"
+        appium driver install windows
+        appium driver list
+        echo "Appium Windows Driver installed"
 
   - task: CmdLine@2
     displayName: 'Start Appium server'
