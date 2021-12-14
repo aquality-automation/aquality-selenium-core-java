@@ -82,6 +82,7 @@ jobs:
     inputs:
       script: |
         start cmd.exe @cmd /k "appium"
+        echo "Appium server started"
 
   - task: ScreenResolutionUtility@1
     displayName: 'Set optimal screen resolution'
