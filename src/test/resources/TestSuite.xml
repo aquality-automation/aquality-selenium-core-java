@@ -13,13 +13,13 @@
             <class name="tests.utilities.ActionRetrierTests"/>
             <class name="tests.waitings.WaitForTests"/>
             <class name="tests.waitings.WaitForTrueTests"/>
-            <class name="tests.elements.CachedElementStateProviderTests"/>
-            <class name="tests.elements.CachedWebElementTests"/>
-            <class name="tests.elements.WebElementTests"/>
         </classes>
     </test>
     <test name="Single-thread tests" parallel="none">
         <classes>
+            <class name="tests.elements.CachedWebElementTests"/>
+            <class name="tests.elements.WebElementTests"/>
+            <class name="tests.elements.CachedElementStateProviderTests"/>
             <class name="tests.elements.DefaultElementStateProviderTests"/>
             <class name="tests.waitings.WaitForObjectTests"/>
         </classes>
