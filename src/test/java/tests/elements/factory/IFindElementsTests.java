@@ -65,7 +65,7 @@ public interface IFindElementsTests {
     default Object[] getSupportedLocators() {
         List<By> locators = new ArrayList<>();
         locators.add(CalculatorWindow.getDottedXPathLocator());
-        locators.add(CalculatorWindow.getTagNameLocator());
+        locators.add(CalculatorWindow.getTagXpathLocator());
         locators.add(CalculatorWindow.getRelativeXPathLocator());
         return locators.toArray();
     }

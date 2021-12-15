@@ -12,12 +12,16 @@
             <class name="tests.utilities.ElementActionRetrierTests"/>
             <class name="tests.utilities.ActionRetrierTests"/>
             <class name="tests.waitings.WaitForTests"/>
-            <class name="tests.waitings.WaitForObjectTests"/>
             <class name="tests.waitings.WaitForTrueTests"/>
-            <class name="tests.elements.DefaultElementStateProviderTests"/>
-            <class name="tests.elements.CachedElementStateProviderTests"/>
+        </classes>
+    </test>
+    <test name="Single-thread tests" parallel="none">
+        <classes>
             <class name="tests.elements.CachedWebElementTests"/>
             <class name="tests.elements.WebElementTests"/>
+            <class name="tests.elements.CachedElementStateProviderTests"/>
+            <class name="tests.elements.DefaultElementStateProviderTests"/>
+            <class name="tests.waitings.WaitForObjectTests"/>
         </classes>
     </test>
     <test name="Use cases tests" parallel="methods" thread-count="10">

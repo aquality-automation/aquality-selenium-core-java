@@ -44,15 +44,50 @@ jobs:
   displayName: Run tests
 
   steps:
+  - task: NodeTool@0
+    displayName: 'Install Node.js'
+    inputs:
+      versionSpec: '16.x'
+
+  - task: CmdLine@2
+    displayName: 'Install Appium'
+    inputs:
+      script: |
+          echo "Installing Appium"
+          npm install -g appium@next
+          appium --version
+          echo "Appium installed"
+
+  - task: CmdLine@2
+    displayName: 'Install and Run Appium doctor'
+    inputs:
+      script: |
+        echo "Installing and Running Appium doctor"
+        npm install -g request@2.34.0
+        npm install -g appium-doctor@1.15.1
+        appium-doctor
+        echo "Appium doctor installed and executed"
+
+  - task: CmdLine@2
+    displayName: 'Install Appium Windows Driver'
+    inputs:
+      script: |
+        echo "Installing Appium Windows Driver"
+        appium driver install windows
+        appium driver list
+        echo "Appium Windows Driver installed"
+
+  - task: CmdLine@2
+    displayName: 'Start Appium server'
+    inputs:
+      script: |
+        start cmd.exe @cmd /k "appium"
+        echo "Appium server started"
+
   - task: ScreenResolutionUtility@1
     displayName: 'Set optimal screen resolution'
     inputs:
       displaySettings: 'optimal'
-
-  - task: Windows Application Driver@0
-    displayName: 'Start WinAppDriver'
-    inputs:
-      OperationType: 'Start'
 
   - task: Maven@3
     displayName: 'Run tests'
@@ -65,8 +100,3 @@ jobs:
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       goals: 'clean test -Dprofile=local'
-
-  - task: Windows Application Driver@0
-    displayName: 'Stop WinAppDriver'
-    inputs:
-      OperationType: 'Stop'
