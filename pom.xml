@@ -86,24 +86,24 @@
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j</artifactId>
-            <version>2.17.0</version>
+            <version>2.18.0</version>
             <type>pom</type>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
-            <version>2.17.0</version>
+            <version>2.18.0</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>7.0.0</version>
+            <version>7.5</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
-            <version>5.0.1</version>
+            <version>5.1.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
@@ -114,29 +114,29 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.1</version>
+            <version>2.13.3</version>
         </dependency>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.1.1</version>
+            <version>4.3.0</version>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.0.2</version>
+            <version>5.2.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
-            <version>8.0.0-beta2</version>
+            <version>8.1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.17.0</version>
+            <version>2.18.0</version>
         </dependency>
     </dependencies>
 

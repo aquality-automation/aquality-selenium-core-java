@@ -153,7 +153,7 @@ public class ElementFactory implements IElementFactory {
      * @return extracted XPath.
      */
     protected String extractXPathFromLocator(By locator) {
-        Class supportedLocatorType = ByXPath.class;
+        Class<ByXPath> supportedLocatorType = ByXPath.class;
         if (locator.getClass().equals(supportedLocatorType)) {
             return locator.toString().substring(XPATH_SUBSTRING_BEGIN_INDEX);
         }
@@ -162,7 +162,7 @@ public class ElementFactory implements IElementFactory {
         }
         throw new InvalidArgumentException(String.format(
                 "Cannot define xpath from locator %1$s. Locator type %2$s is not %3$s, and is not supported yet",
-                locator.toString(), locator.getClass(), supportedLocatorType));
+                locator, locator.getClass(), supportedLocatorType));
     }
 
     /**
@@ -210,6 +210,7 @@ public class ElementFactory implements IElementFactory {
                     String.format("Interface %1$s is not found in getElementTypesMap()", clazz));
         }
 
+        //noinspection unchecked
         return clazz.isInterface() ? (Class<T>) getElementTypesMap().get(clazz) : clazz;
     }
 
