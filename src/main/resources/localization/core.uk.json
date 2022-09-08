@@ -1,0 +1,23 @@
+{
+  "loc.clicking": "Натискання",
+  "loc.el.getattr": "Отримання атрибута '%1$s'",
+  "loc.el.attr.value": "Значення атрибута '%1$s': [%2$s]",
+  "loc.get.text": "Отримання тексту з елемента",
+  "loc.text.value": "Текст елемента: [%1$s]",
+  "loc.text.sending.keys": "Надсилання клавішів '%1$s'",
+  "loc.no.elements.found.in.state": "Не знайдено елементів за локатором '%1$s' у %2$s стані",
+  "loc.no.elements.found.by.locator": "Не знайдено елементів за локатором '%1$s'",
+  "loc.elements.were.found.but.not.in.state": "Знайдено елементи за локатором '%1$s', але вони не в бажаному стані %2$s",
+  "loc.elements.found.but.should.not": "Не має бути знайдено елементів за локатором '%1$s' у %2$s стані",
+  "loc.search.of.elements.failed": "Пошук елемента за локатором '%1$s' був невдалим",
+  "loc.wait.for.state": "Очікується, поки елемент буде %1$s",
+  "loc.wait.for.state.failed": "Елемент не став %1$s після завершення часу очікування",
+  "loc.el.state.displayed": "видимий",
+  "loc.el.state.not.displayed": "невидимий або відсутній",
+  "loc.el.state.exist": "присутній",
+  "loc.el.state.not.exist": "відсутній",
+  "loc.el.state.enabled": "доступний",
+  "loc.el.state.not.enabled": "недоступний",
+  "loc.el.state.clickable": "доступний для натискання",
+  "loc.get.page.source.failed": "Не вдалося отримати розмітку сторінки"
+}
