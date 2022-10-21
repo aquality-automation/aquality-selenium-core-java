@@ -8,7 +8,7 @@ import java.time.Duration;
 public interface ITimeoutConfiguration {
 
     /**
-     * Gets WedDriver ImplicitWait timeout.
+     * Gets WebDriver ImplicitWait timeout.
      *
      * @return ImplicitWait timeout.
      */
