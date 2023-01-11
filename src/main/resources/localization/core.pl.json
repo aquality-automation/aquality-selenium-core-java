@@ -6,7 +6,7 @@
   "loc.text.value": "Tekst elementu: [%1$s]",
   "loc.text.sending.keys": "Naciskamy klawisze '%1$s'",
   "loc.no.elements.found.in.state": "Nie znaleziono elementów przez lokalizator '%1$s' w stanie %2$s",
-  "loc.no.elements.found.by.locator": "Nie znaleziono elementów przez lokalizator'%1$s'",
+  "loc.no.elements.found.by.locator": "Nie znaleziono elementów przez lokalizator '%1$s'",
   "loc.elements.were.found.but.not.in.state": "Elementy zostały znalezione przez lokalizator '%1$s', ale nie w żądanym stanie %2$s",
   "loc.elements.found.but.should.not": "Nie powinno było się znaleźć żadnych elementów przez lokalizator '%1$s' w stanie %2$s",
   "loc.search.of.elements.failed": "Wyszukiwanie elementu przez lokalizator '%1$s' nie powiodło się",

@@ -7,3 +7,7 @@
 ### Overview
 
 This package is a library with core functions simplifying work with Selenium-controlled applications.
+The package is not intended to be used directly, please refer to one of sibling libraries instead: Aquality Selenium, Aquality Appium Mobile.
+
+### License
+Library's source code is made available under the [Apache 2.0 license](https://github.com/aquality-automation/aquality-selenium-core-java/blob/master/LICENSE).
