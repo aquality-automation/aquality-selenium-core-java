@@ -12,6 +12,8 @@ import aquality.selenium.core.utilities.IActionRetrier;
 import aquality.selenium.core.utilities.IElementActionRetrier;
 import aquality.selenium.core.utilities.ISettingsFile;
 import aquality.selenium.core.utilities.IUtilitiesModule;
+import aquality.selenium.core.visualization.IImageComparator;
+import aquality.selenium.core.visualization.IVisualizationModule;
 import aquality.selenium.core.waitings.IConditionalWait;
 import aquality.selenium.core.waitings.IWaitingsModule;
 import com.google.inject.AbstractModule;
@@ -22,7 +24,8 @@ import com.google.inject.Singleton;
  * Describes all dependencies which is registered for the project.
  */
 public class AqualityModule<T extends IApplication> extends AbstractModule
-        implements IConfigurationsModule, IElementsModule, ILocalizationModule, IUtilitiesModule, IWaitingsModule {
+        implements IConfigurationsModule, IElementsModule, ILocalizationModule, IUtilitiesModule, IWaitingsModule,
+        IVisualizationModule {
 
     private final Provider<T> applicationProvider;
 
@@ -49,5 +52,6 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(IConditionalWait.class).to(getConditionalWaitImplementation());
         bind(IElementFinder.class).to(getElementFinderImplementation());
         bind(IElementFactory.class).to(getElementFactoryImplementation());
+        bind(IImageComparator.class).to(getImageComparatorImplementation());
     }
 }
