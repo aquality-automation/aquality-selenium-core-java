@@ -6,8 +6,13 @@ import aquality.selenium.core.configurations.ILoggerConfiguration;
 import aquality.selenium.core.elements.interfaces.*;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.logging.ILogElementState;
+import aquality.selenium.core.logging.ILogVisualState;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.IElementActionRetrier;
+import aquality.selenium.core.visualization.IImageComparator;
+import aquality.selenium.core.visualization.IVisualStateProvider;
+import aquality.selenium.core.visualization.VisualStateProvider;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -36,6 +41,8 @@ public abstract class Element implements IElement {
     protected abstract IElementFactory getElementFactory();
 
     protected abstract IElementFinder getElementFinder();
+
+    protected abstract IImageComparator getImageComparator();
 
     protected abstract IElementCacheConfiguration getElementCacheConfiguration();
 
@@ -70,6 +77,10 @@ public abstract class Element implements IElement {
                         getLocalizationManager().getLocalizedMessage(stateKey)));
     }
 
+    protected ILogVisualState logVisualState() {
+        return this::logElementAction;
+    }
+
     @Override
     public By getLocator() {
         return locator;
@@ -85,6 +96,11 @@ public abstract class Element implements IElement {
         return getElementCacheConfiguration().isEnabled()
                 ? new CachedElementStateProvider(locator, getConditionalWait(), getCache(), logElementState())
                 : new DefaultElementStateProvider(locator, getConditionalWait(), getElementFinder(), logElementState());
+    }
+
+    @Override
+    public IVisualStateProvider visual() {
+        return new VisualStateProvider(getImageComparator(), getElementActionRetrier(), this::getElement, logVisualState());
     }
 
     @Override

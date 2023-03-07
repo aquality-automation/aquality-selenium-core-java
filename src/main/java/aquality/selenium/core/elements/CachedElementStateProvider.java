@@ -1,7 +1,7 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
-import aquality.selenium.core.elements.interfaces.ILogElementState;
+import aquality.selenium.core.logging.ILogElementState;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;

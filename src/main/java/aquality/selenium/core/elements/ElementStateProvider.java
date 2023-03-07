@@ -1,7 +1,7 @@
 package aquality.selenium.core.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
-import aquality.selenium.core.elements.interfaces.ILogElementState;
+import aquality.selenium.core.logging.ILogElementState;
 import org.openqa.selenium.WebElement;
 
 public abstract class ElementStateProvider implements IElementStateProvider {

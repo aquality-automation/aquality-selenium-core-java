@@ -1,5 +1,6 @@
 package aquality.selenium.core.elements.interfaces;
 
+import aquality.selenium.core.visualization.IVisualStateProvider;
 import org.openqa.selenium.By;
 import org.openqa.selenium.remote.RemoteWebElement;
 
@@ -26,6 +27,12 @@ public interface IElement extends IParent {
      * @return provider to define element's state
      */
     IElementStateProvider state();
+
+    /**
+     * Gets element visual state.
+     * @return provider to define element's visual state.
+     */
+    IVisualStateProvider visual();
 
     /**
      * Gets current element by specified {@link #getLocator()}

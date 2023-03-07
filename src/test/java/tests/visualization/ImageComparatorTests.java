@@ -1,6 +1,7 @@
 package tests.visualization;
 
 import aquality.selenium.core.visualization.IImageComparator;
+import aquality.selenium.core.visualization.ImageFunctions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -18,6 +19,14 @@ public class ImageComparatorTests implements ITheInternetPageTest {
         DynamicLoadingForm.getStartLabel().click();
     }
 
+    private Image getStartImage() {
+        return ImageFunctions.getScreenshotAsImage(DynamicLoadingForm.getStartLabel().getElement());
+    }
+
+    private Image getLoadingImage() {
+        return ImageFunctions.getScreenshotAsImage(DynamicLoadingForm.getLoadingLabel().getElement());
+    }
+
     @Override
     @BeforeMethod
     public void beforeMethod() {
@@ -26,25 +35,25 @@ public class ImageComparatorTests implements ITheInternetPageTest {
 
     @Test
     public void testGetPercentageDifferenceForSameElement() {
-        Image firstImage = DynamicLoadingForm.getStartLabel().visual().getImage();
-        Image secondImage = DynamicLoadingForm.getStartLabel().visual().getImage();
+        Image firstImage = getStartImage();
+        Image secondImage = getStartImage();
 
         Assert.assertEquals(imageComparator.percentageDifference(firstImage, secondImage), 0);
     }
 
     @Test
     public void testGetPercentageDifferenceForSameElementWithZeroThreshold() {
-        Image firstImage = DynamicLoadingForm.getStartLabel().visual().getImage();
-        Image secondImage = DynamicLoadingForm.getStartLabel().visual().getImage();
+        Image firstImage = getStartImage();
+        Image secondImage = getStartImage();
 
         Assert.assertEquals(imageComparator.percentageDifference(firstImage, secondImage, 0), 0);
     }
 
     @Test
     public void testGetPercentageDifferenceForDifferentElements() {
-        Image firstImage = DynamicLoadingForm.getStartLabel().visual().getImage();
+        Image firstImage = getStartImage();
         startLoading();
-        Image secondImage = DynamicLoadingForm.getLoadingLabel().visual().getImage();
+        Image secondImage = getLoadingImage();
 
         Assert.assertNotEquals(imageComparator.percentageDifference(firstImage, secondImage), 0);
     }
@@ -52,9 +61,9 @@ public class ImageComparatorTests implements ITheInternetPageTest {
     @Test
     public void testGetPercentageDifferenceForDifferentElementsWithFullThreshold() {
         final int threshold = 1;
-        Image firstImage = DynamicLoadingForm.getStartLabel().visual().getImage();
+        Image firstImage = getStartImage();
         startLoading();
-        Image secondImage = DynamicLoadingForm.getLoadingLabel().visual().getImage();
+        Image secondImage = getLoadingImage();
 
         Assert.assertEquals(imageComparator.percentageDifference(firstImage, secondImage, threshold), 0);
     }
@@ -62,9 +71,9 @@ public class ImageComparatorTests implements ITheInternetPageTest {
     @Test
     public void testGetPercentageDifferenceForSimilarElements() throws InterruptedException {
         startLoading();
-        Image firstImage = DynamicLoadingForm.getLoadingLabel().visual().getImage();
+        Image firstImage = getLoadingImage();
         Thread.sleep(300);
-        Image secondImage = DynamicLoadingForm.getLoadingLabel().visual().getImage();
+        Image secondImage = getLoadingImage();
 
         Assert.assertTrue(imageComparator.percentageDifference(firstImage, secondImage, 0) != 0,
                 "With zero threshold, there should be some difference");

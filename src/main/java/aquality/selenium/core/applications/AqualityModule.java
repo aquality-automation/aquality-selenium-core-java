@@ -45,6 +45,7 @@ public class AqualityModule<T extends IApplication> extends AbstractModule
         bind(ITimeoutConfiguration.class).to(getTimeoutConfigurationImplementation()).in(Singleton.class);
         bind(IRetryConfiguration.class).to(getRetryConfigurationImplementation()).in(Singleton.class);
         bind(IElementCacheConfiguration.class).to(getElementCacheConfigurationImplementation()).in(Singleton.class);
+        bind(IVisualConfiguration.class).to(getVisualConfigurationImplementation()).in(Singleton.class);
         bind(IElementActionRetrier.class).to(getElementActionRetrierImplementation()).in(Singleton.class);
         bind(IActionRetrier.class).to(getActionRetrierImplementation()).in(Singleton.class);
         bind(ILocalizationManager.class).to(getLocalizationManagerImplementation()).in(Singleton.class);

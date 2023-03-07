@@ -1,4 +1,4 @@
-package aquality.selenium.core.elements.interfaces;
+package aquality.selenium.core.logging;
 
 /**
  * Describes interface that can log element state.
