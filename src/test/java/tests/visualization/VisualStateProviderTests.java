@@ -2,9 +2,11 @@ package tests.visualization;
 
 import aquality.selenium.core.visualization.IVisualStateProvider;
 import aquality.selenium.core.visualization.ImageFunctions;
+import aquality.selenium.core.waitings.IConditionalWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import tests.applications.browser.AqualityServices;
 import tests.applications.browser.ITheInternetPageTest;
 import theinternet.DynamicLoadingForm;
 import theinternet.TheInternetPage;
@@ -81,7 +83,8 @@ public class VisualStateProviderTests implements ITheInternetPageTest {
     public void testGetPercentageDifferenceForSimilarElements() throws InterruptedException {
         startLoading();
         Image firstImage = getLoadingVisual().getImage();
-        Thread.sleep(100);
+        AqualityServices.get(IConditionalWait.class).waitFor(
+                () -> firstImage.getHeight(null) < getLoadingVisual().getSize().getHeight());
         Assert.assertNotEquals(getLoadingVisual().getDifference(firstImage, 0), 0);
         Assert.assertTrue(getLoadingVisual().getDifference(firstImage, 0.2f) <= 0.3);
         Assert.assertTrue(getLoadingVisual().getDifference(firstImage, 0.4f) <= 0.2);

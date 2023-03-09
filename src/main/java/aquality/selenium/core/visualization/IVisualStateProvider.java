@@ -30,7 +30,6 @@ public interface IVisualStateProvider {
      * Gets the difference between the image of the element and the provided image using {@link IImageComparator}.
      * @param theOtherOne the image to compare the element with.
      * @param threshold how big a difference will be ignored as a percentage - value between 0 and 1.
-     *                  If the value is null, the default value is got from {@link aquality.selenium.core.configurations.IVisualConfiguration}.
      * @return the difference between the two images as a percentage  - value between 0 and 1.
      */
     float getDifference(Image theOtherOne, float threshold);

@@ -1,25 +1,39 @@
 package aquality.selenium.core.visualization;
 
+import aquality.selenium.core.configurations.IVisualConfiguration;
+import com.google.inject.Inject;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class ImageComparator implements IImageComparator {
-    private static final int DEFAULT_THRESHOLD = 3;
     private static final int THRESHOLD_DIVISOR = 255;
-    private final int comparisonHeight = 16;
-    private final int comparisonWidth = 16;
+    private final IVisualConfiguration visualConfiguration;
+
+    @Inject
+    public ImageComparator(IVisualConfiguration visualConfiguration) {
+        this.visualConfiguration = visualConfiguration;
+    }
+
+    private int getComparisonHeight() {
+        return visualConfiguration.getComparisonHeight();
+    }
+
+    private int getComparisonWidth() {
+        return visualConfiguration.getComparisonWidth();
+    }
 
     public float percentageDifference(Image thisOne, Image theOtherOne, float threshold) {
         if (threshold < 0 || threshold > 1) {
             throw new IllegalArgumentException(String.format("Threshold should be between 0 and 1, but was [%s]", threshold));
         }
 
-        int intThreshold = Float.valueOf(threshold * THRESHOLD_DIVISOR).intValue();
+        int intThreshold = (int) (threshold * THRESHOLD_DIVISOR);
         return percentageDifference(thisOne, theOtherOne, intThreshold);
     }
 
     public float percentageDifference(Image thisOne, Image theOtherOne) {
-        return percentageDifference(thisOne, theOtherOne, DEFAULT_THRESHOLD);
+        return percentageDifference(thisOne, theOtherOne, visualConfiguration.getDefaultThreshold());
     }
 
     protected float percentageDifference(Image thisOne, Image theOtherOne, int threshold) {
@@ -35,16 +49,16 @@ public class ImageComparator implements IImageComparator {
             }
         }
 
-        return diffPixels / (float) (comparisonWidth * comparisonHeight);
+        return diffPixels / (float) (getComparisonWidth() * getComparisonHeight());
     }
 
     protected int[][] getDifferences(Image thisOne, Image theOtherOne) {
         int[][] firstGray = getResizedGrayScaleValues(thisOne);
         int[][] secondGray = getResizedGrayScaleValues(theOtherOne);
 
-        int[][] differences = new int[comparisonWidth][comparisonHeight];
-        for (int y = 0; y < comparisonHeight; y++) {
-            for (int x = 0; x < comparisonWidth; x++) {
+        int[][] differences = new int[getComparisonWidth()][getComparisonHeight()];
+        for (int y = 0; y < getComparisonHeight(); y++) {
+            for (int x = 0; x < getComparisonWidth(); x++) {
                 differences[x][y] = (byte) Math.abs(firstGray[x][y] - secondGray[x][y]);
             }
         }
@@ -53,13 +67,11 @@ public class ImageComparator implements IImageComparator {
     }
 
     protected int[][] getResizedGrayScaleValues(Image image) {
-        BufferedImage resizedImage = new BufferedImage(comparisonWidth, comparisonHeight, BufferedImage.TYPE_BYTE_GRAY);
-        Graphics2D graphics2D = resizedImage.createGraphics();
-        graphics2D.drawImage(image, 0, 0, comparisonWidth, comparisonHeight, null);
-        graphics2D.dispose();
-        int[][] grayScale = new int[comparisonWidth][comparisonHeight];
-        for (int y = 0; y < comparisonHeight; y++) {
-            for (int x = 0; x < comparisonWidth; x++) {
+        BufferedImage resizedImage = ImageFunctions.resize(image, getComparisonWidth(), getComparisonHeight());
+        BufferedImage grayImage = ImageFunctions.grayscale(resizedImage);
+        int[][] grayScale = new int[grayImage.getWidth()][grayImage.getHeight()];
+        for (int y = 0; y < grayImage.getHeight(); y++) {
+            for (int x = 0; x < grayImage.getWidth(); x++) {
                 int pixel = resizedImage.getRGB(x, y);
                 int red = (pixel >> 16) & 0xff;
                 grayScale[x][y] = Math.abs(red);
