@@ -69,10 +69,10 @@ public class ImageComparatorTests implements ITheInternetPageTest {
     }
 
     @Test
-    public void testGetPercentageDifferenceForSimilarElements() throws InterruptedException {
+    public void testGetPercentageDifferenceForSimilarElements() {
         startLoading();
         Image firstImage = getLoadingImage();
-        Thread.sleep(300);
+        DynamicLoadingForm.waitUntilLoaderChanged(firstImage.getHeight(null));
         Image secondImage = getLoadingImage();
 
         Assert.assertTrue(imageComparator.percentageDifference(firstImage, secondImage, 0) != 0,
