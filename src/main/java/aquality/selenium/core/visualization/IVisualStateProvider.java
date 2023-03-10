@@ -1,6 +1,9 @@
 package aquality.selenium.core.visualization;
 
+import aquality.selenium.core.configurations.IVisualizationConfiguration;
+
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Provides visual state of the element.
@@ -24,7 +27,7 @@ public interface IVisualStateProvider {
      * Gets an image containing the screenshot of the element.
      * @return screenshot of the element.
      */
-    Image getImage();
+    BufferedImage getImage();
 
     /**
      * Gets the difference between the image of the element and the provided image using {@link IImageComparator}.
@@ -36,7 +39,7 @@ public interface IVisualStateProvider {
 
     /**
      * Gets the difference between the image of the element and the provided image using {@link IImageComparator}.
-     * The threshold value is got from {@link aquality.selenium.core.configurations.IVisualConfiguration}.
+     * The threshold value is got from {@link IVisualizationConfiguration}.
      * @param theOtherOne the image to compare the element with.
      * @return the difference between the two images as a percentage  - value between 0 and 1.
      */

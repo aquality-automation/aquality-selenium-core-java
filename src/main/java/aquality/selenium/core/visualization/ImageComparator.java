@@ -1,6 +1,6 @@
 package aquality.selenium.core.visualization;
 
-import aquality.selenium.core.configurations.IVisualConfiguration;
+import aquality.selenium.core.configurations.IVisualizationConfiguration;
 import com.google.inject.Inject;
 
 import java.awt.*;
@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;
 
 public class ImageComparator implements IImageComparator {
     private static final int THRESHOLD_DIVISOR = 255;
-    private final IVisualConfiguration visualConfiguration;
+    private final IVisualizationConfiguration visualConfiguration;
 
     @Inject
-    public ImageComparator(IVisualConfiguration visualConfiguration) {
+    public ImageComparator(IVisualizationConfiguration visualConfiguration) {
         this.visualConfiguration = visualConfiguration;
     }
 

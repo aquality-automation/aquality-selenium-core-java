@@ -4,16 +4,14 @@ import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.utilities.ISettingsFile;
 import com.google.inject.Inject;
 
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  * Represents visualization configuration, used for image comparison.
  * Uses {@link ISettingsFile} as source for configuration values.
  */
-public class VisualConfiguration implements IVisualConfiguration {
+public class VisualizationConfiguration implements IVisualizationConfiguration {
     private String imageFormat;
     private Integer maxFullFileNameLength;
     private Float defaultThreshold;
@@ -28,21 +26,15 @@ public class VisualConfiguration implements IVisualConfiguration {
      * @param settingsFile settings file.
      */
     @Inject
-    public VisualConfiguration(ISettingsFile settingsFile) {
+    public VisualizationConfiguration(ISettingsFile settingsFile) {
         this.settingsFile = settingsFile;
     }
 
     @Override
     public String getImageFormat() {
         if (imageFormat == null) {
-            String[] supportedFormats = ImageIO.getWriterFormatNames();
             String valueFromConfig = settingsFile.getValueOrDefault("/visualization/imageExtension", "png").toString();
-            String actualFormat = valueFromConfig.startsWith(".") ? valueFromConfig.substring(1) : valueFromConfig;
-            if (Arrays.stream(supportedFormats).noneMatch(format -> format.equals(actualFormat))) {
-                throw new IllegalArgumentException(String.format(
-                        "Format [%s] is not supported by current JRE. Supported formats: %s", actualFormat, Arrays.toString(supportedFormats)));
-            }
-            imageFormat = actualFormat;
+            imageFormat = valueFromConfig.startsWith(".") ? valueFromConfig.substring(1) : valueFromConfig;
         }
         return imageFormat;
     }
@@ -86,7 +78,7 @@ public class VisualConfiguration implements IVisualConfiguration {
     @Override
     public String getPathToDumps() {
         if (pathToDumps == null) {
-            pathToDumps = settingsFile.getValueOrDefault(".visualization.pathToDumps", "./src/test/resources/VisualDumps/").toString();
+            pathToDumps = settingsFile.getValueOrDefault("/visualization/pathToDumps", "./src/test/resources/visualDumps/").toString();
             if (pathToDumps.startsWith(".")) {
                 try {
                     pathToDumps = new File(pathToDumps).getCanonicalPath();

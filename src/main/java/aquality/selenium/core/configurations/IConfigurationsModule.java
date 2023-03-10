@@ -5,10 +5,10 @@ package aquality.selenium.core.configurations;
  */
 public interface IConfigurationsModule {
     /**
-     * @return class which implements {@link IVisualConfiguration}
+     * @return class which implements {@link IVisualizationConfiguration}
      */
-    default Class<? extends IVisualConfiguration> getVisualConfigurationImplementation() {
-        return VisualConfiguration.class;
+    default Class<? extends IVisualizationConfiguration> getVisualConfigurationImplementation() {
+        return VisualizationConfiguration.class;
     }
 
     /**

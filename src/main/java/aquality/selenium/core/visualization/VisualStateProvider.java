@@ -5,6 +5,7 @@ import aquality.selenium.core.utilities.IElementActionRetrier;
 import org.openqa.selenium.remote.RemoteWebElement;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -38,7 +39,7 @@ public class VisualStateProvider implements IVisualStateProvider {
     }
 
     @Override
-    public Image getImage() {
+    public BufferedImage getImage() {
         return getLoggedValue("image", ImageFunctions::getScreenshotAsImage,
                 image -> getStringValue(ImageFunctions.getSize(image)));
     }

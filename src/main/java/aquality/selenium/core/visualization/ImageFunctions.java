@@ -5,15 +5,12 @@ import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.remote.RemoteWebElement;
 
-import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.FileImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.*;
+import java.util.Arrays;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
@@ -23,6 +20,20 @@ import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 public class ImageFunctions {
     private ImageFunctions() throws InstantiationException {
         throw new InstantiationException("Static ImageFunctions should not be initialized");
+    }
+
+    /**
+     * Reads image from file.
+     * @param file The file to read the image from.
+     * @return Instance of BufferedImage.
+     */
+    public static BufferedImage readImage(File file) {
+        try {
+            return ImageIO.read(file);
+        } catch (IOException exception) {
+            Logger.getInstance().fatal(String.format("Failed to get the file [%s] as an image", file), exception);
+            throw new UncheckedIOException(exception);
+        }
     }
 
     /**
@@ -106,24 +117,31 @@ public class ImageFunctions {
     }
 
     /**
-     * Saves image in the highest quality.
+     * Redraw the image on white background and saves it to target file.
      * @param image source image.
-     * @param name target name without extension.
+     * @param file target file.
      * @param format target format.
      */
-    public static void save(RenderedImage image, String name, String format) {
-        final float highestQuality = 1.0F;
-        ImageWriter writer = ImageIO.getImageWritersByFormatName(format).next();
-        ImageWriteParam param = writer.getDefaultWriteParam();
-        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        param.setCompressionQuality(highestQuality);
-        String fileName = String.format("%s.%s", name, format.startsWith(".") ? format.substring(1) : format);
-        try {
-            writer.setOutput(new FileImageInputStream(new File(fileName)));
-            writer.write(null, new IIOImage(image, null, null), param);
-        } catch (IOException e) {
-            Logger.getInstance().fatal("Failed to save the image: " + e.getMessage(), e);
-            throw new UncheckedIOException(e);
+    public static void save(Image image, File file, String format) throws IOException {
+        if (file.exists() || file.createNewFile()) {
+            BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), TYPE_INT_RGB);
+            Graphics2D graphics = newImage.createGraphics();
+            graphics.drawImage(image, 0, 0, Color.WHITE, null);
+            graphics.dispose();
+            ImageIO.write(newImage, format, file);
+        }
+    }
+
+    /**
+     * Validates that image format is supported by the current JRE.
+     *
+     * @param actualFormat image format to check.
+     */
+    public static void validateImageFormat(String actualFormat) {
+        String[] supportedFormats = ImageIO.getWriterFormatNames();
+        if (Arrays.stream(supportedFormats).noneMatch(format -> format.equals(actualFormat))) {
+            throw new IllegalArgumentException(String.format(
+                    "Format [%s] is not supported by current JRE. Supported formats: %s", actualFormat, Arrays.toString(supportedFormats)));
         }
     }
 }

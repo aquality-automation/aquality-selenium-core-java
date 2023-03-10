@@ -3,7 +3,7 @@ package aquality.selenium.core.configurations;
 /**
  * Represents visualization configuration, used for image comparison.
  */
-public interface IVisualConfiguration {
+public interface IVisualizationConfiguration {
     /**
      * Image format for comparison.
      * @return image format.
