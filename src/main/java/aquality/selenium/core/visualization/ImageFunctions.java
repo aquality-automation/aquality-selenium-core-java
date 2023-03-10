@@ -5,13 +5,15 @@ import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.remote.RemoteWebElement;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.FileImageInputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 
 import static java.awt.image.BufferedImage.TYPE_INT_RGB;
 
@@ -101,5 +103,27 @@ public class ImageFunctions {
         graphics.drawImage(scaledImage, 0, 0, width, height, null);
         graphics.dispose();
         return resizedImage;
+    }
+
+    /**
+     * Saves image in the highest quality.
+     * @param image source image.
+     * @param name target name without extension.
+     * @param format target format.
+     */
+    public static void save(RenderedImage image, String name, String format) {
+        final float highestQuality = 1.0F;
+        ImageWriter writer = ImageIO.getImageWritersByFormatName(format).next();
+        ImageWriteParam param = writer.getDefaultWriteParam();
+        param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        param.setCompressionQuality(highestQuality);
+        String fileName = String.format("%s.%s", name, format.startsWith(".") ? format.substring(1) : format);
+        try {
+            writer.setOutput(new FileImageInputStream(new File(fileName)));
+            writer.write(null, new IIOImage(image, null, null), param);
+        } catch (IOException e) {
+            Logger.getInstance().fatal("Failed to save the image: " + e.getMessage(), e);
+            throw new UncheckedIOException(e);
+        }
     }
 }

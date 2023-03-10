@@ -9,7 +9,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class VisualStateProvider implements IVisualStateProvider {
-
     private final IImageComparator imageComparator;
     private final IElementActionRetrier actionRetrier;
     private final Supplier<RemoteWebElement> getElement;
@@ -22,6 +21,7 @@ public class VisualStateProvider implements IVisualStateProvider {
         this.stateLogger = stateLogger;
     }
 
+    @Override
     public Dimension getSize() {
         return getLoggedValue("size", element -> {
             final org.openqa.selenium.Dimension size = element.getSize();
@@ -29,6 +29,7 @@ public class VisualStateProvider implements IVisualStateProvider {
         }, null);
     }
 
+    @Override
     public Point getLocation() {
         return getLoggedValue("location", element -> {
             final org.openqa.selenium.Point location = element.getLocation();
@@ -36,6 +37,7 @@ public class VisualStateProvider implements IVisualStateProvider {
         }, null);
     }
 
+    @Override
     public Image getImage() {
         return getLoggedValue("image", ImageFunctions::getScreenshotAsImage,
                 image -> getStringValue(ImageFunctions.getSize(image)));

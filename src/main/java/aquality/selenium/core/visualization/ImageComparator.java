@@ -23,6 +23,12 @@ public class ImageComparator implements IImageComparator {
         return visualConfiguration.getComparisonWidth();
     }
 
+    @Override
+    public float percentageDifference(Image thisOne, Image theOtherOne) {
+        return percentageDifference(thisOne, theOtherOne, visualConfiguration.getDefaultThreshold());
+    }
+
+    @Override
     public float percentageDifference(Image thisOne, Image theOtherOne, float threshold) {
         if (threshold < 0 || threshold > 1) {
             throw new IllegalArgumentException(String.format("Threshold should be between 0 and 1, but was [%s]", threshold));
@@ -30,10 +36,6 @@ public class ImageComparator implements IImageComparator {
 
         int intThreshold = (int) (threshold * THRESHOLD_DIVISOR);
         return percentageDifference(thisOne, theOtherOne, intThreshold);
-    }
-
-    public float percentageDifference(Image thisOne, Image theOtherOne) {
-        return percentageDifference(thisOne, theOtherOne, visualConfiguration.getDefaultThreshold());
     }
 
     protected float percentageDifference(Image thisOne, Image theOtherOne, int threshold) {
