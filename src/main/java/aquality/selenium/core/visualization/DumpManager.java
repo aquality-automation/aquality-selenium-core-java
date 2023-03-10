@@ -69,11 +69,11 @@ public class DumpManager<T extends IElement> implements IDumpManager {
     private void logUnprocessedElements(int countOfUnprocessedElements, Map<String, T> existingElements, List<String> absentOnFormElementNames) {
         if (countOfUnprocessedElements > 0)
         {
-            if (existingElements.size() > 0)
+            if (!existingElements.isEmpty())
             {
                 localizedLogger.warn("loc.form.dump.elementsmissedindump", String.join(", ", existingElements.keySet()));
             }
-            if (absentOnFormElementNames.size() > 0)
+            if (!absentOnFormElementNames.isEmpty())
             {
                 localizedLogger.warn("loc.form.dump.elementsmissedonform", String.join(", ", absentOnFormElementNames));
             }
