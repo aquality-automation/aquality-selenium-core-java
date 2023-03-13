@@ -12,7 +12,7 @@ public class ChromeApplication implements IApplication {
     private final RemoteWebDriver driver;
 
     ChromeApplication(long implicitWaitSeconds) {
-        driver = new ChromeDriver(new ChromeOptions().addArguments("--headless"));
+        driver = new ChromeDriver(new ChromeOptions().addArguments("--headless").addArguments("--remote-allow-origins=*"));
         setImplicitWaitTimeout(Duration.ofSeconds(implicitWaitSeconds));
     }
 

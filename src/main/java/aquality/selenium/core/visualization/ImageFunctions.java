@@ -117,7 +117,7 @@ public class ImageFunctions {
     }
 
     /**
-     * Redraw the image on white background and saves it to target file.
+     * Redraw the image and saves it to target file.
      * @param image source image.
      * @param file target file.
      * @param format target format.
@@ -126,7 +126,7 @@ public class ImageFunctions {
         if (file.exists() || file.createNewFile()) {
             BufferedImage newImage = new BufferedImage(image.getWidth(null), image.getHeight(null), TYPE_INT_RGB);
             Graphics2D graphics = newImage.createGraphics();
-            graphics.drawImage(image, 0, 0, Color.WHITE, null);
+            graphics.drawImage(image, 0, 0, null);
             graphics.dispose();
             ImageIO.write(newImage, format, file);
         }
