@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class DumpManager<T extends IElement> implements IDumpManager {
-    private static final String INVALID_CHARS_REGEX = "[\\\\/|\\\\\\\\|\\\\*|\\\\:|\\\\||\\\"|\\'|\\\\<|\\\\>|\\\\{|\\\\}|\\\\?|\\\\%|,]";
+    private static final String INVALID_CHARS_REGEX = "[\\\\/|*:\"'<>{}?%,]";
 
     private final Map<String, T> elementsForVisualization;
     private final String formName;
