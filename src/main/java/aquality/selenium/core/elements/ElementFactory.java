@@ -106,7 +106,7 @@ public class ElementFactory implements IElementFactory {
                         localizationManager.getLocalizedMessage("loc.elements.found.but.should.not",
                                 locator.toString(), state.toString()));
                 break;
-            case MORE_THEN_ZERO:
+            case MORE_THAN_ZERO:
                 conditionalWait.waitForTrue(() -> !elementFinder.findElements(locator, state, ZERO_TIMEOUT).isEmpty(),
                         localizationManager.getLocalizedMessage("loc.no.elements.found.by.locator",
                                 locator.toString(), state.toString()));

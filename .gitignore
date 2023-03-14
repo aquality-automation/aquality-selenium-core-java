@@ -4,6 +4,9 @@
 # Log file
 *.log
 
+# Visualization
+visualDumps/
+
 # BlueJ files
 *.ctxt
 

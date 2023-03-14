@@ -6,7 +6,7 @@ import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
-import aquality.selenium.core.elements.interfaces.ILogElementState;
+import aquality.selenium.core.logging.ILogElementState;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
 import aquality.selenium.core.waitings.IConditionalWait;

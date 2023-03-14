@@ -3,7 +3,9 @@ package theinternet;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
+import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
+import tests.applications.browser.AqualityServices;
 import tests.applications.browser.CachedLabel;
 
 import java.time.Duration;
@@ -47,5 +49,10 @@ public class DynamicLoadingForm extends BaseForm {
 
     public IElementStateProvider startButtonState() {
         return state(START_BUTTON_LOCATOR);
+    }
+
+    public static void waitUntilLoaderChanged(int oldHeight) {
+        AqualityServices.get(IConditionalWait.class).waitFor(
+                () -> oldHeight < getLoadingLabel().visual().getSize().getHeight());
     }
 }

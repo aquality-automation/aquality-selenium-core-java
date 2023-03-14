@@ -5,6 +5,13 @@ package aquality.selenium.core.configurations;
  */
 public interface IConfigurationsModule {
     /**
+     * @return class which implements {@link IVisualizationConfiguration}
+     */
+    default Class<? extends IVisualizationConfiguration> getVisualConfigurationImplementation() {
+        return VisualizationConfiguration.class;
+    }
+
+    /**
      * @return class which implements {@link IElementCacheConfiguration}
      */
     default Class<? extends IElementCacheConfiguration> getElementCacheConfigurationImplementation() {

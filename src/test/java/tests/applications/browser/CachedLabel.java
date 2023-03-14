@@ -5,6 +5,9 @@ import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.utilities.IElementActionRetrier;
+import aquality.selenium.core.visualization.IImageComparator;
+import aquality.selenium.core.visualization.VisualStateProvider;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import tests.applications.ICachedElement;
@@ -57,5 +60,11 @@ public class CachedLabel implements ICachedElement {
     @Override
     public ILocalizationManager getLocalizationManager() {
         return AqualityServices.get(ILocalizationManager.class);
+    }
+
+    public VisualStateProvider visual() {
+        return new VisualStateProvider(AqualityServices.get(IImageComparator.class),
+                AqualityServices.get(IElementActionRetrier.class), this::getElement, (messageKey, args) ->
+                getLocalizedLogger().infoElementAction(CachedLabel.class.getSimpleName(), getLocator().toString(), messageKey, args));
     }
 }

@@ -77,13 +77,13 @@ public interface IFindElementsTests {
 
     @Test
     default void shouldBePossibleToFindCustomElementsViaCustomFactoryWithCustomElementsCount() {
-        Assert.assertTrue(findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementsCount.MORE_THEN_ZERO).size() > 1);
+        Assert.assertTrue(findElements(CalculatorWindow.getEqualsButtonByXPath(), ICustomElement.class, ElementsCount.MORE_THAN_ZERO).size() > 1);
     }
 
     @Test
     default void shouldBePossibleToFindCustomElementsViaSupplierWithDefaultName() {
         Assert.assertTrue(findElements(
-                CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementsCount.MORE_THEN_ZERO,
+                CalculatorWindow.getEqualsButtonByXPath(), CustomElement::new, ElementsCount.MORE_THAN_ZERO,
                 ElementState.EXISTS_IN_ANY_STATE).size() > 1);
     }
 
