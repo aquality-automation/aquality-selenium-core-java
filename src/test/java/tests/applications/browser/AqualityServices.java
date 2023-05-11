@@ -2,7 +2,6 @@ package tests.applications.browser;
 
 import aquality.selenium.core.applications.AqualityModule;
 import com.google.inject.Injector;
-import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class AqualityServices  extends aquality.selenium.core.applications.AqualityServices<ChromeApplication> {
     private static final ThreadLocal<AqualityServices> INSTANCE_CONTAINER = ThreadLocal.withInitial(AqualityServices::new);
@@ -28,7 +27,6 @@ public class AqualityServices  extends aquality.selenium.core.applications.Aqual
     }
 
     private static ChromeApplication startChrome(Injector injector) {
-        WebDriverManager.chromedriver().setup();
         if (injector == null) {
             throw new RuntimeException("cannot start Chrome without DI injector");
         }
