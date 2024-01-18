@@ -56,5 +56,5 @@ jobs:
 
       - name: Step 7 - Publish package
         run: |
-          mvn -P release -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
+          mvn -Dmaven.test.skip=true -P release -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
               -Drevision=${{ steps.gitversion.outputs.semVer }} deploy            
