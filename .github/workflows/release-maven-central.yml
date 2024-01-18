@@ -15,31 +15,29 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Step 2 - Import GPG key
-        run: |
-          echo "${{ secrets.GPG_PUBLIC_KEY }}" | gpg --import
-          echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --import --no-tty --batch --yes
-
-      - name: Step 3 - Set up Maven Central Repository
+      - name: Step 2 - Set up Maven Central Repository
         uses: actions/setup-java@v3
         with:
           java-version: "8"
           distribution: "adopt"
           server-id: ossrh
-          server-username: ${{ secrets.OSSRH_USERNAME }}
-          server-password: ${{ secrets.OSSRH_TOKEN }}
+          server-username: MVN_CENTRAL_USERNAME
+          server-password: MVN_CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.GPG_SECRET_KEY }}
+          gpg-passphrase: MVN_GPG_PASSPHRASE
 
-      - name: Step 4 - Install GitVersion
+      - name: Step 3 - Install GitVersion
         uses: gittools/actions/gitversion/setup@v0
         with:
           versionSpec: '5.x'
-      - name: Step 5 - Determine Version
+
+      - name: Step 4 - Determine Version
         id: gitversion
         uses: gittools/actions/gitversion/execute@v0
         with:
           useConfigFile: true
 
-      - name: Step 6 - Create Release
+      - name: Step 5 - Create Release
         id: create_release
         uses: actions/create-release@latest
         env:
@@ -54,7 +52,10 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Step 7 - Publish package
+      - name: Step 6 - Publish package
         run: |
-          mvn -Dmaven.test.skip=true -P release -Dgpg.passphrase=${{ secrets.GPG_PASSPHRASE }} \
-              -Drevision=${{ steps.gitversion.outputs.semVer }} deploy            
+          mvn -Dmaven.test.skip=true -P release -Drevision=${{ steps.gitversion.outputs.semVer }} deploy
+        env:
+          MVN_CENTRAL_USERNAME: ${{ vars.OSSRH_USERNAME }}
+          MVN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+          MVN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}

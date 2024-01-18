@@ -6,7 +6,7 @@
 
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium-core</artifactId>
-    <version>3.0.0</version>
+    <version>${revision}</version>
 
     <packaging>jar</packaging>
     <name>Aquality Selenium Core</name>
@@ -16,6 +16,7 @@
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <revision>3.0.0-SNAPSHOT</revision>
     </properties>
 
     <distributionManagement>
