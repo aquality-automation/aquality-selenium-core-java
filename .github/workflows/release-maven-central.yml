@@ -50,7 +50,7 @@ jobs:
         with:
           tag_name: ${{ env.VERSION }}
           release_name: ${{ env.VERSION }} ${{ env.TITLE }}
-          body: $BODY
+          body: ${{ env.BODY }}
           draft: false
           prerelease: false
 
