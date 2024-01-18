@@ -56,6 +56,6 @@ jobs:
         run: |
           mvn -Dmaven.test.skip=true -P release -Drevision=${{ steps.gitversion.outputs.semVer }} deploy
         env:
-          MVN_CENTRAL_USERNAME: ${{ vars.OSSRH_USERNAME }}
+          MVN_CENTRAL_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MVN_CENTRAL_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
           MVN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
