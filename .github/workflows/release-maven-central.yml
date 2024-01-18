@@ -48,8 +48,8 @@ jobs:
           BODY: ${{ github.event.pull_request.body }}
           VERSION: "v${{ steps.gitversion.outputs.semVer }}"
         with:
-          tag_name: $VERSION
-          release_name: $VERSION $TITLE
+          tag_name: ${{ env.VERSION }}
+          release_name: ${{ env.VERSION }} ${{ env.TITLE }}
           body: $BODY
           draft: false
           prerelease: false
