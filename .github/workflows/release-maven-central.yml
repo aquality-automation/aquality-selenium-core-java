@@ -15,8 +15,8 @@ jobs:
 
       - name: Step 2 - Import GPG key
         run: |
-          echo "${{ secrets.GPG_PUBLIC_KEY }}" | gpg --import
-          echo "${{ secrets.GPG_SECRET_KEY }}" | gpg --import --no-tty --batch --yes
+          echo "${{ secrets.GPG_PUBLIC_KEY }}" | sudo gpg --import
+          echo "${{ secrets.GPG_SECRET_KEY }}" | sudo gpg --import --no-tty --batch --yes
 
       - name: Step 3 - Set up Maven Central Repository
         uses: actions/setup-java@v3
