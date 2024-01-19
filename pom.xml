@@ -6,7 +6,7 @@
 
     <groupId>com.github.aquality-automation</groupId>
     <artifactId>aquality-selenium-core</artifactId>
-    <version>3.0.1</version>
+    <version>${revision}</version>
 
     <packaging>jar</packaging>
     <name>Aquality Selenium Core</name>
@@ -16,6 +16,7 @@
     <properties>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <revision>3.0.0-SNAPSHOT</revision>
     </properties>
 
     <distributionManagement>
@@ -119,12 +120,12 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.9.1</version>
+            <version>4.13.0</version>
         </dependency>
         <dependency>
             <groupId>io.appium</groupId>
             <artifactId>java-client</artifactId>
-            <version>8.4.0</version>
+            <version>8.6.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -240,6 +241,12 @@
                         <goals>
                             <goal>sign</goal>
                         </goals>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
