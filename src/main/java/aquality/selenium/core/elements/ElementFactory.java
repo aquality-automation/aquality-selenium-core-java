@@ -93,7 +93,7 @@ public class ElementFactory implements IElementFactory {
         for (int index = 1; index <= webElements.size(); index++) {
             WebElement webElement = webElements.get(index - 1);
             String currentName = String.format("%1$s %2$s", namePrefix, index);
-            T element = supplier.get(generateXpathLocator(locator, webElement, index), currentName, state);
+            T element = supplier.get(generateLocator(locator, webElement, index), currentName, state);
             list.add(element);
         }
         return list;
@@ -124,6 +124,18 @@ public class ElementFactory implements IElementFactory {
                                                      ElementsCount count, ElementState state) {
         IElementSupplier<T> elementSupplier = getDefaultElementSupplier(clazz);
         return findElements(locator, name, elementSupplier, count, state);
+    }
+
+    /**
+     * Generates locator for target element.
+     *
+     * @param multipleElementsLocator locator used to find elements.
+     * @param webElement              target element.
+     * @param elementIndex            index of target element.
+     * @return target element's locator
+     */
+    protected By generateLocator(By multipleElementsLocator, WebElement webElement, int elementIndex) {
+        return generateXpathLocator(multipleElementsLocator, webElement, elementIndex);
     }
 
     /**
