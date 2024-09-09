@@ -23,7 +23,6 @@ jobs:
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'clean'
-      options: '-Xmx3072m'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
@@ -98,7 +97,6 @@ jobs:
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'clean test -Dprofile=local'
-      options: '-Xmx3072m'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
       javaHomeOption: 'JDKVersion'
