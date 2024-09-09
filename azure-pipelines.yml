@@ -9,33 +9,36 @@ jobs:
   displayName: Analyse code with SonarQube
 
   steps:
-  - task: SonarCloudPrepare@1
+  - task: SonarCloudPrepare@2
     displayName: 'Prepare SonarCloud analysis'
     inputs:
       SonarCloud: 'SonarCloud'
       organization: 'aqualityautomation'
       scannerMode: 'CLI'
       configMode: 'file'
-      extraProperties: |
-        sonar.coverage.exclusions=**/**
+      extraProperties: 'sonar.coverage.exclusions=**/**'
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Build project'
     inputs:
       mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '11'
-      jdkArchitectureOption: 'x64'
+      goals: 'clean'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false
 
-  - task: SonarCloudAnalyze@1
+  - task: SonarCloudAnalyze@2
+    inputs:
+      jdkversion: 'JAVA_HOME_21_X64'
     displayName: 'Run SonarCloud code analysis'
     continueOnError: true
 
-  - task: SonarCloudPublish@1
+  - task: SonarCloudPublish@2
     displayName: 'Publish SonarCloud quality gate results'
     inputs:
       pollingTimeoutSec: '300'
@@ -89,14 +92,16 @@ jobs:
     inputs:
       displaySettings: 'optimal'
 
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Run tests'
     inputs:
       mavenPomFile: 'pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '11'
-      jdkArchitectureOption: 'x64'
+      goals: 'clean test -Dprofile=local'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean test -Dprofile=local'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.11'
+      mavenVersionOption: 'Default'
+      mavenAuthenticateFeed: false
+      effectivePomSkip: false
+      sonarQubeRunAnalysis: false

@@ -8,20 +8,15 @@ import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.logging.Logger;
 import aquality.selenium.core.waitings.IConditionalWait;
 import com.google.inject.Inject;
-import org.openqa.selenium.By;
+import org.openqa.selenium.*;
 import org.openqa.selenium.By.ByTagName;
 import org.openqa.selenium.By.ByXPath;
-import org.openqa.selenium.InvalidArgumentException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class ElementFactory implements IElementFactory {
@@ -87,16 +82,26 @@ public class ElementFactory implements IElementFactory {
         } catch (TimeoutException e) {
             throw new org.openqa.selenium.TimeoutException(e.getMessage());
         }
-        List<WebElement> webElements = elementFinder.findElements(locator, state, ZERO_TIMEOUT);
         String namePrefix = name == null ? "element" : name;
-        List<T> list = new ArrayList<>();
-        for (int index = 1; index <= webElements.size(); index++) {
-            WebElement webElement = webElements.get(index - 1);
-            String currentName = String.format("%1$s %2$s", namePrefix, index);
-            T element = supplier.get(generateLocator(locator, webElement, index), currentName, state);
-            list.add(element);
-        }
-        return list;
+        List<T> elements = new ArrayList<>();
+        Collection<Class<? extends Throwable>> ignoredExceptions = Arrays.asList(
+                StaleElementReferenceException.class, JavascriptException.class, org.openqa.selenium.TimeoutException.class
+        );
+        conditionalWait.waitFor(() -> {
+            List<WebElement> webElements = elementFinder.findElements(locator, state, ZERO_TIMEOUT);
+            for (int index = 1; index <= webElements.size(); index++) {
+                WebElement webElement = webElements.get(index - 1);
+                String currentName = String.format("%1$s %2$s", namePrefix, index);
+                T element = supplier.get(generateLocator(locator, webElement, index), currentName, state);
+                elements.add(element);
+            }
+            boolean anyElementsFound = !elements.isEmpty();
+            return count == ElementsCount.ANY
+                    || (count == ElementsCount.ZERO && !anyElementsFound)
+                    || (count == ElementsCount.MORE_THAN_ZERO && anyElementsFound);
+        }, ignoredExceptions);
+
+        return elements;
     }
 
     protected void waitForElementsCount(By locator, ElementsCount count, ElementState state) throws TimeoutException {
