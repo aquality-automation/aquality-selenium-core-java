@@ -67,9 +67,8 @@ public class FormDumpTests implements ITheInternetPageTest {
     public void shouldBePossibleToCompareWithDumpWithCustomNameWhenDifferenceIsNotZero()
     {
         HoversForm form = new HoversForm();
-        form.hoverAvatar();
         form.dump().save("Non-zero diff");
-        AqualityServices.getApplication().getDriver().navigate().refresh();
+        form.hoverAvatar();
         form.waitUntilPresent();
         Assert.assertTrue(form.dump().compare("Non-zero diff") > 0, "Difference with current page should be greater than zero");
     }
