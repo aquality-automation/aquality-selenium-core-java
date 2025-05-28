@@ -7,7 +7,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.net.URL;
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class WindowsApplication implements IApplication {
     private long implicitWaitSeconds;
@@ -34,7 +33,7 @@ public class WindowsApplication implements IApplication {
     public void setImplicitWaitTimeout(Duration value) {
         long valueInSeconds = value.getSeconds();
         if (implicitWaitSeconds != valueInSeconds){
-            driver.manage().timeouts().implicitlyWait(value.toMillis(), TimeUnit.MILLISECONDS);
+            driver.manage().timeouts().implicitlyWait(value);
             implicitWaitSeconds = valueInSeconds;
         }
     }
