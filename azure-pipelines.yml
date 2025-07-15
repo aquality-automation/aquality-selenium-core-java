@@ -9,7 +9,7 @@ jobs:
   displayName: Analyse code with SonarQube
 
   steps:
-  - task: SonarCloudPrepare@2
+  - task: SonarCloudPrepare@3
     displayName: 'Prepare SonarCloud analysis'
     inputs:
       SonarCloud: 'SonarCloud'
@@ -32,13 +32,13 @@ jobs:
       effectivePomSkip: false
       sonarQubeRunAnalysis: false
 
-  - task: SonarCloudAnalyze@2
+  - task: SonarCloudAnalyze@3
     inputs:
       jdkversion: 'JAVA_HOME_21_X64'
     displayName: 'Run SonarCloud code analysis'
     continueOnError: true
 
-  - task: SonarCloudPublish@2
+  - task: SonarCloudPublish@3
     displayName: 'Publish SonarCloud quality gate results'
     inputs:
       pollingTimeoutSec: '300'

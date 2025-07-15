@@ -20,7 +20,7 @@ jobs:
         with:
           java-version: "11"
           distribution: "adopt"
-          server-id: ossrh
+          server-id: central
           server-username: MVN_CENTRAL_USERNAME
           server-password: MVN_CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SECRET_KEY }}
