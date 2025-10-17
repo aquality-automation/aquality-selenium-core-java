@@ -113,6 +113,7 @@ public interface IParent {
      *
      * @param childLoc Locator of child elements relative to its parent.
      * @param clazz    Class or interface of the elements to be obtained.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, Class<T> clazz) {
@@ -124,7 +125,8 @@ public interface IParent {
      *
      * @param childLoc Locator of child elements relative to its parent.
      * @param clazz    Class or interface of the elements to be obtained.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, Class<T> clazz, ElementsCount count) {
@@ -137,6 +139,7 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param clazz    Class or interface of the elements to be obtained.
      * @param state    Visibility state of child elements.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, Class<T> clazz, ElementState state) {
@@ -149,7 +152,8 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param clazz    Class or interface of the elements to be obtained.
      * @param state    Visibility state of child elements.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, Class<T> clazz, ElementState state,
@@ -163,6 +167,7 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param name     Child elements name.
      * @param clazz    Class or interface of the elements to be obtained.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz) {
@@ -175,7 +180,8 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param name     Child elements name.
      * @param clazz    Class or interface of the elements to be obtained.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz, ElementsCount count) {
@@ -189,6 +195,7 @@ public interface IParent {
      * @param name     Child elements name.
      * @param clazz    Class or interface of the elements to be obtained.
      * @param state    Visibility state of child elements.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz, ElementState state) {
@@ -203,7 +210,7 @@ public interface IParent {
      * @param name     Child elements name.
      * @param clazz    Class or interface of the elements to be obtained.
      * @param state    Visibility state of target elements.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
      * @return List of child elements.
      */
     <T extends IElement> List<T> findChildElements(By childLoc, String name, Class<T> clazz, ElementState state,
@@ -214,6 +221,7 @@ public interface IParent {
      *
      * @param childLoc Locator of child elements relative to its parent.
      * @param supplier Required elements' supplier.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, IElementSupplier<T> supplier) {
@@ -225,7 +233,8 @@ public interface IParent {
      *
      * @param childLoc Locator of child elements relative to its parent.
      * @param supplier Required elements' supplier.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, IElementSupplier<T> supplier,
@@ -239,6 +248,7 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param supplier Required elements' supplier.
      * @param state    Visibility state of child elements.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, IElementSupplier<T> supplier,
@@ -252,7 +262,8 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param supplier Required elements' supplier.
      * @param state    Visibility state of child elements.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, IElementSupplier<T> supplier, ElementState state,
@@ -266,6 +277,7 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param name     Child elements name.
      * @param supplier Required elements' supplier.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier) {
@@ -278,7 +290,8 @@ public interface IParent {
      * @param childLoc Locator of child elements relative to its parent.
      * @param name     Child elements name.
      * @param supplier Required elements' supplier.
-     * @param count    Expected number of elements that have to be found (zero, more then zero, any).
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier,
@@ -293,6 +306,7 @@ public interface IParent {
      * @param name     Child elements name.
      * @param supplier Required elements' supplier.
      * @param state    Visibility state of child elements.
+     * @param <T>      Type of the target elements.
      * @return List of child elements.
      */
     default <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier,
@@ -308,6 +322,7 @@ public interface IParent {
      * @param name     Child elements name.
      * @param supplier Required elements' supplier.
      * @param state    Visibility state of child elements.
+     * @param count    Expected number of elements that have to be found (zero, more than zero, any).
      * @return List of child elements.
      */
     <T extends IElement> List<T> findChildElements(By childLoc, String name, IElementSupplier<T> supplier,

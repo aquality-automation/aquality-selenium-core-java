@@ -121,6 +121,7 @@ public class ImageFunctions {
      * @param image source image.
      * @param file target file.
      * @param format target format.
+     * @throws IOException if an error occurs during file creation or writing.
      */
     public static void save(Image image, File file, String format) throws IOException {
         if (file.exists() || file.createNewFile()) {
