@@ -50,16 +50,25 @@ jobs:
   - task: NodeTool@0
     displayName: 'Install Node.js'
     inputs:
-      versionSpec: '16.x'
+      versionSpec: '22.x'
 
   - task: CmdLine@2
     displayName: 'Install Appium'
     inputs:
       script: |
           echo "Installing Appium"
-          npm install -g appium@next
+          npm install -g appium@latest
           appium --version
           echo "Appium installed"
+
+  - task: CmdLine@2
+    displayName: 'Install Appium Windows Driver'
+    inputs:
+      script: |
+        echo "Installing Appium Windows Driver"
+        appium driver install windows
+        appium driver list
+        echo "Appium Windows Driver installed"
 
   - task: CmdLine@2
     displayName: 'Install and Run Appium doctor'
@@ -67,18 +76,9 @@ jobs:
       script: |
         echo "Installing and Running Appium doctor"
         npm install -g request@2.34.0
-        npm install -g appium-doctor@1.15.1
-        appium-doctor
+        appium driver doctor windows
+        echo "Appium doctor executed"
         echo "Appium doctor installed and executed"
-
-  - task: CmdLine@2
-    displayName: 'Install Appium Windows Driver'
-    inputs:
-      script: |
-        echo "Installing Appium Windows Driver"
-        appium driver install --source=npm appium-windows-driver
-        appium driver list
-        echo "Appium Windows Driver installed"
 
   - task: CmdLine@2
     displayName: 'Start Appium server'
