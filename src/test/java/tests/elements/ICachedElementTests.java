@@ -22,7 +22,7 @@ public interface ICachedElementTests {
     }
 
     @DataProvider
-    default Object[] stateFunctionsTrueWhenElementStaleWhichRetriveElement() {
+    default Object[] stateFunctionsTrueWhenElementStaleWhichRetrieveElement() {
         List<Predicate<IElementStateProvider>> stateFunctions = new ArrayList<>();
         stateFunctions.add(IElementStateProvider::isEnabled);
         stateFunctions.add(IElementStateProvider::isClickable);

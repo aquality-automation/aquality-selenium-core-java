@@ -2,7 +2,7 @@ package aquality.selenium.core.visualization;
 
 import aquality.selenium.core.logging.ILogVisualState;
 import aquality.selenium.core.utilities.IElementActionRetrier;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -12,10 +12,10 @@ import java.util.function.Supplier;
 public class VisualStateProvider implements IVisualStateProvider {
     private final IImageComparator imageComparator;
     private final IElementActionRetrier actionRetrier;
-    private final Supplier<RemoteWebElement> getElement;
+    private final Supplier<WebElement> getElement;
     private final ILogVisualState stateLogger;
 
-    public VisualStateProvider(IImageComparator imageComparator, IElementActionRetrier actionRetrier, Supplier<RemoteWebElement> getElement, ILogVisualState stateLogger){
+    public VisualStateProvider(IImageComparator imageComparator, IElementActionRetrier actionRetrier, Supplier<WebElement> getElement, ILogVisualState stateLogger){
         this.imageComparator = imageComparator;
         this.actionRetrier = actionRetrier;
         this.getElement = getElement;
@@ -70,7 +70,7 @@ public class VisualStateProvider implements IVisualStateProvider {
         return value;
     }
 
-    private <T> T getLoggedValue(String name, Function<RemoteWebElement, T> getValue, Function<T, String> toString) {
+    private <T> T getLoggedValue(String name, Function<WebElement, T> getValue, Function<T, String> toString) {
         stateLogger.logVisualState("loc.el.visual.get" + name);
         T value = actionRetrier.doWithRetry(() -> getValue.apply(getElement.get()));
         String stringValue = toString == null ? getStringValue(value) : toString.apply(value);

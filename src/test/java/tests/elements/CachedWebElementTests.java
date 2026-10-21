@@ -2,6 +2,7 @@ package tests.elements;
 
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
 import aquality.selenium.core.waitings.IConditionalWait;
+import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.applications.browser.AqualityServices;
@@ -61,17 +62,17 @@ public class CachedWebElementTests implements ITheInternetPageTest, ICachedEleme
         Assert.assertFalse(loader.state().isExist(),
                 "Loader that was displayed previously and become invisible should be treated as disappeared");
         Assert.assertTrue(loader.state().waitForExist(ZERO_TIMEOUT),
-                "When waiting for existance, we should get an actual element's state");
+                "When waiting for existence, we should get an actual element's state");
     }
 
     @Test
     public void testShouldRefreshElementWhenItIsStale() {
         openDynamicControls();
         CachedLabel example = DynamicControlsForm.getContentCachedLabel();
-        String exampleToString = example.getElement().getId();
+        String exampleToString = ((RemoteWebElement)example.getElement()).getId();
         getBrowser().getDriver().navigate().refresh();
         Assert.assertTrue(example.cache().isRefreshNeeded(), "refresh should be needed when refreshed the page");
-        String newToString = example.getElement().getId();
+        String newToString = ((RemoteWebElement)example.getElement()).getId();
         Assert.assertNotEquals(newToString, exampleToString, "new and old element's IDs should be different");
     }
 
@@ -80,7 +81,7 @@ public class CachedWebElementTests implements ITheInternetPageTest, ICachedEleme
         assertStateConditionAfterRefresh(stateCondition, false);
     }
 
-    @Test(dataProvider = "stateFunctionsTrueWhenElementStaleWhichRetriveElement")
+    @Test(dataProvider = "stateFunctionsTrueWhenElementStaleWhichRetrieveElement")
     public void testShouldReturnCorrectStateTrueWhenWindowIsRefreshed(Predicate<IElementStateProvider> stateCondition) throws TimeoutException {
         assertStateConditionAfterRefresh(stateCondition, true);
     }

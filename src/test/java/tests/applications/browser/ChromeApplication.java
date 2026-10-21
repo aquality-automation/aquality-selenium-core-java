@@ -1,6 +1,7 @@
 package tests.applications.browser;
 
 import aquality.selenium.core.applications.IApplication;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -17,7 +18,7 @@ public class ChromeApplication implements IApplication {
     }
 
     @Override
-    public RemoteWebDriver getDriver() {
+    public WebDriver getDriver() {
         return driver;
     }
 

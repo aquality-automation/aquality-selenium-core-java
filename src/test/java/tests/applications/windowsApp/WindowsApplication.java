@@ -3,7 +3,7 @@ package tests.applications.windowsApp;
 import aquality.selenium.core.applications.IApplication;
 import io.appium.java_client.windows.WindowsDriver;
 import io.appium.java_client.windows.options.WindowsOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import java.net.URL;
 import java.time.Duration;
@@ -20,7 +20,7 @@ public class WindowsApplication implements IApplication {
     }
 
     @Override
-    public RemoteWebDriver getDriver() {
+    public WebDriver getDriver() {
         return driver;
     }
 

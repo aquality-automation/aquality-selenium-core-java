@@ -3,7 +3,7 @@ package aquality.selenium.core.visualization;
 import aquality.selenium.core.elements.interfaces.IElement;
 import aquality.selenium.core.logging.Logger;
 import org.openqa.selenium.OutputType;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -52,7 +52,7 @@ public class ImageFunctions {
      * @param element given element.
      * @return image object.
      */
-    public static BufferedImage getScreenshotAsImage(RemoteWebElement element) {
+    public static BufferedImage getScreenshotAsImage(WebElement element) {
         byte[] bytes = element.getScreenshotAs(OutputType.BYTES);
         try (InputStream is = new ByteArrayInputStream(bytes)) {
             return ImageIO.read(is);

@@ -2,6 +2,7 @@ package tests.elements;
 
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
+import io.appium.java_client.remote.AppiumWebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import tests.ITestWithApplication;
@@ -36,28 +37,28 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
     @Test
     public void testShouldReturnSameElementAfterInteraction() {
         CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
-        String initialElement = oneButton.getElement().getId();
+        String initialElement = ((AppiumWebElement)oneButton.getElement()).getId();
         oneButton.click();
-        String resultElement = oneButton.getElement().getId();
+        String resultElement = ((AppiumWebElement)oneButton.getElement()).getId();
         Assert.assertEquals(resultElement, initialElement, "Element should be the same after getting interaction");
     }
 
     @Test
     public void testShouldReturnSameElementAfterGetState() {
         CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
-        String initialElement = oneButton.getElement().getId();
+        String initialElement = ((AppiumWebElement)oneButton.getElement()).getId();
         oneButton.state().waitForClickable();
-        String resultElement = oneButton.getElement().getId();
+        String resultElement = ((AppiumWebElement)oneButton.getElement()).getId();
         Assert.assertEquals(resultElement, initialElement, "Element should be the same after getting state");
     }
 
     @Test
     public void testShouldReturnNewElementWhenWindowIsReopened() {
         CachedButton oneButton = new CachedButton(CalculatorWindow.getOneButtonLoc());
-        String initialElement = oneButton.getElement().getId();
+        String initialElement = ((AppiumWebElement)oneButton.getElement()).getId();
         getApplication().getDriver().quit();
         oneButton.state().waitForClickable();
-        String resultElement = oneButton.getElement().getId();
+        String resultElement = ((AppiumWebElement)oneButton.getElement()).getId();
         Assert.assertNotEquals(resultElement, initialElement, "Element is still the same after reopening the window");
     }
 
@@ -66,7 +67,7 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
         assertStateConditionAfterQuit(stateCondition, false, false);
     }
 
-    @Test(dataProvider = "stateFunctionsTrueWhenElementStaleWhichRetriveElement")
+    @Test(dataProvider = "stateFunctionsTrueWhenElementStaleWhichRetrieveElement")
     public void testShouldReturnCorrectStateAndReopenApplicationWhenWindowIsClosed(Predicate<IElementStateProvider> stateCondition) {
         assertStateConditionAfterQuit(stateCondition, true, true);
     }
@@ -78,6 +79,6 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
         Assert.assertEquals(stateCondition.test(oneButton.state()), expectedValue,
                 "Element state condition is not expected after closing the window");
         Assert.assertEquals(isApplicationStarted(), shouldAppRestart,
-                String.format("Window was %1$s reopened when retrived the element state.", shouldAppRestart ? "not" : ""));
+                String.format("Window was %1$s reopened when retrieved the element state.", shouldAppRestart ? "not" : ""));
     }
 }

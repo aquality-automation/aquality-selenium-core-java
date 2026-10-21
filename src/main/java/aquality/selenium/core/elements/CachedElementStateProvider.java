@@ -17,7 +17,7 @@ import java.util.function.BooleanSupplier;
 import java.util.function.Predicate;
 
 /**
- * Provides functions to retrive the state for cached element.
+ * Provides functions to retrieve the state for cached element.
  */
 public class CachedElementStateProvider extends ElementStateProvider {
 
