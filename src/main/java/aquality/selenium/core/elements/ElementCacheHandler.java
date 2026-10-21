@@ -3,7 +3,7 @@ package aquality.selenium.core.elements;
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 
@@ -16,7 +16,7 @@ public class ElementCacheHandler implements IElementCacheHandler {
     private final ElementState state;
     private final IElementFinder finder;
 
-    private RemoteWebElement remoteElement;
+    private WebElement remoteElement;
 
     public ElementCacheHandler(By locator, ElementState state, IElementFinder finder) {
         this.locator = locator;
@@ -46,10 +46,10 @@ public class ElementCacheHandler implements IElementCacheHandler {
     }
 
     @Override
-    public RemoteWebElement getElement(Duration timeout, ElementState customState) {
+    public WebElement getElement(Duration timeout, ElementState customState) {
         ElementState requiredState = customState == null ? state : customState;
         if (isRefreshNeeded(requiredState)) {
-            remoteElement = (RemoteWebElement) finder.findElement(locator, requiredState, timeout);
+            remoteElement = finder.findElement(locator, requiredState, timeout);
         }
 
         return remoteElement;

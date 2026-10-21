@@ -2,7 +2,7 @@ package aquality.selenium.core.elements.interfaces;
 
 import aquality.selenium.core.visualization.IVisualStateProvider;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 
@@ -39,9 +39,9 @@ public interface IElement extends IParent {
      * Default timeout is provided in {@link aquality.selenium.core.configurations.ITimeoutConfiguration}
      * {@link org.openqa.selenium.NoSuchElementException} throws if element not found
      *
-     * @return instance of {@link RemoteWebElement} if found.
+     * @return instance of {@link WebElement} if found.
      */
-    default RemoteWebElement getElement() {
+    default WebElement getElement() {
         return getElement(null);
     }
 
@@ -50,9 +50,9 @@ public interface IElement extends IParent {
      * {@link org.openqa.selenium.NoSuchElementException} throws if element not found
      *
      * @param timeout Timeout for waiting
-     * @return instance of {@link RemoteWebElement} if found.
+     * @return instance of {@link WebElement} if found.
      */
-    RemoteWebElement getElement(Duration timeout);
+    WebElement getElement(Duration timeout);
 
     /**
      * Gets the item text (inner text).

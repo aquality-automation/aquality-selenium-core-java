@@ -17,7 +17,7 @@ import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 import java.util.List;
@@ -104,11 +104,11 @@ public abstract class Element implements IElement {
     }
 
     @Override
-    public RemoteWebElement getElement(Duration timeout) {
+    public WebElement getElement(Duration timeout) {
         try {
             return getElementCacheConfiguration().isEnabled()
                     ? getCache().getElement(timeout)
-                    : (RemoteWebElement) getElementFinder().findElement(locator, elementState, timeout);
+                    : getElementFinder().findElement(locator, elementState, timeout);
         } catch (NoSuchElementException e) {
             if (getLoggerConfiguration().logPageSource()) {
                 logPageSource(e);

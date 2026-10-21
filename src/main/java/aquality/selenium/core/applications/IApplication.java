@@ -1,6 +1,6 @@
 package aquality.selenium.core.applications;
 
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.WebDriver;
 
 import java.time.Duration;
 
@@ -12,7 +12,7 @@ public interface IApplication {
     /**
      * @return Current instance of driver.
      */
-    RemoteWebDriver getDriver();
+    WebDriver getDriver();
 
     /**
      * @return Is the application already running or not.

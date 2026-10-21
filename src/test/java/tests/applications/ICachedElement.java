@@ -6,12 +6,12 @@ import aquality.selenium.core.elements.ElementState;
 import aquality.selenium.core.elements.interfaces.IElementCacheHandler;
 import aquality.selenium.core.elements.interfaces.IElementFinder;
 import aquality.selenium.core.elements.interfaces.IElementStateProvider;
-import aquality.selenium.core.logging.ILogElementState;
 import aquality.selenium.core.localization.ILocalizationManager;
 import aquality.selenium.core.localization.ILocalizedLogger;
+import aquality.selenium.core.logging.ILogElementState;
 import aquality.selenium.core.waitings.IConditionalWait;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 public interface ICachedElement {
 
@@ -32,7 +32,7 @@ public interface ICachedElement {
         return getElementCacheHandler();
     }
 
-    default RemoteWebElement getElement() {
+    default WebElement getElement() {
         return cache().getElement();
     }
 

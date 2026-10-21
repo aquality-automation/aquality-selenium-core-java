@@ -3,7 +3,7 @@ package tests.elements;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.elements.ElementState;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -54,15 +54,15 @@ public class WebElementTests implements ITestWithApplication {
     @Test
     public void testShouldBePossibleToGetElement() {
         getApplication().getDriver().navigate().to(TheInternetPage.DYNAMIC_CONTROLS.getAddress());
-        RemoteWebElement element = DynamicControlsForm.getEnableButton().getElement();
-        Assert.assertNotNull(element, "RemoteWebElement should not be null");
+        WebElement element = DynamicControlsForm.getEnableButton().getElement();
+        Assert.assertNotNull(element, "WebElement should not be null");
     }
 
     @Test
     public void testShouldBePossibleToGetElementWithCustomTimeout() {
         getApplication().getDriver().navigate().to(TheInternetPage.DYNAMIC_CONTROLS.getAddress());
-        RemoteWebElement element = DynamicControlsForm.getEnableButton().getElement(Duration.ofSeconds(1L));
-        Assert.assertNotNull(element, "RemoteWebElement should not be null");
+        WebElement element = DynamicControlsForm.getEnableButton().getElement(Duration.ofSeconds(1L));
+        Assert.assertNotNull(element, "WebElement should not be null");
     }
 
     @Test

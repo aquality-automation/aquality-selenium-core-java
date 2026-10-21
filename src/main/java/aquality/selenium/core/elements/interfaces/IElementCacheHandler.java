@@ -1,7 +1,7 @@
 package aquality.selenium.core.elements.interfaces;
 
 import aquality.selenium.core.elements.ElementState;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 
 import java.time.Duration;
 
@@ -22,7 +22,7 @@ public interface IElementCacheHandler {
     /**
      * Determines is the cached element refresh needed.
      *
-     * @param customState custom element's existance state used for search.
+     * @param customState custom element's existence state used for search.
      * @return true if the refresh is needed (element wasn't found previously or is stale), false otherwise.
      */
     boolean isRefreshNeeded(ElementState customState);
@@ -46,29 +46,29 @@ public interface IElementCacheHandler {
     /**
      * Allows to get cached element.
      *
-     * @param timeout     timeout used to retrive the element when {@link #isRefreshNeeded()} is true.
-     * @param customState custom element's existance state used for search.
+     * @param timeout     timeout used to retrieve the element when {@link #isRefreshNeeded()} is true.
+     * @param customState custom element's existence state used for search.
      * @return cached element.
      */
-    RemoteWebElement getElement(Duration timeout, ElementState customState);
+    WebElement getElement(Duration timeout, ElementState customState);
 
     /**
      * Allows to get cached element.
      *
-     * @param timeout timeout used to retrive the element when {@link #isRefreshNeeded()} is true.
+     * @param timeout timeout used to retrieve the element when {@link #isRefreshNeeded()} is true.
      * @return cached element.
      */
-    default RemoteWebElement getElement(Duration timeout) {
+    default WebElement getElement(Duration timeout) {
         return getElement(timeout, null);
     }
 
     /**
      * Allows to get cached element.
      *
-     * @param customState custom element's existance state used for search.
+     * @param customState custom element's existence state used for search.
      * @return cached element.
      */
-    default RemoteWebElement getElement(ElementState customState) {
+    default WebElement getElement(ElementState customState) {
         return getElement(null, customState);
     }
 
@@ -77,7 +77,7 @@ public interface IElementCacheHandler {
      *
      * @return cached element.
      */
-    default RemoteWebElement getElement() {
+    default WebElement getElement() {
         return getElement(null, null);
     }
 }

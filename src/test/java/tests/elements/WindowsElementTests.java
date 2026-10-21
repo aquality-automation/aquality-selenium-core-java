@@ -3,7 +3,7 @@ package tests.elements;
 import aquality.selenium.core.applications.IApplication;
 import aquality.selenium.core.elements.ElementState;
 import org.openqa.selenium.By;
-import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -51,14 +51,14 @@ public class WindowsElementTests implements ITestWithApplication {
 
     @Test
     public void testShouldBePossibleToGetElement() {
-        RemoteWebElement element = CalculatorWindow.getOneButton().getElement();
-        Assert.assertNotNull(element, "RemoteWebElement should not be null");
+        WebElement element = CalculatorWindow.getOneButton().getElement();
+        Assert.assertNotNull(element, "WebElement should not be null");
     }
 
     @Test
     public void testShouldBePossibleToGetElementWithCustomTimeout() {
-        RemoteWebElement element = CalculatorWindow.getOneButton().getElement(Duration.ofSeconds(1L));
-        Assert.assertNotNull(element, "RemoteWebElement should not be null");
+        WebElement element = CalculatorWindow.getOneButton().getElement(Duration.ofSeconds(1L));
+        Assert.assertNotNull(element, "WebElement should not be null");
     }
 
     @Test
