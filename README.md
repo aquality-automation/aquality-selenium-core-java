@@ -9,5 +9,17 @@
 This package is a library with core functions simplifying work with Selenium-controlled applications.
 The package is not intended to be used directly, please refer to one of sibling libraries instead: Aquality Selenium, Aquality Appium Mobile.
 
+### Requirements
+
+- **Java**: 11 or higher
+- **Maven**: 3.6.0 or higher
+
+### Key Dependencies
+
+- **Selenium (API and Support libraries only): 4.x.x **
+- **Guice**: 6.x.x
+- **Jackson Databind**: 2.x.x
+- **Log4j**: 2.x.x
+- 
 ### License
 Library's source code is made available under the [Apache 2.0 license](https://github.com/aquality-automation/aquality-selenium-core-java/blob/master/LICENSE).
