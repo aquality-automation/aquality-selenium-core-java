@@ -12,7 +12,7 @@ The package is not intended to be used directly, please refer to one of sibling 
 ### Requirements
 
 - **Java**: 11 or higher
-- **Maven**: 3.6.0 or higher
+- **Maven**: 3.6.3 or higher
 
 ### Key Dependencies
 
