@@ -46,7 +46,7 @@ public class JsonSettingsFile implements ISettingsFile {
      *
      * @param node   node from json file
      * @param envVar value got from environment variable
-     * @return Value, casted to specific type.
+     * @return Value, cast to specific type.
      */
     private Object castEnvOrDefaultValue(JsonNode node, String envVar) {
         if (node.isBoolean()) {
