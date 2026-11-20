@@ -19,7 +19,7 @@ public class ElementFinderTests implements IElementFinderTests {
     @Test
     public void shouldBePossibleToUseConditionalWaitWithElementFinder() {
         BooleanSupplier elementFinderCondition = () ->
-                getElementFinder().findElement(CalculatorWindow.getResultsLabelLoc()).getText().contains("3");
+                getElementFinder().findElement(CalculatorWindow.getResultsLabelLoc()).getAttribute("Value").contains("3");
         Assert.assertFalse(elementFinderCondition.getAsBoolean(), "condition should not match before actions");
         Assert.assertTrue(AqualityServices.get(IConditionalWait.class)
                 .waitFor(driver -> {

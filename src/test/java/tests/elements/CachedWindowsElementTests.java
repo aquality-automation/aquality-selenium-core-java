@@ -30,7 +30,7 @@ public class CachedWindowsElementTests implements ICachedElementTests, ITestWith
         new CachedButton(CalculatorWindow.getPlusButtonLoc()).click();
         new CachedButton(CalculatorWindow.getOneButtonLoc()).click();
         new CachedButton(CalculatorWindow.getEqualsButtonLoc()).click();
-        String result = new CachedButton(CalculatorWindow.getResultsLabelLoc()).getElement().getText();
+        String result = new CachedButton(CalculatorWindow.getResultsLabelLoc()).getElement().getAttribute("Value");
         Assert.assertTrue(result.contains("2"));
     }
 

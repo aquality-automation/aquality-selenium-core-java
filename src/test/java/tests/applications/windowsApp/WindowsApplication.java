@@ -15,6 +15,7 @@ public class WindowsApplication implements IApplication {
     WindowsApplication(long implicitWaitSeconds, String appPath, URL serviceUrl) {
         WindowsOptions options = new WindowsOptions();
         options.setApp(appPath);
+        options.setAutomationName("Wincore");
         driver = new WindowsDriver(serviceUrl, options);
         setImplicitWaitTimeout(Duration.ofSeconds(implicitWaitSeconds));
     }

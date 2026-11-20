@@ -64,14 +64,16 @@ public class WindowsElementTests implements ITestWithApplication {
     @Test
     public void testShouldBePossibleToClickOnElementAndGetText() {
         CalculatorWindow.getOneButton().click();
-        Assert.assertEquals(CalculatorWindow.getLeftValueTextBox().getText(), "1", "1 should be entered");
+        Assert.assertEquals(CalculatorWindow.getLeftValueTextBox().getText(), "", "Text should remain empty for input field");
+        Assert.assertEquals(CalculatorWindow.getLeftValueTextBox().getAttribute("Value"), "1", "1 should be entered");
     }
 
     @Test
     public void testShouldBePossibleToSendKeysToElement() {
         String keys = "12";
         CalculatorWindow.getLeftValueTextBox().sendKeys(keys);
-        Assert.assertEquals(CalculatorWindow.getLeftValueTextBox().getText(), keys, "Keys should be entered");
+        Assert.assertEquals(CalculatorWindow.getLeftValueTextBox().getText(), "", "Text should remain empty for input field");
+        Assert.assertEquals(CalculatorWindow.getLeftValueTextBox().getAttribute("Value"), keys, "Keys should be entered");
     }
 
     @Test
