@@ -50,7 +50,7 @@ jobs:
   - task: NodeTool@0
     displayName: 'Install Node.js'
     inputs:
-      versionSpec: '22.x'
+      versionSpec: '26.x'
 
   - task: CmdLine@2
     displayName: 'Install Appium v4 (beta)'
